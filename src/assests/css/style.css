@@ -1,0 +1,100 @@
+.card-header {
+    background-color: #CFE2FF;
+}
+
+.btn-primary {
+    background-color: white !important;
+}
+
+.btn-primary:hover {
+    color: white !important;
+    background-color: #dc3545 !important;
+}
+
+ul li {
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.bg-body-tertiary {
+    background-color: #8172DB !important;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#textarea {
+    resize: none;
+}
+
+.btn-block {
+    padding: 50px;
+    font-size: 1.25rem;
+}
+
+.btn-blocks {
+    padding: 50px 65px 50px 65px;
+    font-size: 1.25rem;
+}
+
+.form-check-input {
+    border: 1px solid #000 !important;
+}
+
+.card {
+    transition: box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+
+.bounce {
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateY(0);
+    }
+
+    40% {
+        transform: translateY(-15px);
+    }
+
+    60% {
+        transform: translateY(-8px);
+    }
+}
+
+@media print {
+    @page {
+        size: A4;
+    }
+
+    .no-print {
+        display: none;
+    }
+
+    .print-content {
+        page-break-after: always;
+    }
+
+    .print-content:first-child {
+        margin-top: 0;
+    }
+
+    .print-content:not(:first-child) {
+        margin-top: 1rem;
+    }
+}
