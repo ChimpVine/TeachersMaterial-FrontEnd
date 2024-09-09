@@ -106,7 +106,7 @@ export default function MainPlanner() {
                                     <div className="card-body">
                                         <FaQuestionCircle size={50} className="bounce mb-3 mt-3" style={{ color: "#0d6efd" }} />
                                         <h5 className="card-title mb-5 fw-bold">Quiz Generator</h5>
-                                        <p className="card-text mt-5 mb-5">Create tailored, interactive quizzes effortlessly with our Quiz Generator.</p>
+                                        <p className="card-text mt-5 mb-5">Effortlessly create customized and interactive quizzes with our easy-to-use Quiz Generator.</p>
                                         <hr />
                                         <NavLink className="btn btn-outline-primary" to="/quiz-generator">
                                             Go to Quiz Generator
@@ -119,7 +119,7 @@ export default function MainPlanner() {
                                     <div className="card-body">
                                         <FaBookReader size={50} className="bounce mb-3 mt-3" style={{ color: "#198754" }} />
                                         <h5 className="card-title mb-5 fw-bold">Lesson Planner</h5>
-                                        <p className="card-text mb-5">Organize and plan your lessons effectively with our Lesson Planner.</p>
+                                        <p className="card-text mb-5">Plan and organize your lessons effectively with our easy-to-use Lesson Planner.</p>
                                         <hr />
                                         <NavLink className="btn btn-outline-success" to="/LessonPlanner">
                                             Go to Lesson Planner
