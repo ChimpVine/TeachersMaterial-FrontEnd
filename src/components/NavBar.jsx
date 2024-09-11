@@ -7,7 +7,7 @@ export default function NavBar() {
         <div>
             <nav className="navbar navbar-expand-lg bg-body-tertiary no-print">
                 <div className="container-fluid">
-                    <NavLink className="navbar-brand" to="/">
+                    <NavLink className="navbar-brand" to="/MainPlanner">
                         <img src={logo} alt="ChimpVineLogo" width="185" height="56" />
                     </NavLink>
                 </div>

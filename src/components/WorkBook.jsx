@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import NavBar from './NavBar';
-import { FaArrowRight, FaRegFilePdf} from "react-icons/fa";
+import { FaArrowRight, FaRegFilePdf, FaEraser, FaArrowLeft, FaRegLightbulb } from "react-icons/fa";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../spinner/Spinner';
@@ -9,7 +9,7 @@ import Spinner from '../spinner/Spinner';
 const subjects = [
     { value: "", label: "Choose Subject" },
     { value: "english", label: "English" },
-    { value: "math", label: "Math" },
+    { value: "mathematics", label: "Mathematics" },
     { value: "science", label: "Science" },
     { value: "social_studies", label: "Social Studies" },
     { value: "reading", label: "Reading" },
@@ -45,6 +45,16 @@ export default function WorkBook() {
         backgroundColor: '#FF683B',
         color: 'white',
     };
+
+    const cancelStyle = {
+        backgroundColor: '#dc3545',
+        color: 'white',
+    }
+
+    const pdfStyle = {
+        backgroundColor: '#198754',
+        color: 'white',
+    }
 
     const [formData, setFormData] = useState({
         subject: '',
@@ -88,6 +98,11 @@ export default function WorkBook() {
             return;
         }
 
+        if (pdf_file && pdf_file.size > 250 * 1024) {
+            toast.error('File size exceeds 250KB. Please upload a smaller file.');
+            return;
+        }
+
         const formDataToSend = new FormData();
         formDataToSend.append('subject', subject);
         formDataToSend.append('grade', grade);
@@ -127,7 +142,7 @@ export default function WorkBook() {
             <NavBar id="main-nav" />
             <ToastContainer position="top-right" autoClose={1500} />
             <div className="container-fluid">
-                <div className="row justify-content-center mt-4">
+                <div className="row justify-content-center mt-5">
                     {isLoading ? (
                         <div className="col-md-5 text-center">
                             <Spinner />
@@ -200,27 +215,27 @@ export default function WorkBook() {
                                             onChange={handleChange}
                                             disabled={isLoading}
                                         />
-                                        <p className='text-center' style={{fontSize:'14px'}}><span className='fw-bold' style={{ color: 'red' }}>Note: *</span> For better result please upload <label style={{color: 'red'}}>Lesson Planner</label> pdf.</p>
+                                        <p className='text-center' style={{ fontSize: '14px' }}><span className='fw-bold' style={{ color: 'red' }}>Note: *</span> For better result please upload <label style={{ color: 'red' }}>Lesson Planner</label> pdf.</p>
                                     </div>
 
                                     <div className="d-flex justify-content-between mt-3">
                                         <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
                                             Generate <FaArrowRight />
                                         </button>
-                                        <button type="button" className="btn btn-sm" style={btnStyle}onClick={handleCancel}>
-                                            Reset
+                                        <button type="button" className="btn btn-sm" style={cancelStyle} onClick={handleCancel}>
+                                            <FaEraser /> Reset
                                         </button>
                                     </div>
                                 </form>
                             </div>
                         ) : (
                             <div className="mt-3" ref={contentRef} id="main-btn">
-                                {parseWorkbook(apiResponse.workbook)}
+                                {parseWorkbook(apiResponse)}
                                 <button className="btn btn-sm mt-2 mb-3 me-2 no-print" style={btnStyle} onClick={() => setApiResponse(null)}>
-                                Generate Another Workbook
+                                    <FaArrowLeft /> Generate Another Workbook
                                 </button>
-                                <button className="btn btn-sm mt-2 mb-3 no-print" style={btnStyle} onClick={handlePrint}>
-                                <FaRegFilePdf /> Download PDF 
+                                <button className="btn btn-sm mt-2 mb-3 no-print" style={pdfStyle} onClick={handlePrint}>
+                                    <FaRegFilePdf /> Download PDF
                                 </button>
                             </div>
                         )
@@ -232,6 +247,7 @@ export default function WorkBook() {
 }
 
 const parseWorkbook = (workbook) => {
+
     const nameStyle = {
         display: "inline-block",
         width: "200px",
@@ -250,20 +266,74 @@ const parseWorkbook = (workbook) => {
 
     return (
         <div className="container-fluid mt-3 mb-2 ps-5 pe-5 print-content">
-            <div className='mt-4 mb-4'>
+             <div className='mt-4'>
                 <div className="d-flex justify-content-center mt-3">
-                    <h1>Your High School Name</h1>
+                    <h2 className='mb-5'>Your High School Name</h2>
                 </div>
-                <div className="d-flex justify-content-between mt-5 mb-3">
-                    <h5>Name :  <span style={nameStyle}></span></h5>
-                    <h5>Date :  <span style={dateStyle}></span></h5>
+                <div className="d-flex justify-content-between mt-5 mb-5">
+                    <h5>Name : <span style={nameStyle}></span></h5>
+                    <h5 className='me-3'>Date :  <span style={dateStyle}></span></h5>
                 </div>
             </div>
-            <div dangerouslySetInnerHTML={{ __html: workbook }} />
+            <div className='mt-4 mb-4'>
+                <div className="mt-3">
+                    <h2>Title : {workbook.title}</h2>
+                </div>
+                <div className="mt-3 mb-3">
+                    <h5>Introduction</h5>
+                    <p>{workbook.introduction.content}</p>
+                </div>
+            </div>
+
+            <div className='mb-4'>
+                <h5>Analogy</h5>
+                <p>{workbook.analogy.content}</p>
+            </div>
+
+            <div className='mb-4'>
+                <h5>Key Concepts</h5>
+                <ul>
+                    {workbook.keyConcepts.map((conceptObj, index) => (
+                        <li key={index}>
+                            <strong>{conceptObj.concept}:</strong> {conceptObj.explanation}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
+            <div className='mb-4'>
+                <h5>Exercises</h5>
+                {workbook.exercises.map((exercise, index) => (
+                    <div key={index}>
+                        <p><strong>{exercise.question}</strong></p>
+                        <ul>
+                            {exercise.options.map((option, optionIndex) => (
+                                <li key={optionIndex}>{option}</li>
+                            ))}
+                        </ul>
+                    </div>
+                ))}
+            </div>
+
+            <div className='mb-4'>
+                <h5>Summary</h5>
+                <p>{workbook.summary.content}</p>
+            </div>
+
+            <div className='mb-4 border border-2 p-3'>
+                <h5>Fun Fact <FaRegLightbulb size={25}/></h5>
+                <p>{workbook.funFact.content}</p>
+            </div>
+
+            <div className='mb-4'>
+                <h5>Answers</h5>
+                {workbook.answers.map((answer, index) => (
+                    <div key={index}>
+                        <p><strong>{answer.question}</strong></p>
+                        <p>Correct Answer: {answer.correctAnswer}</p>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };
-
-
-
-

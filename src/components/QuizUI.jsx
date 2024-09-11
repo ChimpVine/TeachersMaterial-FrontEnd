@@ -4,7 +4,13 @@ import Spinner from '../spinner/Spinner';
 import jsPDF from 'jspdf';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {FaArrowRight, FaCheckCircle, FaArrowLeft, FaDownload, FaRandom} from "react-icons/fa";
+import {
+    FaArrowRight,
+    FaCheckCircle, 
+    FaArrowLeft, 
+    FaDownload, 
+    FaRandom, 
+    FaEraser } from "react-icons/fa";
 import NavBar from './NavBar';
 
 
@@ -18,9 +24,25 @@ const QuizUI = () => {
         color: 'white',
     };
 
+    const cancelStyle = {
+        backgroundColor: '#dc3545',
+        color: 'white',
+    }
+
     const gapStyle = {
         marginRight: '10px',
     };
+
+    const pdfStyle = {
+        backgroundColor: '#198754',
+        color: 'white',
+    }
+
+    const backStyle = {
+        backgroundColor: '#6c757d',
+        color: 'white',
+    }
+
 
     const defaultNumberOfQuestionnaires = 10;
     const questionsPerPage = 10;
@@ -135,6 +157,16 @@ const QuizUI = () => {
         setCurrentPage(1);
         setSelectedQuestions([]);
         setApprovalStatus({});
+    };
+
+    const handleReset = () => {
+        setInputData({
+            subject: '',
+            topic: '',
+            difficulty: '',
+            language: '',
+            numberOfQuestions: defaultNumberOfQuestionnaires,
+        });
     };
 
     const handleCancel = () => {
@@ -267,7 +299,7 @@ const QuizUI = () => {
                 autoClose={1500}
             />
             <div className="container">
-                <div className="row justify-content-center mt-3">
+                <div className="row justify-content-center mt-5">
                     <div className="col-md-6 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded">
                         {loading ? (
                             <div className="text-center">
@@ -336,7 +368,7 @@ const QuizUI = () => {
                                         <option defaultValue>Choose Language</option>
                                         <option value="english">English</option>
                                         <option value="spanish">Spanish</option>
-                                        <option value="thai">Thailand</option>
+                                        <option value="thai">Thai</option>
                                     </select>
 
                                     <label htmlFor="numberOfQuestions" className="form-label">
@@ -365,11 +397,11 @@ const QuizUI = () => {
                                     <button
                                         type="reset"
                                         className="btn btn-sm"
-                                        style={btnStyle}
-                                        onClick={handleCancel}
+                                        style={cancelStyle}
+                                        onClick={handleReset}
                                         disabled={loading}
                                     >
-                                        Cancel
+                                      <FaEraser />  Reset 
                                     </button>
                                 </div>
                             </form>
@@ -467,7 +499,7 @@ const QuizUI = () => {
                                     <button
                                         type="button"
                                         className="btn btn-sm"
-                                        style={btnStyle}
+                                        style={backStyle}
                                         onClick={handleBack}
                                     >
                                     <FaArrowLeft /> Back
@@ -477,7 +509,7 @@ const QuizUI = () => {
                                         className="btn btn-sm"
                                         style={btnStyle}
                                         onClick={handleToggleSelectAll}
-                                    >
+                                    > 
                                         {selectedQuestions.length === 0
                                             ? 'Select All'
                                             : selectedQuestions.length === userQuizQuestions.length
@@ -487,7 +519,7 @@ const QuizUI = () => {
                                     <button
                                         type="button"
                                         className="btn btn-sm"
-                                        style={btnStyle}
+                                        style={pdfStyle}
                                         onClick={handleDownloadPdf}
                                         ref={downloadPdfRef}
                                     >
@@ -496,7 +528,7 @@ const QuizUI = () => {
                                     <button
                                         type="button"
                                         className="btn btn-sm"
-                                        style={btnStyle}
+                                        style={cancelStyle}
                                         onClick={handleCancel}
                                     >
                                         Cancel

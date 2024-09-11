@@ -55,21 +55,6 @@ const MatchTermDef = ({ worksheet, answers, modalVisible, handleUpdate, setApiRe
                   <h5 className="modal-title">Edit Match Term & Definition Worksheet</h5>
                 </div>
                 <div className="modal-body" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
-                  <div className='mb-4'>
-                    <label className="form-label fw-bold">Question</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={worksheet.question}
-                      onChange={(e) => setApiResponse((prevState) => ({
-                        ...prevState,
-                        worksheet: {
-                          ...prevState.worksheet,
-                          question: e.target.value,
-                        },
-                      }))}
-                    />
-                  </div>
                   <div className='row'>
                     <div className='col-md-6'>
                       <p><strong>Edit Options A</strong></p>
@@ -98,7 +83,6 @@ const MatchTermDef = ({ worksheet, answers, modalVisible, handleUpdate, setApiRe
                       ))}
                     </div>
                   </div>
-
                   <div className='mt-4'>
                     <label className="form-label fw-bold">Correct Answers</label>
                     {answers.map((answer, index) => (

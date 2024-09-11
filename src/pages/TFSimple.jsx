@@ -11,15 +11,7 @@ const TFSimple = ({ worksheet, answers, modalVisible, handleUpdate, setApiRespon
     }));
   };
 
-  const handleOptionChange = (index, optionKey, newOptionValue) => {
-    const updatedWorksheet = [...worksheet];
-    updatedWorksheet[index].options[optionKey] = newOptionValue;
-    setApiResponse((prevState) => ({
-      ...prevState,
-      worksheet: updatedWorksheet,
-    }));
-  };
-
+  
   const handleAnswerChange = (index, selectedAnswer) => {
     const updatedAnswers = { ...answers };
     updatedAnswers[index + 1] = selectedAnswer;

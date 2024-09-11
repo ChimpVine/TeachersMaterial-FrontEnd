@@ -59,6 +59,69 @@ body {
     animation: bounce 2s infinite;
 }
 
+.unique-get-started-container {
+    background-image: url(https://site.chimpvine.com/wp-content/uploads/2023/12/cv-grades-background.png);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.unique-navbar {
+    background-color: #8172DB !important;
+}
+
+a {
+    text-decoration: none;
+    color: #8172DB;
+}
+
+a:hover {
+    color: #8172DB;
+}
+
+.unique-typewrite > .wrap {
+    border-right: 0.08em solid #8172DB;
+}
+
+.unique-button {
+    border-radius: 50px;
+    background-color: #FF683B;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 21px;
+    padding: 20px;
+    width: 200px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.unique-button span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+.unique-button span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+
+.unique-button:hover span {
+    padding-right: 25px;
+}
+
+.unique-button:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
 @keyframes bounce {
     0%,
     20%,

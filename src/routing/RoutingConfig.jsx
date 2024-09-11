@@ -6,14 +6,17 @@ import QuizUI from '../components/QuizUI.jsx';
 import MainPlanner from '../components/MainPlanner.jsx';
 import WorkBook from '../components/WorkBook.jsx';
 import WorkSheet from '../components/WorkSheet.jsx';
-
+import GetStarted from '../components/GetStarted.jsx';
+import ReactGA from 'react-ga4';
 
 export default function RoutingConfig() {
+  ReactGA.initialize('G-TBNNYXX21K');
   return (
     <>
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<MainPlanner/>}></Route>
+                <Route path="/" element={<GetStarted/>}></Route>
+                <Route path="/MainPlanner" element={<MainPlanner/>}></Route>
                 <Route path="/LessonPlanner" element={<LessonPlanner/>}></Route>
                 <Route path="/quiz-generator" element={<QuizUI/>}></Route>
                 <Route path="/workbook" element={<WorkBook/>}></Route>

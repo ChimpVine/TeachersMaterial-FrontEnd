@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import NavBar from './NavBar';
-import { FaArrowRight, FaRegFilePdf } from "react-icons/fa";
+import { FaArrowRight, FaRegFilePdf, FaEraser, FaArrowLeft } from "react-icons/fa";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../spinner/Spinner';
@@ -9,7 +9,7 @@ import Spinner from '../spinner/Spinner';
 const subjects = [
     { value: "", label: "Choose Subject" },
     { value: "english", label: "English" },
-    { value: "math", label: "Math" },
+    { value: "mathematics", label: "Mathematics" },
     { value: "science", label: "Science" },
     { value: "social_studies", label: "Social Studies" },
     { value: "reading", label: "Reading" },
@@ -63,6 +63,16 @@ export default function LessonPlan() {
         color: 'white',
     };
 
+    const cancelStyle = {
+        backgroundColor: '#dc3545',
+        color: 'white',
+    }
+
+    const pdfStyle = {
+        backgroundColor: '#198754',
+        color: 'white',
+    }
+
     const [formData, setFormData] = useState({
         subject: '',
         grade: '',
@@ -89,6 +99,11 @@ export default function LessonPlan() {
 
         if (!subject || !grade || !duration || !textarea || !pdf_file) {
             toast.error('Please fill in all fields.');
+            return;
+        }
+
+        if (pdf_file && pdf_file.size > 250 * 1024) {
+            toast.error('File size exceeds 250KB. Please upload a smaller file.');
             return;
         }
 
@@ -133,7 +148,7 @@ export default function LessonPlan() {
             <NavBar id="main-nav" />
             <ToastContainer position="top-right" autoClose={1500} />
             <div className="container-fluid">
-                <div className="row justify-content-center mt-3">
+                <div className="row justify-content-center mt-5">
                     {isLoading ? (
                         <div className="col-md-5 text-center">
                             <Spinner />
@@ -223,34 +238,32 @@ export default function LessonPlan() {
                                             onChange={handleChange}
                                             disabled={isLoading}
                                         />
-
-                                       
                                     </div>
 
                                     <div className="d-flex justify-content-between mt-3">
                                         <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
                                             Generate <FaArrowRight />
                                         </button>
-                                        <button type="button" className="btn btn-sm" style={btnStyle} onClick={() => setFormData({
+                                        <button type="button" className="btn btn-sm" style={cancelStyle} onClick={() => setFormData({
                                             subject: '',
                                             grade: '',
                                             duration: '',
                                             textarea: '',
                                             pdf_file: null,
                                         })} disabled={isLoading}>
-                                            Reset
+                                            <FaEraser /> Reset
                                         </button>
                                     </div>
                                 </form>
                             </div>
                         ) : (
                             <div className="mt-3" ref={contentRef} id="main-btn">
-                                {parseLessonPlan(apiResponse.lesson_plan)}
+                                {renderLessonPlan(apiResponse)}
                                 <button className="btn btn-sm mt-2 mb-3 me-2 no-print" style={btnStyle} onClick={() => setApiResponse(null)}>
-                                    Generate Another Lesson
+                                    <FaArrowLeft /> Generate Another Lesson
                                 </button>
-                                <button className="btn btn-sm mt-2 mb-3 no-print" style={btnStyle} onClick={handlePrint}>
-                                <FaRegFilePdf /> Download PDF
+                                <button className="btn btn-sm mt-2 mb-3 no-print" style={pdfStyle} onClick={handlePrint}>
+                                    <FaRegFilePdf /> Download PDF
                                 </button>
                             </div>
                         )
@@ -261,7 +274,8 @@ export default function LessonPlan() {
     );
 }
 
-const parseLessonPlan = (lessonPlan) => {
+const renderLessonPlan = (lessonPlan) => {
+
     const nameStyle = {
         display: "inline-block",
         width: "200px",
@@ -280,16 +294,146 @@ const parseLessonPlan = (lessonPlan) => {
 
     return (
         <div className="container-fluid mt-3 mb-2 ps-5 pe-5 print-content">
-            <div className='mt-4 mb-4'>
+            <div className='mt-4'>
                 <div className="d-flex justify-content-center mt-3">
-                    <h2>Your High School Name</h2>
+                    <h2 className='mb-5'>Your High School Name</h2>
                 </div>
-                <div className="d-flex justify-content-between mt-5 mb-3">
+                <div className="d-flex justify-content-between mt-5 mb-5">
                     <h5>Name : <span style={nameStyle}></span></h5>
                     <h5 className='me-3'>Date :  <span style={dateStyle}></span></h5>
                 </div>
+                <div className='mb-3'>
+                    <h5>Subject: {lessonPlan.subject} </h5>
+                    <h5>Grade: {lessonPlan.gradeLevel}</h5>
+                    <h5>Duration: {lessonPlan.duration}</h5>
+                    <h5>Topic: {lessonPlan.topic}</h5>
+                </div>
             </div>
-            <div dangerouslySetInnerHTML={{ __html: lessonPlan }} />
+            {/* Learning Objectives */}
+            <section>
+                <h4>Learning Objectives:</h4>
+                <ul>
+                    {lessonPlan.learningObjectives.map((objective, index) => (
+                        <li key={index}>{objective}</li>
+                    ))}
+                </ul>
+            </section>
+
+            {/* Materials */}
+            <section>
+                <h4>Materials:</h4>
+                <ul>
+                    {lessonPlan.materials.map((material, index) => (
+                        <li key={index}>{material}</li>
+                    ))}
+                </ul>
+            </section>
+            {/* Procedure */}
+            <section>
+                <h4>Procedure:</h4>
+                <div>
+                    <h5>Introduction:</h5>
+                    <ul>
+                        {lessonPlan.procedure.introduction.map((activity, index) => (
+                            <li key={index}>{activity}</li>
+                        ))}
+                    </ul>
+
+                    <h5>Direct Instruction:</h5>
+                    <ul>
+                        {lessonPlan.procedure.directInstruction.map((step, index) => (
+                            <li key={index}>{step}</li>
+                        ))}
+                    </ul>
+
+                    <h5>Guided Practice:</h5>
+                    <ul>
+                        {lessonPlan.procedure.guidedPractice.map((practice, index) => (
+                            <li key={index}>{practice}</li>
+                        ))}
+                    </ul>
+
+                    <h5>Independent Practice:</h5>
+                    <ul>
+                        {lessonPlan.procedure.independentPractice.map((task, index) => (
+                            <li key={index}>{task}</li>
+                        ))}
+                    </ul>
+
+                    <h5>Closure:</h5>
+                    <ul>
+                        {lessonPlan.procedure.closure.map((closureStep, index) => (
+                            <li key={index}>{closureStep}</li>
+                        ))}
+                    </ul>
+                </div>
+            </section>
+
+            {/* Assessment */}
+            <section>
+                <h4>Assessment:</h4>
+                <div>
+                    <h5>Formative:</h5>
+                    <ul>
+                        {lessonPlan.assessment.formative.map((assessment, index) => (
+                            <li key={index}>{assessment}</li>
+                        ))}
+                    </ul>
+
+                    <h5>Summative:</h5>
+                    <ul>
+                        {lessonPlan.assessment.summative.map((assessment, index) => (
+                            <li key={index}>{assessment}</li>
+                        ))}
+                    </ul>
+                </div>
+            </section>
+
+            {/* Differentiation */}
+            <section>
+                <h4>Differentiation:</h4>
+                <ul>
+                    {lessonPlan.differentiation.map((strategy, index) => (
+                        <li key={index}>{strategy}</li>
+                    ))}
+                </ul>
+            </section>
+
+            {/* Accommodations */}
+            <section>
+                <h4>Accommodations:</h4>
+                <ul>
+                    {lessonPlan.accommodations.map((accommodation, index) => (
+                        <li key={index}>{accommodation}</li>
+                    ))}
+                </ul>
+            </section>
+
+            {/* Extensions */}
+            <section>
+                <h4>Extensions:</h4>
+                <ul>
+                    {lessonPlan.extensions.map((extension, index) => (
+                        <li key={index}>{extension}</li>
+                    ))}
+                </ul>
+            </section>
+
+            {/* Reflection */}
+            <section>
+                <h4>Reflection:</h4>
+                <ul>
+                    {lessonPlan.reflection.map((reflection, index) => (
+                        <li key={index}>{reflection}</li>
+                    ))}
+                </ul>
+            </section>
+
+            {/* Importance */}
+            <section>
+                <h4>Importance:</h4>
+                <p>{lessonPlan.importance}</p>
+            </section>
         </div>
     );
 };

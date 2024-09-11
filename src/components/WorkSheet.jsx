@@ -3,7 +3,7 @@ import axios from 'axios';
 import NavBar from './NavBar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { FaArrowRight, FaCloudDownloadAlt, FaFilePdf, FaEdit } from "react-icons/fa";
+import { FaArrowRight, FaCloudDownloadAlt, FaFilePdf, FaEdit, FaArrowLeft, FaEraser } from "react-icons/fa";
 import Spinner from '../spinner/Spinner';
 import MCQSingle from '../pages/MCQSingle';
 import MCQMultiple from '../pages/MCQMultiple';
@@ -11,6 +11,11 @@ import TFSimple from '../pages/TFSimple';
 import FIBSingle from '../pages/FIBSingle';
 import FIBMultiple from '../pages/FIBMultiple';
 import MatchTermDef from '../pages/MatchTermDef';
+import ShortAnswerList from '../pages/ShortAnswerList';
+import ShortAnswerExplain from '../pages/ShortAnswerExplain';
+import LongAnswerExplain from '../pages/LongAnswerExplain';
+import ProblemSolving from '../pages/ProblemSolving';
+import SeqEvents from '../pages/SeqEvents';
 
 export default function WorkSheet() {
     const [selectedQuestionType, setSelectedQuestionType] = useState('');
@@ -33,7 +38,7 @@ export default function WorkSheet() {
     const subjects = [
         { value: "", label: "Choose Subject" },
         { value: "english", label: "English" },
-        { value: "math", label: "Math" },
+        { value: "Mathematics", label: "Mathematics" },
         { value: "science", label: "Science" },
         { value: "social_studies", label: "Social Studies" },
         { value: "reading", label: "Reading" },
@@ -127,6 +132,43 @@ export default function WorkSheet() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Validate required fields
+        if (!formData.subject) {
+            toast.error('Please select a subject.');
+            return;
+        }
+        if (!formData.grade) {
+            toast.error('Please select a grade.');
+            return;
+        }
+        if (!formData.number) {
+            toast.error('Please select the number of questions.');
+            return;
+        }
+        if (!formData.questionType) {
+            toast.error('Please select a question type.');
+            return;
+        }
+        if (subOptions.length > 0 && !formData.subQuestionType) {
+            toast.error('Please select a sub-question type.');
+            return;
+        }
+        if (!formData.topic) {
+            toast.error('Please enter a topic.');
+            return;
+        }
+        if (!formData.pdfFile) {
+            toast.error('Please upload a PDF file.');
+            return;
+        }
+
+        // Check the file size before generating the worksheet
+        if (formData.pdfFile && formData.pdfFile.size > 250 * 1024) {
+            toast.error('File size exceeds 250KB. Please upload a smaller file.');
+            return;
+        }
+
         setLoading(true);
         setFormVisible(false);
         setApiResponse(null);
@@ -218,6 +260,10 @@ export default function WorkSheet() {
         closeModal();
     };
 
+    const pdfStyle = {
+        backgroundColor: '#198754',
+        color: 'white',
+    }
 
     const btnStyle = {
         backgroundColor: '#FF683B',
@@ -227,6 +273,11 @@ export default function WorkSheet() {
     const gapStyle = {
         marginBottom: '100px',
     };
+
+    const cancelStyle = {
+        backgroundColor: '#dc3545',
+        color: 'white',
+    }
 
     const lineStyle = {
         display: "inline-block",
@@ -381,7 +432,7 @@ export default function WorkSheet() {
                                     <button
                                         type="submit"
                                         className="btn btn-sm"
-                                        style={{ backgroundColor: '#FF683B', color: 'white' }}
+                                        style={btnStyle}
                                         disabled={loading}
                                     >
                                         {loading ? 'Generating...' : 'Generate'} <FaArrowRight />
@@ -389,10 +440,10 @@ export default function WorkSheet() {
                                     <button
                                         type="button"
                                         className="btn btn-sm"
-                                        style={{ backgroundColor: '#FF683B', color: 'white' }}
+                                        style={cancelStyle}
                                         onClick={handleReset}
                                     >
-                                        Reset
+                                        <FaEraser/> Reset
                                     </button>
                                 </div>
                             </form>
@@ -473,150 +524,57 @@ export default function WorkSheet() {
                                     />
                                 )
                             }
-                            {/* {
-                                apiResponse &&
-                                apiResponse.worksheet &&
-                                formData.questionType === 'Q&A' &&
-                                formData.subQuestionType === 'Short_Answer_List' && (
-                                    <ShortAnswerList
-                                        worksheet={apiResponse.worksheet}
-                                        answers={apiResponse.answers}
-                                        modalVisible={modalVisible}
-                                        handleUpdate={handleUpdate}
-                                        setApiResponse={setApiResponse}
-                                    />
-                                )
-                            } */}
-
-                            {/* {apiResponse && apiResponse.worksheet && formData.questionType === 'Q&A' && formData.subQuestionType === 'Short_Answer_List' && (
-                                <div>
-                                    <h4 className='mb-3'><strong>Short Answer List</strong></h4>
-                                    {apiResponse.worksheet.map((item, index) => (
-                                        <div className='mb-4' key={index}>
-                                            <p className='mb-5'><strong>Question {index + 1}:</strong> {item.question}</p>
-                                            <div className='short-answers'>
-                                                <label className='mb-5'>
-                                                    <strong>
-                                                        Answer:
-                                                        <span className="ms-2" style={lineStyle}></span>
-                                                    </strong>
-                                                </label>
-                                            </div>
-                                            <div className='short-answers-second mb-5'>
-                                                <span style={AdditionalStyle}></span>
-                                            </div>
-                                            <div className='short-answers-third mb-5'>
-                                                <span style={AdditionalStyle}></span>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            )} */}
+                            {apiResponse && apiResponse.worksheet && formData.questionType === 'Q&A' && formData.subQuestionType === 'Short_Answer_List' && (
+                                <ShortAnswerList
+                                    worksheet={apiResponse.worksheet}
+                                    answers={apiResponse.answers}
+                                    lineStyle={lineStyle}
+                                    AdditionalStyle={AdditionalStyle}
+                                    setApiResponse={setApiResponse}
+                                    handleUpdate={handleUpdate}
+                                    modalVisible={modalVisible}
+                                />
+                            )}
                             {apiResponse && apiResponse.worksheet && formData.questionType === 'Q&A' && formData.subQuestionType === 'Short_Answer_Explain' && (
-                                <div>
-                                    <h4 className='mb-5'><strong>Short Answer Explaination</strong></h4>
-                                    {apiResponse.worksheet.map((item, index) => (
-                                        <div className='mb-4' key={index}>
-                                            <p className='mb-5'><strong>Question {index + 1}:</strong> {item.question}</p>
-                                            <div className='short-answers'>
-                                                <label className='mb-5'>
-                                                    <strong>
-                                                        Answer:
-                                                        <span className="ms-2" style={lineStyle}></span>
-                                                    </strong>
-                                                </label>
-                                            </div>
-                                            <div className='short-answers-second mb-5'>
-                                                <span style={AdditionalStyle}></span>
-                                            </div>
-                                            <div className='short-answers-third mb-5'>
-                                                <span style={AdditionalStyle}></span>
-                                            </div>
-                                            <div className='short-answers-fourth mb-5'>
-                                                <span style={AdditionalStyle}></span>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
+                                <ShortAnswerExplain
+                                    worksheet={apiResponse.worksheet}
+                                    answers={apiResponse.answers}
+                                    lineStyle={lineStyle}
+                                    AdditionalStyle={AdditionalStyle}
+                                    setApiResponse={setApiResponse}
+                                    handleUpdate={handleUpdate}
+                                    modalVisible={modalVisible}
+                                />
                             )}
                             {apiResponse && apiResponse.worksheet && formData.questionType === 'Q&A' && formData.subQuestionType === 'Long_Answer_Explain' && (
-                                <div>
-                                    <h4 className='mb-5'><strong>Long Answer Explaination</strong></h4>
-                                    {apiResponse.worksheet.map((item, index) => (
-                                        <div className='mb-4' key={index}>
-                                            <p className='mb-5'><strong>Question {index + 1}:</strong> {item.question}</p>
-                                            <div className='short-answers'>
-                                                <label className='mb-5'>
-                                                    <strong>
-                                                        Answer:
-                                                        <span className="ms-2" style={lineStyle}></span>
-                                                    </strong>
-                                                </label>
-                                            </div>
-                                            <div className='short-answers-second mb-5'>
-                                                <span style={AdditionalStyle}></span>
-                                            </div>
-                                            <div className='short-answers-third mb-5'>
-                                                <span style={AdditionalStyle}></span>
-                                            </div>
-                                            <div className='short-answers-fourth mb-5'>
-                                                <span style={AdditionalStyle}></span>
-                                            </div>
-                                            <div className='short-answers-fifth mb-5'>
-                                                <span style={AdditionalStyle}></span>
-                                            </div>
-                                            <div className='short-answers-six mb-5'>
-                                                <span style={AdditionalStyle}></span>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
+                                <LongAnswerExplain
+                                    worksheet={apiResponse.worksheet}
+                                    answers={apiResponse.answers}
+                                    lineStyle={lineStyle}
+                                    AdditionalStyle={AdditionalStyle}
+                                    setApiResponse={setApiResponse}
+                                    handleUpdate={handleUpdate}
+                                    modalVisible={modalVisible}
+                                />
                             )}
-                            {apiResponse && apiResponse.worksheet && formData.questionType === 'Sequencing' && formData.subQuestionType === 'Seq_Events' && (
-                                <div className='mb-5'>
-                                    <h4 className='mb-2'><strong>Sequence Events Order</strong></h4>
-                                    {apiResponse.worksheet.map((worksheetItem, index) => (
-                                        <div key={index} className='mb-5'>
-                                            <p><strong>Question {index + 1}:</strong> {worksheetItem.question}</p>
-                                            <div className='mb-5 options'>
-                                                <p><strong>Options:</strong></p>
-                                                {Object.keys(worksheetItem.options).map((optionKey) => (
-                                                    <div key={optionKey}>
-                                                        <span><strong>{optionKey}.</strong> {worksheetItem.options[optionKey]}</span>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                            <div className='mb-5'>
-                                                <strong>Answers:</strong>
-                                            </div>
-                                            <p className='answer mb-5'>
-                                                <strong>Correct Answers:</strong>
-                                                {apiResponse.answers[index].map((answer, answerIndex) => (
-                                                    <span key={answerIndex} className='mb-5 ms-2'>
-                                                        {answer}
-                                                    </span>
-                                                ))}
-                                            </p>
-                                        </div>
-                                    ))}
-                                </div>
+                            {apiResponse && apiResponse.worksheet && formData.questionType === 'Sequencing' && (
+                                <SeqEvents
+                                    worksheet={apiResponse.worksheet}
+                                    answers={apiResponse.answers}
+                                    setApiResponse={setApiResponse}
+                                    handleUpdate={handleUpdate}
+                                    modalVisible={modalVisible}
+                                />
                             )}
-                            {apiResponse && apiResponse.worksheet && formData.questionType === 'Problem_Solving' && formData.subQuestionType === 'PS_Math' && (
-                                <div className='mb-5'>
-                                    <h4 className='mb-2'><strong>Mathematical Problems</strong></h4>
-                                    {apiResponse.worksheet.map((item, index) => (
-                                        <div key={index}>
-                                            <p><strong>Question {index + 1}:</strong> {item.question}</p>
-                                            <p className='mb-5' >
-                                                <strong className='mb-5'>Answers:</strong>
-                                            </p>
-                                            <label style={gapStyle}></label>
-                                            <p className='answer mb-5'>
-                                                <strong>Correct Answer:</strong> {apiResponse.answers[index]}
-                                            </p>
-                                        </div>
-                                    ))}
-                                </div>
+                            {apiResponse && apiResponse.worksheet && formData.questionType === 'Problem_Solving' && (
+                                <ProblemSolving
+                                    worksheet={apiResponse.worksheet}
+                                    answers={apiResponse.answers}
+                                    gapStyle={gapStyle}
+                                    setApiResponse={setApiResponse}
+                                    handleUpdate={handleUpdate}
+                                    modalVisible={modalVisible}
+                                />
                             )}
                             <div className="d-flex justify-content-center">
                                 <button
@@ -624,7 +582,7 @@ export default function WorkSheet() {
                                     className="btn btn-sm me-3 mb-3 no-print"
                                     style={btnStyle}
                                     onClick={handleReset}>
-                                    Generate New Worksheet
+                                   <FaArrowLeft/> Generate New Worksheet
                                 </button>
 
                                 <button
@@ -638,7 +596,7 @@ export default function WorkSheet() {
                                 <button
                                     type="button"
                                     className="btn btn-sm me-3 mb-3 no-print"
-                                    style={btnStyle}
+                                    style={pdfStyle}
                                     onClick={() => generatePdf(false, false)}
                                 >
                                     <FaCloudDownloadAlt /> Download Questions
@@ -647,7 +605,7 @@ export default function WorkSheet() {
                                 <button
                                     type="button"
                                     className="btn btn-sm mb-3 no-print"
-                                    style={btnStyle}
+                                    style={pdfStyle}
                                     onClick={() => generatePdf(true, true)}
                                 >
                                     <FaFilePdf /> Download Answers
