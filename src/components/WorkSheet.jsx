@@ -186,7 +186,7 @@ export default function WorkSheet() {
         }
 
         try {
-            const response = await axios.post(`${import.meta.env.VITE_API_URL}/generate`, formPayload);
+            const response = await axios.post(`${import.meta.env.VITE_YARN_URL}/generate`, formPayload);
             setApiResponse(response.data);
             localStorage.setItem("worksheet", JSON.stringify(response.data));
             toast.success('Worksheet generated successfully!');

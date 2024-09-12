@@ -84,6 +84,21 @@ export default function MainPlanner() {
                             </div>
                         </div>
                     </div>
+
+{/*                     
+                    <div className="col-md-3 mt-3">
+                        <div className="card">
+                            <div className="card-body">
+                                <FaQuestionCircle size={50} className="bounce mb-3 mt-3" style={{ color: "#0d6efd" }} />
+                                <h5 className="card-title mb-5 fw-bold">Vocabulary Generator</h5>
+                                <p className="card-text mt-5 mb-5">Easily craft personalized and dynamic vocabulary lists with our intuitive Vocabulary Builder.</p>
+                                <hr />
+                                <NavLink className="btn btn-outline-secondary" to="/vocabulary" onClick={() => trackButtonClick('Quiz Generator')}>
+                                    Go to Vocabulary Generator
+                                </NavLink>
+                            </div>
+                        </div>
+                    </div> */}
                 </div>
             </div>
         </div>

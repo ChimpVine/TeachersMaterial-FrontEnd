@@ -108,7 +108,7 @@ const QuizUI = () => {
         try {
             setLoading(true);
 
-            const apiUrl = `${import.meta.env.VITE_API_URL}/generate_quiz?topic=${inputData.topic}&language=${inputData.language}&subject=${inputData.subject}&number=${inputData.numberOfQuestions}&difficulty=${inputData.difficulty}`;
+            const apiUrl = `${import.meta.env.VITE_YARN_URL}/generate_quiz?topic=${inputData.topic}&language=${inputData.language}&subject=${inputData.subject}&number=${inputData.numberOfQuestions}&difficulty=${inputData.difficulty}`;
             const response = await fetch(apiUrl);
 
             if (!response.ok) {

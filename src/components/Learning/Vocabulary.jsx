@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
-import NavBar from './NavBar';
-import { FaArrowRight, FaRegFilePdf, FaEraser, FaArrowLeft, FaRegLightbulb } from "react-icons/fa";
+import NavBar from '../NavBar';
+import { FaArrowRight, FaEraser, FaArrowLeft } from "react-icons/fa";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Spinner from '../spinner/Spinner';
+import Spinner from '../../spinner/Spinner';
 
 const subjects = [
     { value: "", label: "Choose Subject" },
@@ -37,104 +37,78 @@ const grades = [
     { value: "9", label: "9th Grade" },
     { value: "10", label: "10th Grade" },
     { value: "11", label: "11th Grade" },
-    { value: "12", label: "12th Grade" },
+    { value: "12", label: "12th Grade" }
 ];
 
-export default function WorkBook() {
-    const btnStyle = {
-        backgroundColor: '#FF683B',
-        color: 'white',
-    };
+const difficultyLevels = [
+    { value: "", label: "Choose Difficulty Level" },
+    { value: "easy", label: "Easy" },
+    { value: "medium", label: "Medium" },
+    { value: "hard", label: "Hard" },
+];
 
-    const cancelStyle = {
-        backgroundColor: '#dc3545',
-        color: 'white',
-    }
-
-    const pdfStyle = {
-        backgroundColor: '#198754',
-        color: 'white',
-    }
+export default function LessonPlan() {
+    const btnStyle = { backgroundColor: '#FF683B', color: 'white' };
+    const cancelStyle = { backgroundColor: '#dc3545', color: 'white' };
 
     const [formData, setFormData] = useState({
         subject: '',
         grade: '',
-        textarea: '',
-        pdf_file: null,
+        difficultyLevel: '',
+        topic: '',
+        numberOfWords: ''
     });
-
-    const fileInputRef = useRef(null);
-
-    const handleCancel = () => {
-        setFormData({
-            subject: '',
-            grade: '',
-            textarea: '',
-            pdf_file: null,
-        });
-        if (fileInputRef.current) {
-            fileInputRef.current.value = null;
-        }
-    };
 
     const [apiResponse, setApiResponse] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const contentRef = useRef();
 
     const handleChange = (e) => {
-        const { name, value, files } = e.target;
+        const { name, value } = e.target;
         setFormData({
             ...formData,
-            [name]: files ? files[0] : value,
+            [name]: value,
         });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const { subject, grade, textarea, pdf_file } = formData;
+        const { subject, grade, difficultyLevel, topic, numberOfWords } = formData;
 
-        if (!subject || !grade || !textarea || !pdf_file) {
-            toast.error('Please fill in all fields.');
+        if (!subject || !grade || !difficultyLevel || !topic) {
+            toast.error('Please fill in all required fields.');
             return;
         }
 
-        if (pdf_file && pdf_file.size > 250 * 1024) {
-            toast.error('File size exceeds 250KB. Please upload a smaller file.');
-            return;
-        }
-
-        const formDataToSend = new FormData();
-        formDataToSend.append('subject', subject);
-        formDataToSend.append('grade', grade);
-        formDataToSend.append('command', textarea);
-        formDataToSend.append('file', pdf_file);
+        const formDataToSend = {
+            subject,
+            grade,
+            difficultyLevel,
+            topic,
+            numberOfWords
+        };
 
         setIsLoading(true);
 
         try {
-            const response = await axios.post(`${import.meta.env.VITE_YARN_URL}/generate_workbook`, formDataToSend, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
+            const response = await axios.post(`${import.meta.env.VITE_YARN_URL}/generate_lesson_plan`, formDataToSend, {
+                headers: { 'Content-Type': 'application/json' },
             });
             setApiResponse(response.data);
             setFormData({
                 subject: '',
                 grade: '',
-                textarea: '',
-                pdf_file: null,
+                difficultyLevel: '',
+                topic: '',
+                numberOfWords: ''
             });
-            toast.success('Workbook generated successfully!');
+            toast.success('Lesson plan generated successfully!');
         } catch (error) {
             console.error('Error:', error);
-            toast.error('Failed to generate the workbook. Please try again.');
+            toast.error('Failed to generate the lesson plan. Please try again.');
         } finally {
             setIsLoading(false);
         }
-    };
-
-    const handlePrint = () => {
-        window.print();
     };
 
     return (
@@ -151,7 +125,7 @@ export default function WorkBook() {
                         !apiResponse ? (
                             <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded no-print">
                                 <form onSubmit={handleSubmit}>
-                                    <h4 className="text-center mb-3">Workbook Planner</h4>
+                                    <h4 className="text-center mb-3">Vocabulary Generator</h4>
                                     <div className="mb-2">
                                         <label htmlFor="subject" className="form-label">
                                             Subject <span style={{ color: 'red' }}>*</span>
@@ -170,6 +144,7 @@ export default function WorkBook() {
                                                 </option>
                                             ))}
                                         </select>
+
                                         <label htmlFor="grade" className="form-label">
                                             Grade <span style={{ color: 'red' }}>*</span>
                                         </label>
@@ -188,41 +163,70 @@ export default function WorkBook() {
                                             ))}
                                         </select>
 
-                                        <label htmlFor="textarea" className="form-label">
-                                            Your Topic <span style={{ color: 'red' }}>*</span>
+                                        <label htmlFor="difficultyLevel" className="form-label">
+                                            Difficulty Level <span style={{ color: 'red' }}>*</span>
                                         </label>
-                                        <textarea
-                                            type="text"
-                                            className="form-control form-control-sm mb-2"
-                                            placeholder="Eg. Arithmetic, History or Lesson number 2"
-                                            id="textarea"
-                                            name="textarea"
-                                            value={formData.textarea}
+                                        <select
+                                            className="form-select form-select-sm mb-3"
+                                            id="difficultyLevel"
+                                            name="difficultyLevel"
+                                            value={formData.difficultyLevel}
                                             onChange={handleChange}
                                             disabled={isLoading}
-                                        />
+                                        >
+                                            {difficultyLevels.map((level, index) => (
+                                                <option key={index} value={level.value}>
+                                                    {level.label}
+                                                </option>
+                                            ))}
+                                        </select>
 
-                                        <label htmlFor="pdf_file" className="form-label">
-                                            File Upload <span style={{ color: 'red' }}>*</span>
+                                        <label htmlFor="topic" className="form-label">
+                                            Topic <span style={{ color: 'red' }}>*</span>
                                         </label>
                                         <input
-                                            type="file"
+                                            type="text"
                                             className="form-control form-control-sm mb-2"
-                                            id="pdf_file"
-                                            name="pdf_file"
-                                            accept="application/pdf"
-                                            ref={fileInputRef}
+                                            id="topic"
+                                            name="topic"
+                                            value={formData.topic}
                                             onChange={handleChange}
                                             disabled={isLoading}
+                                            placeholder="Enter Vocabulary Topic"
                                         />
-                                        <p className='text-center' style={{ fontSize: '14px' }}><span className='fw-bold' style={{ color: 'red' }}>Note: *</span> For better result please upload <label style={{ color: 'red' }}>Lesson Planner</label> pdf.</p>
+
+                                        <label htmlFor="numberOfWords" className="form-label">
+                                            Number of Words 
+                                        </label>
+                                        <input
+                                            type="number"
+                                            className="form-control form-control-sm mb-2"
+                                            id="numberOfWords"
+                                            name="numberOfWords"
+                                            value={formData.numberOfWords}
+                                            onChange={handleChange}
+                                            disabled={isLoading}
+                                            placeholder="E.g. 5"
+                                        />
                                     </div>
 
                                     <div className="d-flex justify-content-between mt-3">
                                         <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
                                             Generate <FaArrowRight />
                                         </button>
-                                        <button type="button" className="btn btn-sm" style={cancelStyle} onClick={handleCancel}>
+                                        <button
+                                            type="button"
+                                            className="btn btn-sm"
+                                            style={cancelStyle}
+                                            onClick={() => setFormData({
+                                                subject: '',
+                                                grade: '',
+                                                difficultyLevel: '',
+                                                topic: '',
+                                                numberOfWords: ''
+                                            })}
+                                            disabled={isLoading}
+                                        >
                                             <FaEraser /> Reset
                                         </button>
                                     </div>
@@ -230,12 +234,12 @@ export default function WorkBook() {
                             </div>
                         ) : (
                             <div className="mt-3" ref={contentRef} id="main-btn">
-                                {parseWorkbook(apiResponse)}
+                                {renderLessonPlan(apiResponse)}
                                 <button className="btn btn-sm mt-2 mb-3 me-2 no-print" style={btnStyle} onClick={() => setApiResponse(null)}>
-                                    <FaArrowLeft /> Generate Another Workbook
+                                    <FaArrowLeft /> Generate Another Vocabulary
                                 </button>
                                 <button className="btn btn-sm mt-2 mb-3 no-print" style={pdfStyle} onClick={handlePrint}>
-                                    <FaRegFilePdf /> Download PDF
+                                    Download PDF
                                 </button>
                             </div>
                         )
@@ -246,27 +250,10 @@ export default function WorkBook() {
     );
 }
 
-const parseWorkbook = (workbook) => {
-
-    const nameStyle = {
-        display: "inline-block",
-        width: "200px",
-        height: "1px",
-        backgroundColor: "black",
-        borderBottom: "1px solid black",
-    };
-
-    const dateStyle = {
-        display: "inline-block",
-        width: "100px",
-        height: "1px",
-        backgroundColor: "black",
-        borderBottom: "1px solid black",
-    };
-
+const renderLessonPlan = (lessonPlan) => {
     return (
         <div className="container-fluid mt-3 mb-2 ps-5 pe-5 print-content">
-             <div className='mt-4'>
+            <div className='mt-4'>
                 <div className="d-flex justify-content-center mt-3">
                     <h2 className='mb-5'>Your High School Name</h2>
                 </div>
@@ -274,65 +261,6 @@ const parseWorkbook = (workbook) => {
                     <h5>Name : <span style={nameStyle}></span></h5>
                     <h5 className='me-3'>Date :  <span style={dateStyle}></span></h5>
                 </div>
-            </div>
-            <div className='mt-4 mb-4'>
-                <div className="mt-3">
-                    <h2>Title : {workbook.title}</h2>
-                </div>
-                <div className="mt-3 mb-3">
-                    <h5>Introduction</h5>
-                    <p>{workbook.introduction.content}</p>
-                </div>
-            </div>
-
-            <div className='mb-4'>
-                <h5>Analogy</h5>
-                <p>{workbook.analogy.content}</p>
-            </div>
-
-            <div className='mb-4'>
-                <h5>Key Concepts</h5>
-                <ul>
-                    {workbook.keyConcepts.map((conceptObj, index) => (
-                        <li key={index}>
-                            <strong>{conceptObj.concept}:</strong> {conceptObj.explanation}
-                        </li>
-                    ))}
-                </ul>
-            </div>
-
-            <div className='mb-4'>
-                <h5>Exercises</h5>
-                {workbook.exercises.map((exercise, index) => (
-                    <div key={index}>
-                        <p><strong>{exercise.question}</strong></p>
-                        <ul>
-                            {exercise.options.map((option, optionIndex) => (
-                                <li key={optionIndex}>{option}</li>
-                            ))}
-                        </ul>
-                    </div>
-                ))}
-            </div>
-
-            <div className='mb-4'>
-                <h5>Summary</h5>
-                <p>{workbook.summary.content}</p>
-            </div>
-
-            <div className='mb-4 border border-2 p-3'>
-                <h5>Fun Fact <FaRegLightbulb size={25}/></h5>
-                <p>{workbook.funFact.content}</p>
-            </div>
-
-            <div className='mb-4'>
-                <h5>Answers</h5>
-                {workbook.answers.map((answer, index) => (
-                    <div key={index}>
-                        <p><strong>{answer.question}</strong></p>
-                        <p>Correct Answer: {answer.correctAnswer}</p>
-                    </div>
-                ))}
             </div>
         </div>
     );

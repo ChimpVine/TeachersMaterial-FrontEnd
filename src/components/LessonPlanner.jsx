@@ -117,7 +117,7 @@ export default function LessonPlan() {
         setIsLoading(true);
 
         try {
-            const response = await axios.post(`${import.meta.env.VITE_API_URL}/generate_lesson_plan`, formDataToSend, {
+            const response = await axios.post(`${import.meta.env.VITE_YARN_URL}/generate_lesson_plan`, formDataToSend, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
