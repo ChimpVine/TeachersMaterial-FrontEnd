@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../spinner/Spinner';
 
 const subjects = [
-    { value: "", label: "Choose Subject" },
+    { value: "", label: "Choose a Subject" },
     { value: "english", label: "English" },
     { value: "mathematics", label: "Mathematics" },
     { value: "science", label: "Science" },
@@ -24,7 +24,7 @@ const subjects = [
 ];
 
 const grades = [
-    { value: "", label: "Choose Grade" },
+    { value: "", label: "Choose a Grade" },
     { value: "k", label: "Kindergarten" },
     { value: "1", label: "1st Grade" },
     { value: "2", label: "2nd Grade" },
@@ -41,7 +41,7 @@ const grades = [
 ];
 
 const lessonDurations = [
-    { value: "", label: "Choose Duration" },
+    { value: "", label: "Choose the Duration" },
     { value: "15", label: "15 minutes" },
     { value: "30", label: "30 minutes" },
     { value: "45", label: "45 minutes" },
@@ -117,7 +117,7 @@ export default function LessonPlan() {
         setIsLoading(true);
 
         try {
-            const response = await axios.post(`${import.meta.env.VITE_YARN_URL}/generate_lesson_plan`, formDataToSend, {
+            const response = await axios.post(`https://teachertools-api.chimpvine.com/generate_lesson_plan`, formDataToSend, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

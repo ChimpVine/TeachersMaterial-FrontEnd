@@ -1,13 +1,14 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import NavBar from '../NavBar';
-import { FaArrowRight, FaEraser, FaArrowLeft } from "react-icons/fa";
+import { FaArrowRight, FaEraser, FaArrowLeft, FaRegFilePdf } from "react-icons/fa";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../spinner/Spinner';
 
+// Subjects list
 const subjects = [
-    { value: "", label: "Choose Subject" },
+    { value: "", label: "Choose a Subject" },
     { value: "english", label: "English" },
     { value: "mathematics", label: "Mathematics" },
     { value: "science", label: "Science" },
@@ -23,8 +24,9 @@ const subjects = [
     { value: "foreign_language", label: "Foreign Language" }
 ];
 
+// Grades list
 const grades = [
-    { value: "", label: "Choose Grade" },
+    { value: "", label: "Choose a Grade" },
     { value: "k", label: "Kindergarten" },
     { value: "1", label: "1st Grade" },
     { value: "2", label: "2nd Grade" },
@@ -40,16 +42,21 @@ const grades = [
     { value: "12", label: "12th Grade" }
 ];
 
+// Difficulty Levels list
 const difficultyLevels = [
-    { value: "", label: "Choose Difficulty Level" },
+    { value: "", label: "Choose a Difficulty Level" },
     { value: "easy", label: "Easy" },
     { value: "medium", label: "Medium" },
     { value: "hard", label: "Hard" },
 ];
 
-export default function LessonPlan() {
+export default function VocabularyPlan() {
     const btnStyle = { backgroundColor: '#FF683B', color: 'white' };
     const cancelStyle = { backgroundColor: '#dc3545', color: 'white' };
+    const pdfStyle = {
+        backgroundColor: '#198754',
+        color: 'white',
+    }
 
     const [formData, setFormData] = useState({
         subject: '',
@@ -63,6 +70,7 @@ export default function LessonPlan() {
     const [isLoading, setIsLoading] = useState(false);
     const contentRef = useRef();
 
+    // Handle form data changes
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -71,27 +79,29 @@ export default function LessonPlan() {
         });
     };
 
+    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { subject, grade, difficultyLevel, topic, numberOfWords } = formData;
 
-        if (!subject || !grade || !difficultyLevel || !topic) {
+        // Check if all required fields are filled
+        if (!subject || !grade || !difficultyLevel || !topic || !numberOfWords) {
             toast.error('Please fill in all required fields.');
             return;
         }
 
         const formDataToSend = {
-            subject,
-            grade,
-            difficultyLevel,
-            topic,
-            numberOfWords
+            grade_level: grade,
+            subject: subject,
+            topic: topic,
+            num_words: numberOfWords,
+            difficulty_level: difficultyLevel
         };
 
         setIsLoading(true);
 
         try {
-            const response = await axios.post(`${import.meta.env.VITE_YARN_URL}/generate_lesson_plan`, formDataToSend, {
+            const response = await axios.post('https://teachertools-api.chimpvine.com/generate-vocab-list', formDataToSend, {
                 headers: { 'Content-Type': 'application/json' },
             });
             setApiResponse(response.data);
@@ -102,13 +112,18 @@ export default function LessonPlan() {
                 topic: '',
                 numberOfWords: ''
             });
-            toast.success('Lesson plan generated successfully!');
+            toast.success('Vocabulary generated successfully!');
         } catch (error) {
             console.error('Error:', error);
-            toast.error('Failed to generate the lesson plan. Please try again.');
+            toast.error('Failed to generate the Vocabulary. Please try again.');
         } finally {
             setIsLoading(false);
         }
+    };
+
+    // Handle print action
+    const handlePrint = () => {
+        window.print();
     };
 
     return (
@@ -196,7 +211,7 @@ export default function LessonPlan() {
                                         />
 
                                         <label htmlFor="numberOfWords" className="form-label">
-                                            Number of Words 
+                                            Number of Words <span style={{ color: 'red' }}>*</span>
                                         </label>
                                         <input
                                             type="number"
@@ -206,7 +221,7 @@ export default function LessonPlan() {
                                             value={formData.numberOfWords}
                                             onChange={handleChange}
                                             disabled={isLoading}
-                                            placeholder="E.g. 5"
+                                            placeholder="For Example: 5"
                                         />
                                     </div>
 
@@ -234,12 +249,12 @@ export default function LessonPlan() {
                             </div>
                         ) : (
                             <div className="mt-3" ref={contentRef} id="main-btn">
-                                {renderLessonPlan(apiResponse)}
+                                {renderVocabulary(apiResponse)}
                                 <button className="btn btn-sm mt-2 mb-3 me-2 no-print" style={btnStyle} onClick={() => setApiResponse(null)}>
                                     <FaArrowLeft /> Generate Another Vocabulary
                                 </button>
                                 <button className="btn btn-sm mt-2 mb-3 no-print" style={pdfStyle} onClick={handlePrint}>
-                                    Download PDF
+                                    <FaRegFilePdf /> Download PDF
                                 </button>
                             </div>
                         )
@@ -250,7 +265,23 @@ export default function LessonPlan() {
     );
 }
 
-const renderLessonPlan = (lessonPlan) => {
+// Render Vocabulary and Sentence Table
+const renderVocabulary = (vocabularyData) => {
+    const nameStyle = {
+        display: "inline-block",
+        width: "200px",
+        height: "1px",
+        backgroundColor: "black",
+        borderBottom: "1px solid black",
+    };
+
+    const dateStyle = {
+        display: "inline-block",
+        width: "100px",
+        height: "1px",
+        backgroundColor: "black",
+        borderBottom: "1px solid black",
+    };
     return (
         <div className="container-fluid mt-3 mb-2 ps-5 pe-5 print-content">
             <div className='mt-4'>
@@ -261,6 +292,55 @@ const renderLessonPlan = (lessonPlan) => {
                     <h5>Name : <span style={nameStyle}></span></h5>
                     <h5 className='me-3'>Date :  <span style={dateStyle}></span></h5>
                 </div>
+                <div className='mb-5'>
+                    <h5>Grade: {vocabularyData.grade_level}</h5>
+                    <h5>Subject: {vocabularyData.subject}</h5>
+                    <h5>Difficulty: {vocabularyData.difficulty_level}</h5>
+                    <h5>Topic: {vocabularyData.topic}</h5>
+                    <h5>Number of Words: {vocabularyData.num_words}</h5>
+                </div>
+
+                {/* Vocabulary List */}
+                <section className='mb-5'>
+                    <h4>Vocabulary List:</h4>
+                    <table className="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Word</th>
+                                <th>Definition</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {vocabularyData.vocab_list.map((item, index) => (
+                                <tr key={index}>
+                                    <td>{item.word}</td>
+                                    <td>{item.definition}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </section>
+
+                {/* Sentence Table */}
+                <section className='mt-5'>
+                    <h4>Sentence Table:</h4>
+                    <table className="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Word</th>
+                                <th>Example Sentence</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {vocabularyData.sentence_table.map((item, index) => (
+                                <tr key={index}>
+                                    <td>{item.word}</td>
+                                    <td>{item.example_sentence || ''}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </section>
             </div>
         </div>
     );

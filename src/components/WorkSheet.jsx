@@ -36,7 +36,7 @@ export default function WorkSheet() {
     const [modalVisible, setModalVisible] = useState(false);
 
     const subjects = [
-        { value: "", label: "Choose Subject" },
+        { value: "", label: "Choose a Subject" },
         { value: "english", label: "English" },
         { value: "Mathematics", label: "Mathematics" },
         { value: "science", label: "Science" },
@@ -53,7 +53,7 @@ export default function WorkSheet() {
     ];
 
     const grades = [
-        { value: "", label: "Choose Grade" },
+        { value: "", label: "Choose a Grade" },
         { value: "k", label: "Kindergarten" },
         { value: "1", label: "1st Grade" },
         { value: "2", label: "2nd Grade" },
@@ -70,13 +70,13 @@ export default function WorkSheet() {
     ];
 
     const numbers = [
-        { value: "", label: "Choose Number of Questions" },
+        { value: "", label: "Choose the Number of Questions" },
         { value: "5", label: "5" },
         { value: "10", label: "10" }
     ];
 
     const questionTypes = [
-        { value: "", label: "Choose Question Type" },
+        { value: "", label: "Choose the Question Type" },
         { value: "MCQ", label: "MCQ" },
         { value: "TF_Simple", label: "True and False Statements" },
         { value: "Fill-in-the-Blanks", label: "Fill in the Blanks" },
@@ -93,12 +93,12 @@ export default function WorkSheet() {
             { value: "MCQ_Multiple", label: "Multiple Correct Answer" }
         ],
         "Fill-in-the-Blanks": [
-            { value: "", label: "Choose Sub Question Type" },
+            { value: "", label: "Choose the Sub Question Type" },
             { value: "FIB_Single", label: "Single Blank" },
             { value: "FIB_Multiple", label: "Multiple Blank" }
         ],
         "Q&A": [
-            { value: "", label: "Choose Sub Question Type" },
+            { value: "", label: "Choose the Sub Question Type" },
             { value: "Short_Answer_List", label: "Short Answer List" },
             { value: "Short_Answer_Explain", label: "Short Answer Brief Explanation" },
             { value: "Long_Answer_Explain", label: "Long Answer Brief Explanation" }
@@ -186,7 +186,7 @@ export default function WorkSheet() {
         }
 
         try {
-            const response = await axios.post(`${import.meta.env.VITE_YARN_URL}/generate`, formPayload);
+            const response = await axios.post(`https://teachertools-api.chimpvine.com/generate`, formPayload);
             setApiResponse(response.data);
             localStorage.setItem("worksheet", JSON.stringify(response.data));
             toast.success('Worksheet generated successfully!');

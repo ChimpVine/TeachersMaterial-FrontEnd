@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import NavBar from './NavBar';
 import { NavLink } from 'react-router-dom';
+import Footer from '../pages/Footer.jsx'
 
 // Custom Typing Effect using React Hooks with smoother erasing
 const TypingEffect = () => {
@@ -8,7 +9,7 @@ const TypingEffect = () => {
     const [isDeleting, setIsDeleting] = useState(false);
     const [loopNum, setLoopNum] = useState(0);
     const [delta, setDelta] = useState(150); // Typing speed
-    const toRotate = ["Quiz Generator.", "Lesson Planner.", "Workbook Planner.", "Worksheet Planner."];
+    const toRotate = ["Quiz Generator.", "Lesson Planner.", "Workbook Planner.", "Worksheet Planner.", "Vocabulary Generator."];
     const period = 2000; // Period after full text typed
 
     useEffect(() => {
@@ -75,6 +76,7 @@ const GetStarted = () => {
                     </section>
                 </div>
             </div>
+            <Footer/>
         </>
     );
 };

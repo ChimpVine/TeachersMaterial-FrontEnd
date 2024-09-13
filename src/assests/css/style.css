@@ -122,6 +122,21 @@ a:hover {
     right: 0;
 }
 
+.footer .content , .social-content{
+    color: white;
+    text-decoration: none;
+}
+
+.social-content:hover{
+    color: white;
+    text-decoration: none;
+}
+
+.footer .content:hover {
+    color: #FF683B;
+    text-decoration: none;
+}
+
 @keyframes bounce {
     0%,
     20%,

@@ -108,7 +108,7 @@ const QuizUI = () => {
         try {
             setLoading(true);
 
-            const apiUrl = `${import.meta.env.VITE_YARN_URL}/generate_quiz?topic=${inputData.topic}&language=${inputData.language}&subject=${inputData.subject}&number=${inputData.numberOfQuestions}&difficulty=${inputData.difficulty}`;
+            const apiUrl = `https://teachertools-api.chimpvine.com/generate_quiz?topic=${inputData.topic}&language=${inputData.language}&subject=${inputData.subject}&number=${inputData.numberOfQuestions}&difficulty=${inputData.difficulty}`;
             const response = await fetch(apiUrl);
 
             if (!response.ok) {
@@ -348,7 +348,7 @@ const QuizUI = () => {
                                     value={inputData.difficulty}
                                     onChange={handleInputChange}
                                 >
-                                    <option value="">Choose Difficulty</option>
+                                    <option value="">Choose the Difficulty Level</option>
                                     <option value="easy">Easy</option>
                                     <option value="medium">Medium</option>
                                     <option value="hard">Hard</option>
@@ -365,7 +365,7 @@ const QuizUI = () => {
                                         onChange={handleInputChange}
                                         disabled={loading}
                                     >
-                                        <option defaultValue>Choose Language</option>
+                                        <option defaultValue>Choose the Language</option>
                                         <option value="english">English</option>
                                         <option value="spanish">Spanish</option>
                                         <option value="thai">Thai</option>
