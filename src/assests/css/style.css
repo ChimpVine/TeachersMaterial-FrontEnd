@@ -81,6 +81,7 @@ a:hover {
 
 .unique-typewrite > .wrap {
     border-right: 0.08em solid #8172DB;
+
 }
 
 .unique-button {
@@ -136,6 +137,16 @@ a:hover {
     color: #FF683B;
     text-decoration: none;
 }
+
+.nav-link{
+    color: #8172DB;
+} 
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    color: white;
+    background-color: #FF683B;
+}
+
 
 @keyframes bounce {
     0%,

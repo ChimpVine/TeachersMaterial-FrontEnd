@@ -2137,6 +2137,11 @@ react-bootstrap@^2.10.4:
     uncontrollable "^7.2.1"
     warning "^4.0.3"
 
+react-calendly@^4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/react-calendly/-/react-calendly-4.3.1.tgz#3775d468eecfdc3cb32d6cc81aac5779df129cb1"
+  integrity sha512-poyUH3NOUOlsotr8ho5WzbsbPuRAppaY+Jvu+C/PkwTP6WT807pNFI8+HrbbuRknXZbd75zpzysOJQvcu3P8Pg==
+
 react-dom@^18.3.1:
   version "18.3.1"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.3.1.tgz#c2265d79511b57d479b3dd3fdfa51536494c5cb4"
