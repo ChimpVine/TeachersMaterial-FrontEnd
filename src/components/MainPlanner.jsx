@@ -139,7 +139,7 @@ export default function MainPlanner() {
             category: 'Summarizer',
             icon: <FaYoutubeSquare size={50} style={{ color: "#dc3545" }} />,
             title: 'YouTube Q&A',
-            description: 'Effortlessly craft custom assessments with our YouTube Q&A Generator.',
+            description: 'Effortlessly craft dynamic and custom assessments with our YouTube Q&A Generator.',
             link: '/comingsoon',
             btnColor: 'danger'
         },
@@ -148,7 +148,7 @@ export default function MainPlanner() {
             category: 'Summarizer',
             icon: <FaYoutubeSquare size={50} style={{ color: "#dc3545" }} />,
             title: 'YouTube Summarizer',
-            description: 'Effortlessly create concise summaries with our YouTube Summarizer.',
+            description: 'Effortlessly create clear and concise video summaries with our YouTube Summarizer.',
             link: '/comingsoon',
             btnColor: 'danger'
         },
@@ -157,7 +157,7 @@ export default function MainPlanner() {
             category: 'Assessment',
             icon: <FaUsers size={50} style={{ color: "#6c757d" }} />,
             title: 'Group Work',
-            description: 'Effortlessly create concise summaries with our YouTube Summarizer.',
+            description: 'Effortlessly create quick and concise video summaries with our YouTube Summarizer.',
             link: '/comingsoon',
             btnColor: 'secondary'
         },
@@ -166,7 +166,7 @@ export default function MainPlanner() {
             category: 'Summarizer',
             icon: <FaTenge size={50} />,
             title: 'Text Summarizer',
-            description: 'Effortlessly produce concise summaries with our Text Summarizer.',
+            description: 'Effortlessly produce clear and concise text summaries with our Text Summarizer.',
             link: '/comingsoon',
             btnColor: 'dark'
         },
@@ -175,7 +175,7 @@ export default function MainPlanner() {
             category: 'Summarizer',
             icon: <FaFilePdf size={50} style={{ color: "#6c757d" }} />,
             title: 'PDF Summarizer',
-            description: 'Effortlessly create clear summaries with our PDF Summarizer.',
+            description: 'Effortlessly create clear and concise document summaries with our PDF Summarizer.',
             link: '/comingsoon',
             btnColor: 'secondary'
         },
@@ -184,7 +184,7 @@ export default function MainPlanner() {
             category: 'Gamification',
             icon: <FaThLarge size={50} style={{ color: "#6c757d" }} />,
             title: 'Guess the Word',
-            description: 'Quickly create fun challenges with our Guess the Word Generator.',
+            description: 'Quickly create fun and interactive challenges with our Guess the Word Generator.',
             link: '/comingsoon',
             btnColor: 'secondary'
         },
@@ -193,7 +193,7 @@ export default function MainPlanner() {
             category: 'Gamification',
             icon: <FaQuestion size={50} style={{ color: "#dc3545" }} />,
             title: 'Bingo Card',
-            description: 'Effortlessly design custom games with our Bingo Card Generator.',
+            description: 'Effortlessly design fun and interactive custom games with our Bingo Card Generator.',
             link: '/comingsoon',
             btnColor: 'danger'
         },
@@ -202,7 +202,7 @@ export default function MainPlanner() {
             category: 'Learning',
             icon: <BiMath size={50} />,
             title: 'Vedic Math',
-            description: 'Effortlessly design custom games with our Bingo Card Generator.',
+            description: 'Effortlessly create engaging and powerful Vedic Math summaries with precision..',
             link: '/comingsoon',
             btnColor: 'dark'
         },
