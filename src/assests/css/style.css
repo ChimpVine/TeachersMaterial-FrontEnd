@@ -11,6 +11,7 @@
     background-color: #dc3545 !important;
 }
 
+
 ul li {
     font-family: "Poppins", sans-serif;
     font-weight: 400;
@@ -61,9 +62,7 @@ body {
 
 .unique-get-started-container {
     background-image: url(https://site.chimpvine.com/wp-content/uploads/2023/12/cv-grades-background.png);
-    background-position: top center;
     background-repeat: no-repeat;
-    background-size: cover;
 }
 
 .unique-navbar {
@@ -79,7 +78,7 @@ a:hover {
     color: #8172DB;
 }
 
-.unique-typewrite > .wrap {
+.unique-typewrite>.wrap {
     border-right: 0.08em solid #8172DB;
 
 }
@@ -123,12 +122,13 @@ a:hover {
     right: 0;
 }
 
-.footer .content , .social-content{
+.footer .content,
+.social-content {
     color: white;
     text-decoration: none;
 }
 
-.social-content:hover{
+.social-content:hover {
     color: white;
     text-decoration: none;
 }
@@ -138,17 +138,83 @@ a:hover {
     text-decoration: none;
 }
 
-.nav-link{
+.nav-link,
+.text-style {
     color: #8172DB;
-} 
+}
 
-.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+.nav-pills .nav-link.active,
+.nav-pills .show>.nav-link {
     color: white;
     background-color: #FF683B;
 }
 
+.nav-link-home,
+.nav-link-contact {
+    color: white;
+}
+
+.nav-link-home:hover,
+.nav-link-contact:hover {
+    color: #FF683B;
+}
+
+#sel_topic,
+#learning_objectives, #description {
+    resize: none;
+}
+
+#section07 a {
+    padding-top: 80px;
+    position: relative;
+    display: inline-block;
+    color: #6C757D;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  #section07 a span {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 24px;
+    height: 24px;
+    margin-left: -12px;
+    border-left: 1px solid #6C757D;
+    border-bottom: 1px solid #6C757D;
+    transform: rotate(-45deg);
+    animation: sdb07 2s infinite;
+    opacity: 0;
+    box-sizing: border-box;
+  }
+  
+  #section07 a span:nth-of-type(1) {
+    animation-delay: 0s;
+  }
+  #section07 a span:nth-of-type(2) {
+    top: 16px;
+    animation-delay: .15s;
+  }
+  #section07 a span:nth-of-type(3) {
+    top: 32px;
+    animation-delay: .3s;
+  }
+  
+  @keyframes sdb07 {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  
 
 @keyframes bounce {
+
     0%,
     20%,
     50%,

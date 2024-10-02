@@ -90,6 +90,11 @@ export default function VocabularyPlan() {
             return;
         }
 
+        if (numberOfWords < 1 || numberOfWords > 10) {
+            toast.warn('The number of words must be between 1 and 10.');
+            return;
+        }
+
         const formDataToSend = {
             grade_level: grade,
             subject: subject,
@@ -265,7 +270,6 @@ export default function VocabularyPlan() {
     );
 }
 
-// Render Vocabulary and Sentence Table
 const renderVocabulary = (vocabularyData) => {
     const nameStyle = {
         display: "inline-block",

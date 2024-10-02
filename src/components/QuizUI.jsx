@@ -74,29 +74,30 @@ const QuizUI = () => {
 
     const validateInput = () => {
         if (!inputData.subject.trim()) {
-            alert('Please enter a subject.');
+            toast.warning('Please enter a subject.');
             return false;
         }
 
         if (!inputData.topic.trim()) {
-            alert('Please enter a topic.');
+            toast.warning('Please enter a topic.');
             return false;
         }
 
         if (!inputData.difficulty.trim()) {
-            alert('Please select a difficulty.');
+            toast.warning('Please select a difficulty.');
             return false;
         }
 
         if (!inputData.language.trim()) {
-            alert('Please select a language.');
+            toast.warning('Please select a language.');
             return false;
         }
 
         if (parseInt(inputData.numberOfQuestions) !== 10) {
-            alert('Number of questions should be exactly 10.');
+            toast.warning('Number of questions should be exactly 10.');
             return;
         }
+        
         return true;
     };
 
@@ -129,11 +130,11 @@ const QuizUI = () => {
                 setApprovalStatus({});
                 toast.success('Quiz generated successfully');
             } else {
-                console.error('Invalid API response. Expected a non-empty array:', data);
+                // console.error('Invalid API response. Expected a non-empty array:', data);
                 toast.error('Some error encountered. Please try again later.');
             }
         } catch (error) {
-            console.error('Error fetching quiz questions:', error);
+            // console.error('Error fetching quiz questions:', error);
             toast.error('Failed to fetch quiz questions. Please try again later.');
         } finally {
             setLoading(false);
@@ -196,7 +197,7 @@ const QuizUI = () => {
 
     const generatePdf = () => {
         if (selectedQuestions.length === 0) {
-            alert('Please select questions to download as PDF.');
+            toast.warning('Please select questions to download as PDF.');
             return;
         }
 

@@ -16,7 +16,8 @@ import {
     FaTenge,
     FaFilePdf,
     FaThLarge,
-    FaQuestion  
+    FaQuestion,
+    FaRegSmileBeam 
 } from "react-icons/fa";
 import { BiMath } from "react-icons/bi";
 import NavBar from './NavBar';
@@ -50,7 +51,7 @@ export default function MainPlanner() {
             icon: <FaQuestionCircle size={50} style={{ color: "#0d6efd" }} />,
             title: 'Quiz Generator',
             description: 'Effortlessly create customized and interactive quizzes with our easy-to-use Quiz Generator.',
-            link: '/quiz-generator',
+            link: '/Quiz-generator',
             btnColor: 'primary'
         },
         {
@@ -68,7 +69,7 @@ export default function MainPlanner() {
             icon: <FaReadme size={50} />,
             title: 'Workbook Planner',
             description: 'Design comprehensive workbooks for your students with our Workbook Planner.',
-            link: '/workbook',
+            link: '/Workbook',
             btnColor: 'dark'
         },
         {
@@ -77,7 +78,7 @@ export default function MainPlanner() {
             icon: <FaReceipt size={50} style={{ color: "#dc3545" }} />,
             title: 'Worksheet Planner',
             description: 'Easily create and customize worksheets for your students with our Worksheet Planner.',
-            link: '/worksheet',
+            link: '/Worksheet',
             btnColor: 'danger'
         },
         {
@@ -86,7 +87,7 @@ export default function MainPlanner() {
             icon: <FaBook size={50} style={{ color: "#6c757d" }} />,
             title: 'Vocabulary Builder',
             description: 'Easily craft personalized and dynamic vocabulary lists with our intuitive Vocabulary Builder.',
-            link: '/vocabulary',
+            link: '/Vocabulary',
             btnColor: 'secondary'
         },
         {
@@ -95,7 +96,7 @@ export default function MainPlanner() {
             icon: <FaGrinTongueSquint size={50} style={{ color: "#0d6efd" }} />,
             title: 'Tongue Twister',
             description: 'Easily craft personalized and challenging tongue twisters with our intuitive Tongue Twister.',
-            link: '/comingsoon',
+            link: '/TongueTwister',
             btnColor: 'primary'
         },
         {
@@ -104,17 +105,17 @@ export default function MainPlanner() {
             icon: <FaPuzzlePiece size={50} />,
             title: 'Word Puzzle',
             description: 'Easily create engaging and interactive word puzzles with our intuitive Word Puzzle.',
-            link: '/comingsoon',
+            link: '/WordPuzzle',
             btnColor: 'dark'
         },
         {
             id: 8,
             category: 'Planner',
-            icon: <FaTasks size={50} style={{ color: "#0d6efd" }} />,
+            icon: <FaTasks size={50} style={{ color: "#dc3545" }}/>,
             title: 'Rubric Generator',
             description: 'Easily design personalized and detailed rubrics with our intuitive Rubric Generator.',
-            link: '/comingsoon',
-            btnColor: 'primary'
+            link: '/Comingsoon',
+            btnColor: 'danger'
         },
         {
             id: 9,
@@ -122,34 +123,34 @@ export default function MainPlanner() {
             icon: <FaBookReader  size={50} style={{ color: "#198754" }} />,
             title: 'Comprehension',
             description: 'Easily design personalized and detailed assessments with our intuitive Comprehension.',
-            link: '/comingsoon',
+            link: '/Comingsoon',
             btnColor: 'success'
         },
         {
             id: 10,
             category: 'Specialneeds',
             icon: <FaBook size={50} style={{ color: "#198754" }} />,
-            title: 'Social Stories',
-            description: 'Easily design personalized and engaging assessments with our intuitive Social Stories.',
-            link: '/comingsoon',
+            title: 'Social Story',
+            description: 'Easily design personalized and engaging assessments with our intuitive Social Story.',
+            link: '/SocialStory',
             btnColor: 'success'
         },
         {
             id: 11,
             category: 'Summarizer',
             icon: <FaYoutubeSquare size={50} style={{ color: "#dc3545" }} />,
-            title: 'YouTube Q&A',
-            description: 'Effortlessly craft dynamic and custom assessments with our YouTube Q&A Generator.',
-            link: '/comingsoon',
+            title: 'YouTube Summarizer',
+            description: 'Effortlessly create clear and concise video summaries with our YouTube Summarizer.',
+            link: '/YTSummarizer',
             btnColor: 'danger'
         },
         {
             id: 12,
             category: 'Summarizer',
             icon: <FaYoutubeSquare size={50} style={{ color: "#dc3545" }} />,
-            title: 'YouTube Summarizer',
-            description: 'Effortlessly create clear and concise video summaries with our YouTube Summarizer.',
-            link: '/comingsoon',
+            title: 'YouTube Q&A',
+            description: 'Effortlessly craft dynamic and custom assessments with our YouTube Q&A Generator.',
+            link: '/Comingsoon',
             btnColor: 'danger'
         },
         {
@@ -158,7 +159,7 @@ export default function MainPlanner() {
             icon: <FaUsers size={50} style={{ color: "#6c757d" }} />,
             title: 'Group Work',
             description: 'Effortlessly create quick and concise video summaries with our YouTube Summarizer.',
-            link: '/comingsoon',
+            link: '/Comingsoon',
             btnColor: 'secondary'
         },
         {
@@ -167,7 +168,7 @@ export default function MainPlanner() {
             icon: <FaTenge size={50} />,
             title: 'Text Summarizer',
             description: 'Effortlessly produce clear and concise text summaries with our Text Summarizer.',
-            link: '/comingsoon',
+            link: '/Comingsoon',
             btnColor: 'dark'
         },
         {
@@ -176,7 +177,7 @@ export default function MainPlanner() {
             icon: <FaFilePdf size={50} style={{ color: "#6c757d" }} />,
             title: 'PDF Summarizer',
             description: 'Effortlessly create clear and concise document summaries with our PDF Summarizer.',
-            link: '/comingsoon',
+            link: '/Comingsoon',
             btnColor: 'secondary'
         },
         {
@@ -185,7 +186,7 @@ export default function MainPlanner() {
             icon: <FaThLarge size={50} style={{ color: "#6c757d" }} />,
             title: 'Guess the Word',
             description: 'Quickly create fun and interactive challenges with our Guess the Word Generator.',
-            link: '/comingsoon',
+            link: '/Comingsoon',
             btnColor: 'secondary'
         },
         {
@@ -194,7 +195,7 @@ export default function MainPlanner() {
             icon: <FaQuestion size={50} style={{ color: "#dc3545" }} />,
             title: 'Bingo Card',
             description: 'Effortlessly design fun and interactive custom games with our Bingo Card Generator.',
-            link: '/comingsoon',
+            link: '/Comingsoon',
             btnColor: 'danger'
         },
         {
@@ -202,10 +203,19 @@ export default function MainPlanner() {
             category: 'Learning',
             icon: <BiMath size={50} />,
             title: 'Vedic Math',
-            description: 'Effortlessly create engaging and powerful Vedic Math summaries with precision..',
-            link: '/comingsoon',
+            description: 'Effortlessly create engaging and powerful Vedic Math summaries with precision.',
+            link: '/Comingsoon',
             btnColor: 'dark'
         },
+        {
+            id: 19,
+            category: 'Planner',
+            icon: <FaRegSmileBeam  size={50} style={{ color: "#0d6efd" }}/>,
+            title: 'SEL Generator',
+            description: 'Masterfully curate holistic and engaging SEL content for deep, meaningful learning.',
+            link: '/SelGenerator',
+            btnColor: 'primary'
+        }
     ];
 
     // Filter cards based on the active tab
@@ -216,7 +226,7 @@ export default function MainPlanner() {
             <PopupWidget
                 url="https://calendly.com/vj--npe0/15min/?month=2024-09"
                 rootElement={document.getElementById("root")}
-                text="Request For Tools"
+                text="Make an appointment"
                 textColor="#ffffff"
                 color="#FF683B"
             />
