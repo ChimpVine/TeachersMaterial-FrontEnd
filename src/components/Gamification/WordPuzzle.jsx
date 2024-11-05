@@ -5,8 +5,9 @@ import { FaArrowRight, FaEraser, FaArrowLeft, FaCloudDownloadAlt, FaFilePdf } fr
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../spinner/Spinner';
+import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
 
-export default function WordPuzzle() {
+export default function WordPuzzle({ BASE_URL }) {
     const btnStyle = { backgroundColor: '#FF683B', color: 'white' };
     const cancelStyle = { backgroundColor: '#dc3545', color: 'white' };
     const pdfStyle = { backgroundColor: '#198754', color: 'white' };
@@ -21,18 +22,23 @@ export default function WordPuzzle() {
         setFormData({ ...formData, [name]: value });
     };
 
+    const numberOfWords = [
+        { value: "", label: "Choose Number of Words" },
+        ...Array.from({ length: 10 }, (_, i) => ({ value: i + 1, label: `${i + 1}` }))
+    ];
+
+    const breadcrumbItems = [
+        { label: 'Main Panel', href: '/MainPlanner', active: false },
+        { label: 'Gamification', active: true },
+        { label: 'Word Puzzle', active: true }
+    ];
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { topic, numberofword, difficulty_level } = formData;
 
         if (!topic || !numberofword || !difficulty_level) {
             toast.error('Please fill in all required fields.');
-            return;
-        }
-
-        // Ensure numberofword is between 1 and 10
-        if (numberofword < 1 || numberofword > 10) {
-            toast.warn('The number of words must be between 1 and 10.');
             return;
         }
 
@@ -44,7 +50,7 @@ export default function WordPuzzle() {
         setIsLoading(true);
 
         try {
-            const response = await axios.post('https://teachertools-api.chimpvine.com/word_puzzle', formDataToSend, {
+            const response = await axios.post(`${BASE_URL}/word_puzzle`, formDataToSend, {
                 headers: { 'Content-Type': 'application/json' },
             });
             setApiResponse(response.data);
@@ -93,72 +99,79 @@ export default function WordPuzzle() {
                         </div>
                     ) : (
                         !apiResponse ? (
-                            <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded no-print">
-                                <form onSubmit={handleSubmit}>
-                                    <h4 className="text-center mb-3">Word Puzzle Generator</h4>
-                                    <div className="mb-2">
-                                        <label htmlFor="topic" className="form-label">
-                                            Topic <span style={{ color: 'red' }}>*</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className="form-control form-control-sm mb-2"
-                                            id="topic"
-                                            name="topic"
-                                            value={formData.topic}
-                                            onChange={handleChange}
-                                            disabled={isLoading}
-                                            placeholder="Enter Word Puzzle Topic For eg. Animals,Foods"
-                                        />
+                            <>
+                                <NavBreadcrumb items={breadcrumbItems} />
+                                <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded no-print">
+                                    <form onSubmit={handleSubmit}>
+                                        <h4 className="text-center mb-3">Word Puzzle Generator</h4>
+                                        <div className="mb-2">
+                                            <label htmlFor="topic" className="form-label">
+                                                Topic <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control form-control-sm mb-2"
+                                                id="topic"
+                                                name="topic"
+                                                value={formData.topic}
+                                                onChange={handleChange}
+                                                disabled={isLoading}
+                                                placeholder="Enter Word Puzzle Topic For eg. Animals,Foods"
+                                            />
 
-                                        <label htmlFor="numberofword" className="form-label">
-                                            Number of Words <span style={{ color: 'red' }}>*</span>
-                                        </label>
-                                        <input
-                                            type="number"
-                                            className="form-control form-control-sm mb-2"
-                                            id="numberofword"
-                                            name="numberofword"
-                                            value={formData.numberofword}
-                                            onChange={handleChange}
-                                            disabled={isLoading}
-                                            placeholder="For example: 5"
-                                        />
+                                            <label htmlFor="numberofword" className="form-label">
+                                                Number of Words <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <select
+                                                className="form-select form-select-sm mb-2"
+                                                id="numberofword"
+                                                name="numberofword"
+                                                value={formData.numberofword}
+                                                onChange={handleChange}
+                                                disabled={isLoading}
+                                            >
+                                                {numberOfWords.map((option) => (
+                                                    <option key={option.value} value={option.value}>
+                                                        {option.label}
+                                                    </option>
+                                                ))}
+                                            </select>
 
-                                        <label htmlFor="difficulty_level" className="form-label">
-                                            Difficulty Level <span style={{ color: 'red' }}>*</span>
-                                        </label>
-                                        <select
-                                            className="form-select form-select-sm mb-2"
-                                            id="difficulty_level"
-                                            name="difficulty_level"
-                                            value={formData.difficulty_level}
-                                            onChange={handleChange}
-                                            disabled={isLoading}
-                                        >
-                                            <option value="">Select Difficulty Level</option>
-                                            <option value="easy">Easy</option>
-                                            <option value="medium">Medium</option>
-                                            <option value="hard">Hard</option>
-                                        </select>
-                                    </div>
+                                            <label htmlFor="difficulty_level" className="form-label">
+                                                Difficulty Level <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <select
+                                                className="form-select form-select-sm mb-2"
+                                                id="difficulty_level"
+                                                name="difficulty_level"
+                                                value={formData.difficulty_level}
+                                                onChange={handleChange}
+                                                disabled={isLoading}
+                                            >
+                                                <option value="">Select Difficulty Level</option>
+                                                <option value="easy">Easy</option>
+                                                <option value="medium">Medium</option>
+                                                <option value="hard">Hard</option>
+                                            </select>
+                                        </div>
 
-                                    <div className="d-flex justify-content-between mt-3">
-                                        <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
-                                            Generate <FaArrowRight />
-                                        </button>
-                                        <button
-                                            type="button"
-                                            className="btn btn-sm"
-                                            style={cancelStyle}
-                                            onClick={() => setFormData({ topic: '', numberofword: '', difficulty_level: '' })}
-                                            disabled={isLoading}
-                                        >
-                                            <FaEraser /> Reset
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
+                                        <div className="d-flex justify-content-between mt-3">
+                                            <button
+                                                type="button"
+                                                className="btn btn-sm"
+                                                style={cancelStyle}
+                                                onClick={() => setFormData({ topic: '', numberofword: '', difficulty_level: '' })}
+                                                disabled={isLoading}
+                                            >
+                                                <FaEraser /> Reset
+                                            </button>
+                                            <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
+                                                Generate <FaArrowRight />
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </>
                         ) : (
                             <div className="mt-3 text-center" id="main-btn">
                                 {renderWordPuzzle(apiResponse)}
@@ -171,7 +184,7 @@ export default function WordPuzzle() {
                                     style={pdfStyle}
                                     onClick={() => generatePdf(false, false)}
                                 >
-                                    <FaCloudDownloadAlt /> Download Questions
+                                    <FaCloudDownloadAlt /> View Questions
                                 </button>
 
                                 <button
@@ -180,7 +193,7 @@ export default function WordPuzzle() {
                                     style={pdfStyle}
                                     onClick={() => generatePdf(true, false)}
                                 >
-                                    <FaFilePdf /> Download Answers
+                                    <FaFilePdf /> View Answers
                                 </button>
                             </div>
                         )

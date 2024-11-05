@@ -37,7 +37,7 @@ export default function HeroSection() {
                         <div className="col-md-7 border border-primary border-one rounded p-2">
                             <div className="ratio ratio-16x9">
                                 <iframe
-                                    src="https://www.youtube.com/embed/lvXn7xsVN5w"
+                                    src="https://www.youtube.com/embed/ZmFsNg_fsvc"
                                     title="YouTube video"
                                     allowFullScreen
                                 />
@@ -51,7 +51,7 @@ export default function HeroSection() {
                         <div className="col-md-7 border border-success rounded p-2">
                             <div className="ratio ratio-16x9">
                                 <iframe
-                                    src="https://www.youtube.com/embed/NwVyGmiaKGE"
+                                    src="https://www.youtube.com/embed/Tqm9Xt7YSwQ"
                                     title="YouTube video"
                                     allowFullScreen
                                 />
@@ -76,7 +76,7 @@ export default function HeroSection() {
                         <div className="col-md-7 border border-warning rounded p-2">
                             <div className="ratio ratio-16x9">
                                 <iframe
-                                    src="https://www.youtube.com/embed/9YRZBQENfkE"
+                                    src="https://www.youtube.com/embed/RV7XiGvUY9g"
                                     title="YouTube video"
                                     allowFullScreen
                                 />

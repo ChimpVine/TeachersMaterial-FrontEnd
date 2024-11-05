@@ -5,12 +5,12 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../spinner/Spinner';
 import NavBar from '../NavBar';
+import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
 
-export default function YTSummarizer() {
+export default function YTSummarizer({ BASE_URL }) {
     const btnStyle = { backgroundColor: '#FF683B', color: 'white' };
     const cancelStyle = { backgroundColor: '#dc3545', color: 'white' };
     const headingStyle = { color: '#dc3545' };
-    // const pdfStyle = { backgroundColor: '#198754', color: 'white' };
 
     const [formData, setFormData] = useState({ video_url: '' });
     const [apiResponse, setApiResponse] = useState(null);
@@ -21,6 +21,12 @@ export default function YTSummarizer() {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
+
+    const breadcrumbItems = [
+        { label: 'Main Panel', href: '/MainPlanner', active: false },
+        { label: 'Summarizer', active: true },
+        { label: 'YouTube Summarizer', active: true }
+    ];
 
     // Handle form submission
     const handleSubmit = async (e) => {
@@ -33,9 +39,8 @@ export default function YTSummarizer() {
         }
 
         setIsLoading(true);
-
         try {
-            const response = await axios.post('https://teachertools-api.chimpvine.com/YT_summarize', { video_url });
+            const response = await axios.post(`${BASE_URL}/YT_summarize`, { video_url });
             setApiResponse(response.data);
             setFormData({ video_url: '' });
             toast.success('Summary generated successfully!');
@@ -109,12 +114,15 @@ export default function YTSummarizer() {
             <ToastContainer position="top-right" autoClose={1500} />
             <div className="container-fluid">
                 <div className="row justify-content-center mt-5">
+                    
                     {isLoading ? (
                         <div className="col-md-5 text-center">
                             <Spinner />
                         </div>
                     ) : (
                         !apiResponse ? (
+                            <>
+                            <NavBreadcrumb items={breadcrumbItems} />
                             <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded">
                                 <form onSubmit={handleSubmit}>
                                     <h4 className="text-center mb-3">YouTube Summarizer</h4>
@@ -144,9 +152,6 @@ export default function YTSummarizer() {
                                     </div>
 
                                     <div className="d-flex justify-content-between mt-3">
-                                        <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
-                                            Summarize <FaArrowRight />
-                                        </button>
                                         <button
                                             type="button"
                                             className="btn btn-sm"
@@ -156,9 +161,13 @@ export default function YTSummarizer() {
                                         >
                                             <FaEraser /> Reset
                                         </button>
+                                        <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
+                                            Summarize <FaArrowRight />
+                                        </button>
                                     </div>
                                 </form>
                             </div>
+                            </>
                         ) : (
                             <div className="mt-3">
                                 {renderSummary(apiResponse)}

@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../spinner/Spinner';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'; 
 
-function Contactus() { 
+function Contactus({BASE_URL}) { 
   const countries = [
     "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda",
     "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas",
@@ -114,7 +114,7 @@ function Contactus() {
   
       setIsLoading(true);
   
-      const response = await axios.post('https://teachertools-api.chimpvine.com/google_sheet', dataToSend, {
+      const response = await axios.post(`${BASE_URL}/google_sheet`, dataToSend, {
         headers: {
           'Content-Type': 'application/json',
         },

@@ -1,10 +1,12 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
-import NavBar from './NavBar';
+import NavBar from '../NavBar';
 import { FaArrowRight, FaRegFilePdf, FaEraser, FaArrowLeft, FaRegLightbulb } from "react-icons/fa";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Spinner from '../spinner/Spinner';
+import Spinner from '../../spinner/Spinner';
+import { NavLink } from 'react-router-dom';
+import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
 
 const subjects = [
     { value: "", label: "Choose a Subject" },
@@ -40,7 +42,7 @@ const grades = [
     { value: "12", label: "12th Grade" },
 ];
 
-export default function WorkBook() {
+export default function WorkBook({ BASE_URL }) {
     const btnStyle = {
         backgroundColor: '#FF683B',
         color: 'white',
@@ -55,6 +57,12 @@ export default function WorkBook() {
         backgroundColor: '#198754',
         color: 'white',
     }
+
+    const breadcrumbItems = [
+        { label: 'Main Panel', href: '/MainPlanner', active: false },
+        { label: 'Assessment', active: true },
+        { label: 'Workbook', active: true }
+    ];
 
     const [formData, setFormData] = useState({
         subject: '',
@@ -112,7 +120,7 @@ export default function WorkBook() {
         setIsLoading(true);
 
         try {
-            const response = await axios.post(`https://teachertools-api.chimpvine.com/generate_workbook`, formDataToSend, {
+            const response = await axios.post(`${BASE_URL}/generate_workbook`, formDataToSend, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -142,92 +150,106 @@ export default function WorkBook() {
             <NavBar id="main-nav" />
             <ToastContainer position="top-right" autoClose={1500} />
             <div className="container-fluid">
-                <div className="row justify-content-center mt-5">
+                <div className="row justify-content-center mt-5 mb-4">
                     {isLoading ? (
                         <div className="col-md-5 text-center">
                             <Spinner />
                         </div>
                     ) : (
                         !apiResponse ? (
-                            <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded no-print">
-                                <form onSubmit={handleSubmit}>
-                                    <h4 className="text-center mb-3">Workbook Planner</h4>
-                                    <div className="mb-2">
-                                        <label htmlFor="subject" className="form-label">
-                                            Subject <span style={{ color: 'red' }}>*</span>
-                                        </label>
-                                        <select
-                                            className="form-select form-select-sm mb-3"
-                                            id="subject"
-                                            name="subject"
-                                            value={formData.subject}
-                                            onChange={handleChange}
-                                            disabled={isLoading}
-                                        >
-                                            {subjects.map((element, index) => (
-                                                <option key={index} value={element.value}>
-                                                    {element.label}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <label htmlFor="grade" className="form-label">
-                                            Grade <span style={{ color: 'red' }}>*</span>
-                                        </label>
-                                        <select
-                                            className="form-select form-select-sm mb-3"
-                                            id="grade"
-                                            name="grade"
-                                            value={formData.grade}
-                                            onChange={handleChange}
-                                            disabled={isLoading}
-                                        >
-                                            {grades.map((grade, index) => (
-                                                <option key={index} value={grade.value}>
-                                                    {grade.label}
-                                                </option>
-                                            ))}
-                                        </select>
+                            <>
+                                <NavBreadcrumb items={breadcrumbItems} />
+                                <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded no-print">
+                                    <form onSubmit={handleSubmit}>
+                                        <h4 className="text-center mb-3">Workbook Planner</h4>
+                                        <div className="mb-2">
+                                            <label htmlFor="subject" className="form-label">
+                                                Subject <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <select
+                                                className="form-select form-select-sm mb-3"
+                                                id="subject"
+                                                name="subject"
+                                                value={formData.subject}
+                                                onChange={handleChange}
+                                                disabled={isLoading}
+                                            >
+                                                {subjects.map((element, index) => (
+                                                    <option key={index} value={element.value}>
+                                                        {element.label}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            <label htmlFor="grade" className="form-label">
+                                                Grade <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <select
+                                                className="form-select form-select-sm mb-3"
+                                                id="grade"
+                                                name="grade"
+                                                value={formData.grade}
+                                                onChange={handleChange}
+                                                disabled={isLoading}
+                                            >
+                                                {grades.map((grade, index) => (
+                                                    <option key={index} value={grade.value}>
+                                                        {grade.label}
+                                                    </option>
+                                                ))}
+                                            </select>
 
-                                        <label htmlFor="textarea" className="form-label">
-                                            Your Topic <span style={{ color: 'red' }}>*</span>
-                                        </label>
-                                        <textarea
-                                            type="text"
-                                            className="form-control form-control-sm mb-2"
-                                            placeholder="Eg. Arithmetic, History or Lesson number 2"
-                                            id="textarea"
-                                            name="textarea"
-                                            value={formData.textarea}
-                                            onChange={handleChange}
-                                            disabled={isLoading}
-                                        />
+                                            <label htmlFor="textarea" className="form-label">
+                                                Your Topic <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <textarea
+                                                type="text"
+                                                className="form-control form-control-sm mb-2"
+                                                placeholder="Eg. Arithmetic, History, or Ancient Egypt related to PDF upload."
+                                                id="textarea"
+                                                name="textarea"
+                                                value={formData.textarea}
+                                                onChange={handleChange}
+                                                disabled={isLoading}
+                                            />
 
-                                        <label htmlFor="pdf_file" className="form-label">
-                                            File Upload <span style={{ color: 'red' }}>*</span>
-                                        </label>
-                                        <input
-                                            type="file"
-                                            className="form-control form-control-sm mb-2"
-                                            id="pdf_file"
-                                            name="pdf_file"
-                                            accept="application/pdf"
-                                            ref={fileInputRef}
-                                            onChange={handleChange}
-                                            disabled={isLoading}
-                                        />
-                                        <p className='text-center' style={{ fontSize: '14px' }}><span className='fw-bold' style={{ color: 'red' }}>Note: *</span> For better result please upload <label style={{ color: 'red' }}>Lesson Planner</label> pdf.</p>
-                                    </div>
+                                            <label htmlFor="pdf_file" className="form-label">
+                                                File Upload <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <input
+                                                type="file"
+                                                className="form-control form-control-sm mb-2"
+                                                id="pdf_file"
+                                                name="pdf_file"
+                                                accept="application/pdf"
+                                                ref={fileInputRef}
+                                                onChange={handleChange}
+                                                disabled={isLoading}
+                                            />
+                                            <div className="text-center" style={{ fontSize: '14px' }}>
+                                                <p>
+                                                    <span className="fw-bold" style={{ color: 'red' }}>Note: *</span>
+                                                    For better results, please upload a <span style={{ color: 'red' }}>Lesson Planner</span> PDF.
+                                                </p>
+                                                <p>
+                                                    If you have a larger PDF and want to shorten it ,
+                                                    <NavLink to="/PdfSplitter" target='_blank'>
+                                                        Click here
+                                                    </NavLink>
+                                                </p>
+                                            </div>
+                                        </div>
 
-                                    <div className="d-flex justify-content-between mt-3">
-                                        <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
-                                            Generate <FaArrowRight />
-                                        </button>
-                                        <button type="button" className="btn btn-sm" style={cancelStyle} onClick={handleCancel}>
-                                            <FaEraser /> Reset
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
+                                        <div className="d-flex justify-content-between mt-3">
+                                            <button type="button" className="btn btn-sm" style={cancelStyle} onClick={handleCancel}>
+                                                <FaEraser /> Reset
+                                            </button>
+                                            <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
+                                                Generate <FaArrowRight />
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </>
                         ) : (
                             <div className="mt-3" ref={contentRef} id="main-btn">
                                 {parseWorkbook(apiResponse)}
@@ -235,7 +257,7 @@ export default function WorkBook() {
                                     <FaArrowLeft /> Generate Another Workbook
                                 </button>
                                 <button className="btn btn-sm mt-2 mb-3 no-print" style={pdfStyle} onClick={handlePrint}>
-                                    <FaRegFilePdf /> Download PDF
+                                    <FaRegFilePdf /> View PDF
                                 </button>
                             </div>
                         )
@@ -266,7 +288,7 @@ const parseWorkbook = (workbook) => {
 
     return (
         <div className="container-fluid mt-3 mb-2 ps-5 pe-5 print-content">
-             <div className='mt-4'>
+            <div className='mt-4'>
                 <div className="d-flex justify-content-center mt-3">
                     <h2 className='mb-5'>Your High School Name</h2>
                 </div>
@@ -277,7 +299,7 @@ const parseWorkbook = (workbook) => {
             </div>
             <div className='mt-4 mb-4'>
                 <div className="mt-3">
-                    <h2>Title : {workbook.title}</h2>
+                    <h3>Title : {workbook.title}</h3>
                 </div>
                 <div className="mt-3 mb-3">
                     <h5>Introduction</h5>
@@ -321,7 +343,7 @@ const parseWorkbook = (workbook) => {
             </div>
 
             <div className='mb-4 border border-2 p-3'>
-                <h5>Fun Fact <FaRegLightbulb size={25}/></h5>
+                <h5>Fun Fact <FaRegLightbulb size={25} /></h5>
                 <p>{workbook.funFact.content}</p>
             </div>
 

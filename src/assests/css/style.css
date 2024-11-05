@@ -55,11 +55,6 @@ body {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-
-.bounce {
-    animation: bounce 2s infinite;
-}
-
 .unique-get-started-container {
     background-image: url(https://site.chimpvine.com/wp-content/uploads/2023/12/cv-grades-background.png);
     background-repeat: no-repeat;
@@ -122,6 +117,45 @@ a:hover {
     right: 0;
 }
 
+.upload-button {
+    border-radius: 20px;
+    background-color: #FF683B;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 21px;
+    padding: 15px;
+    width: 200px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.upload-button span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+.upload-button span:after {
+    content: '+';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+
+.upload-button:hover span {
+    padding-right: 25px;
+}
+
+.upload-button:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
 .footer .content,
 .social-content {
     color: white;
@@ -150,17 +184,32 @@ a:hover {
 }
 
 .nav-link-home,
-.nav-link-contact {
+.nav-link-contact{
     color: white;
 }
 
+.nav-link-splitter ,.nav-link-navigate{
+    color: black;
+}
+
 .nav-link-home:hover,
-.nav-link-contact:hover {
+.nav-link-contact:hover,
+.nav-link-splitter:hover,
+.nav-link-navigate:hover {
     color: #FF683B;
 }
 
 #sel_topic,
-#learning_objectives, #description {
+#learning_objectives,
+#learning_objective,
+#description,
+#objective,
+#edit-objective,
+#inputs {
+    resize: none;
+}
+
+.resizeStyle{
     resize: none;
 }
 
@@ -171,9 +220,9 @@ a:hover {
     color: #6C757D;
     text-decoration: none;
     font-weight: bold;
-  }
-  
-  #section07 a span {
+}
+
+#section07 a span {
     position: absolute;
     top: 0;
     left: 50%;
@@ -186,49 +235,33 @@ a:hover {
     animation: sdb07 2s infinite;
     opacity: 0;
     box-sizing: border-box;
-  }
-  
-  #section07 a span:nth-of-type(1) {
+}
+
+#section07 a span:nth-of-type(1) {
     animation-delay: 0s;
-  }
-  #section07 a span:nth-of-type(2) {
+}
+
+#section07 a span:nth-of-type(2) {
     top: 16px;
     animation-delay: .15s;
-  }
-  #section07 a span:nth-of-type(3) {
+}
+
+#section07 a span:nth-of-type(3) {
     top: 32px;
     animation-delay: .3s;
-  }
-  
-  @keyframes sdb07 {
+}
+
+@keyframes sdb07 {
     0% {
-      opacity: 0;
+        opacity: 0;
     }
+
     50% {
-      opacity: 1;
+        opacity: 1;
     }
+
     100% {
-      opacity: 0;
-    }
-  }
-  
-
-@keyframes bounce {
-
-    0%,
-    20%,
-    50%,
-    80%,
-    100% {
-        transform: translateY(0);
-    }
-
-    40% {
-        transform: translateY(-15px);
-    }
-
-    60% {
-        transform: translateY(-8px);
+        opacity: 0;
     }
 }
 
@@ -253,3 +286,39 @@ a:hover {
         margin-top: 1rem;
     }
 }
+
+/* BreadCrumb - Navigation */
+.breadcrumb-container {
+    display: flex;
+    justify-content: center;
+    margin: 5px;
+}
+
+.breadcrumb {
+    font-size: 1.25rem;
+}
+
+.breadcrumb-item {
+    text-align: center;
+}
+
+.small-badge {
+    font-size: 0.7rem;
+    padding: 0.2em 0.4em;
+}
+
+/* Hover Navigation */
+.nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+}
+
+.dropdown-menu {
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+}
+
+

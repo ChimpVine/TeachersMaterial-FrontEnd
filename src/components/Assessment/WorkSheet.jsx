@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import NavBar from './NavBar';
+import NavBar from '../NavBar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FaArrowRight, FaCloudDownloadAlt, FaFilePdf, FaEdit, FaArrowLeft, FaEraser } from "react-icons/fa";
-import Spinner from '../spinner/Spinner';
-import MCQSingle from '../pages/MCQSingle';
-import MCQMultiple from '../pages/MCQMultiple';
-import TFSimple from '../pages/TFSimple';
-import FIBSingle from '../pages/FIBSingle';
-import FIBMultiple from '../pages/FIBMultiple';
-import MatchTermDef from '../pages/MatchTermDef';
-import ShortAnswerList from '../pages/ShortAnswerList';
-import ShortAnswerExplain from '../pages/ShortAnswerExplain';
-import LongAnswerExplain from '../pages/LongAnswerExplain';
-import ProblemSolving from '../pages/ProblemSolving';
-import SeqEvents from '../pages/SeqEvents';
+import Spinner from '../../spinner/Spinner';
+import MCQSingle from '../../pages/MCQSingle';
+import MCQMultiple from '../../pages/MCQMultiple';
+import TFSimple from '../../pages/TFSimple';
+import FIBSingle from '../../pages/FIBSingle';
+import FIBMultiple from '../../pages/FIBMultiple';
+import MatchTermDef from '../../pages/MatchTermDef';
+import ShortAnswerList from '../../pages/ShortAnswerList';
+import ShortAnswerExplain from '../../pages/ShortAnswerExplain';
+import LongAnswerExplain from '../../pages/LongAnswerExplain';
+import ProblemSolving from '../../pages/ProblemSolving';
+import SeqEvents from '../../pages/SeqEvents';
+import { NavLink } from 'react-router-dom';
+import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
 
-export default function WorkSheet() {
+export default function WorkSheet({ BASE_URL }) {
     const [selectedQuestionType, setSelectedQuestionType] = useState('');
     const [subOptions, setSubOptions] = useState([]);
     const [formData, setFormData] = useState({
@@ -105,6 +107,12 @@ export default function WorkSheet() {
         ]
     };
 
+    const breadcrumbItems = [
+        { label: 'Main Panel', href: '/MainPlanner', active: false },
+        { label: 'Assessment', active: true },
+        { label: 'Worksheet', active: true }
+    ];
+
     const handleQuestionTypeChange = (e) => {
         const selectedType = e.target.value;
         setSelectedQuestionType(selectedType);
@@ -186,7 +194,7 @@ export default function WorkSheet() {
         }
 
         try {
-            const response = await axios.post(`https://teachertools-api.chimpvine.com/generate`, formPayload);
+            const response = await axios.post(`${BASE_URL}/generate`, formPayload);
             setApiResponse(response.data);
             localStorage.setItem("worksheet", JSON.stringify(response.data));
             toast.success('Worksheet generated successfully!');
@@ -300,154 +308,167 @@ export default function WorkSheet() {
             <NavBar />
             <ToastContainer position="top-right" autoClose={1500} />
             <div className="container-fluid">
-                <div className="row justify-content-center mt-3">
+                <div className="row justify-content-center mt-5 mb-4">
                     {loading ? (
                         <div className="col-md-5 text-center">
                             <Spinner />
                         </div>
                     ) : formVisible ? (
-                        <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded">
-                            <form onSubmit={handleSubmit}>
-                                <h4 className="text-center mb-3">WorkSheet Planner</h4>
-                                <div className="mb-2">
-                                    <label htmlFor="subject" className="form-label">
-                                        Subject <span style={{ color: 'red' }}>*</span>
-                                    </label>
-                                    <select
-                                        className="form-select form-select-sm mb-3"
-                                        id="subject"
-                                        name="subject"
-                                        value={formData.subject}
-                                        onChange={handleChange}
-                                    >
-                                        {subjects.map((element, index) => (
-                                            <option key={index} value={element.value}>
-                                                {element.label}
-                                            </option>
-                                        ))}
-                                    </select>
+                        <>
+                            <NavBreadcrumb items={breadcrumbItems} />
+                            <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded">
+                                <form onSubmit={handleSubmit}>
+                                    <h4 className="text-center mb-3">WorkSheet Planner</h4>
+                                    <div className="mb-2">
+                                        <label htmlFor="subject" className="form-label">
+                                            Subject <span style={{ color: 'red' }}>*</span>
+                                        </label>
+                                        <select
+                                            className="form-select form-select-sm mb-3"
+                                            id="subject"
+                                            name="subject"
+                                            value={formData.subject}
+                                            onChange={handleChange}
+                                        >
+                                            {subjects.map((element, index) => (
+                                                <option key={index} value={element.value}>
+                                                    {element.label}
+                                                </option>
+                                            ))}
+                                        </select>
 
-                                    <label htmlFor="grade" className="form-label">
-                                        Grade <span style={{ color: 'red' }}>*</span>
-                                    </label>
-                                    <select
-                                        className="form-select form-select-sm mb-3"
-                                        id="grade"
-                                        name="grade"
-                                        value={formData.grade}
-                                        onChange={handleChange}
-                                    >
-                                        {grades.map((grade, index) => (
-                                            <option key={index} value={grade.value}>
-                                                {grade.label}
-                                            </option>
-                                        ))}
-                                    </select>
+                                        <label htmlFor="grade" className="form-label">
+                                            Grade <span style={{ color: 'red' }}>*</span>
+                                        </label>
+                                        <select
+                                            className="form-select form-select-sm mb-3"
+                                            id="grade"
+                                            name="grade"
+                                            value={formData.grade}
+                                            onChange={handleChange}
+                                        >
+                                            {grades.map((grade, index) => (
+                                                <option key={index} value={grade.value}>
+                                                    {grade.label}
+                                                </option>
+                                            ))}
+                                        </select>
 
-                                    <label htmlFor="number" className="form-label">
-                                        Number of Questions <span style={{ color: 'red' }}>*</span>
-                                    </label>
-                                    <select
-                                        className="form-select form-select-sm mb-3"
-                                        id="number"
-                                        name="number"
-                                        value={formData.number}
-                                        onChange={handleChange}
-                                    >
-                                        {numbers.map((number, index) => (
-                                            <option key={index} value={number.value}>
-                                                {number.label}
-                                            </option>
-                                        ))}
-                                    </select>
+                                        <label htmlFor="number" className="form-label">
+                                            Number of Questions <span style={{ color: 'red' }}>*</span>
+                                        </label>
+                                        <select
+                                            className="form-select form-select-sm mb-3"
+                                            id="number"
+                                            name="number"
+                                            value={formData.number}
+                                            onChange={handleChange}
+                                        >
+                                            {numbers.map((number, index) => (
+                                                <option key={index} value={number.value}>
+                                                    {number.label}
+                                                </option>
+                                            ))}
+                                        </select>
 
-                                    <label htmlFor="question-type" className="form-label">
-                                        Question Type <span style={{ color: 'red' }}>*</span>
-                                    </label>
-                                    <select
-                                        className="form-select form-select-sm mb-3"
-                                        id="question-type"
-                                        name="questionType"
-                                        value={formData.questionType}
-                                        onChange={handleQuestionTypeChange}
-                                    >
-                                        {questionTypes.map((element, index) => (
-                                            <option key={index} value={element.value}>
-                                                {element.label}
-                                            </option>
-                                        ))}
-                                    </select>
+                                        <label htmlFor="question-type" className="form-label">
+                                            Question Type <span style={{ color: 'red' }}>*</span>
+                                        </label>
+                                        <select
+                                            className="form-select form-select-sm mb-3"
+                                            id="question-type"
+                                            name="questionType"
+                                            value={formData.questionType}
+                                            onChange={handleQuestionTypeChange}
+                                        >
+                                            {questionTypes.map((element, index) => (
+                                                <option key={index} value={element.value}>
+                                                    {element.label}
+                                                </option>
+                                            ))}
+                                        </select>
 
-                                    {subOptions.length > 0 && (
-                                        <>
-                                            <label htmlFor="sub-question-type" className="form-label">
-                                                Sub Question Type <span style={{ color: 'red' }}>*</span>
-                                            </label>
-                                            <select
-                                                className="form-select form-select-sm mb-3"
-                                                id="sub-question-type"
-                                                name="subQuestionType"
-                                                value={formData.subQuestionType}
-                                                onChange={handleChange}
-                                            >
-                                                {subOptions.map((element, index) => (
-                                                    <option key={index} value={element.value}>
-                                                        {element.label}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </>
-                                    )}
+                                        {subOptions.length > 0 && (
+                                            <>
+                                                <label htmlFor="sub-question-type" className="form-label">
+                                                    Sub Question Type <span style={{ color: 'red' }}>*</span>
+                                                </label>
+                                                <select
+                                                    className="form-select form-select-sm mb-3"
+                                                    id="sub-question-type"
+                                                    name="subQuestionType"
+                                                    value={formData.subQuestionType}
+                                                    onChange={handleChange}
+                                                >
+                                                    {subOptions.map((element, index) => (
+                                                        <option key={index} value={element.value}>
+                                                            {element.label}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </>
+                                        )}
 
-                                    <label htmlFor="textarea" className="form-label">
-                                        Your Topic <span style={{ color: 'red' }}>*</span>
-                                    </label>
-                                    <textarea
-                                        type="text"
-                                        className="form-control form-control-sm mb-2"
-                                        placeholder="Eg. Arithmetic, History, or Lesson number 2"
-                                        id="textarea"
-                                        name="topic"
-                                        value={formData.topic}
-                                        onChange={handleChange}
-                                    />
+                                        <label htmlFor="textarea" className="form-label">
+                                            Your Topic <span style={{ color: 'red' }}>*</span>
+                                        </label>
+                                        <textarea
+                                            type="text"
+                                            className="form-control form-control-sm mb-2"
+                                            placeholder="Eg. Arithmetic, History, or Ancient Egypt related to PDF upload."
+                                            id="textarea"
+                                            name="topic"
+                                            value={formData.topic}
+                                            onChange={handleChange}
+                                        />
 
-                                    <label htmlFor="pdf_file" className="form-label">
-                                        File Upload <span style={{ color: 'red' }}>*</span>
-                                    </label>
-                                    <input
-                                        type="file"
-                                        className="form-control form-control-sm mb-2"
-                                        id="pdf_file"
-                                        name="pdf_file"
-                                        accept="application/pdf"
-                                        onChange={handleFileChange}
-                                    />
-                                    <p className='text-center' style={{ fontSize: '14px' }}>
-                                        <span className='fw-bold' style={{ color: 'red' }}>Note: *</span> For better results, please upload a <label style={{ color: 'red' }}>Workbook</label> PDF.
-                                    </p>
-                                </div>
+                                        <label htmlFor="pdf_file" className="form-label">
+                                            File Upload <span style={{ color: 'red' }}>*</span>
+                                        </label>
+                                        <input
+                                            type="file"
+                                            className="form-control form-control-sm mb-2"
+                                            id="pdf_file"
+                                            name="pdf_file"
+                                            accept="application/pdf"
+                                            onChange={handleFileChange}
+                                        />
+                                        <div className="text-center" style={{ fontSize: '14px' }}>
+                                            <p>
+                                                <span className="fw-bold" style={{ color: 'red' }}>Note: *</span>
+                                                For better results, please upload a
+                                                <span style={{ color: 'red' }}> Workbook</span> PDF.
+                                            </p>
+                                            <p>
+                                                If you have a larger PDF and want to shorten it ,
+                                                <NavLink to="/PdfSplitter" target='_blank'>
+                                                    Click here
+                                                </NavLink>
+                                            </p>
+                                        </div>
+                                    </div>
 
-                                <div className="d-flex justify-content-between mt-3">
-                                    <button
-                                        type="submit"
-                                        className="btn btn-sm"
-                                        style={btnStyle}
-                                        disabled={loading}
-                                    >
-                                        {loading ? 'Generating...' : 'Generate'} <FaArrowRight />
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn btn-sm"
-                                        style={cancelStyle}
-                                        onClick={handleReset}
-                                    >
-                                        <FaEraser/> Reset
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
+                                    <div className="d-flex justify-content-between mt-3">
+                                        <button
+                                            type="button"
+                                            className="btn btn-sm"
+                                            style={cancelStyle}
+                                            onClick={handleReset}
+                                        >
+                                            <FaEraser /> Reset
+                                        </button>
+                                        <button
+                                            type="submit"
+                                            className="btn btn-sm"
+                                            style={btnStyle}
+                                            disabled={loading}
+                                        >
+                                            {loading ? 'Generating...' : 'Generate'} <FaArrowRight />
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </>
                     ) : (
                         <div className="container-fluid ps-4 pe-4">
                             <div id="headerContent" className='mb-4 mt-3'>
@@ -582,7 +603,7 @@ export default function WorkSheet() {
                                     className="btn btn-sm me-3 mb-3 no-print"
                                     style={btnStyle}
                                     onClick={handleReset}>
-                                   <FaArrowLeft/> Generate New Worksheet
+                                    <FaArrowLeft /> Generate New Worksheet
                                 </button>
 
                                 <button
@@ -599,7 +620,7 @@ export default function WorkSheet() {
                                     style={pdfStyle}
                                     onClick={() => generatePdf(false, false)}
                                 >
-                                    <FaCloudDownloadAlt /> Download Questions
+                                    <FaCloudDownloadAlt /> View Questions
                                 </button>
 
                                 <button
@@ -608,7 +629,7 @@ export default function WorkSheet() {
                                     style={pdfStyle}
                                     onClick={() => generatePdf(true, true)}
                                 >
-                                    <FaFilePdf /> Download Answers
+                                    <FaFilePdf /> View Answers
                                 </button>
                             </div>
                         </div>

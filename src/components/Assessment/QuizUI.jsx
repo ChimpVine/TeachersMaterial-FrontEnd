@@ -1,20 +1,22 @@
 import React, { useState, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import Spinner from '../spinner/Spinner';
+import Spinner from '../../spinner/Spinner.jsx';
 import jsPDF from 'jspdf';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {
     FaArrowRight,
-    FaCheckCircle, 
-    FaArrowLeft, 
-    FaDownload, 
-    FaRandom, 
-    FaEraser } from "react-icons/fa";
-import NavBar from './NavBar';
+    FaCheckCircle,
+    FaArrowLeft,
+    FaDownload,
+    FaRandom,
+    FaEraser
+} from "react-icons/fa";
+import NavBar from '../NavBar.jsx';
+import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb.jsx'
 
 
-const QuizUI = () => {
+const QuizUI = ({ BASE_URL }) => {
     const mystyle = {
         color: 'red',
     };
@@ -43,6 +45,12 @@ const QuizUI = () => {
         color: 'white',
     }
 
+    const breadcrumbItems = [
+        { label: 'Main Panel', href: '/MainPlanner', active: false },
+        { label: 'Assessment', active: true },
+        { label: 'Quiz Generator', active: true }
+    ];
+
 
     const defaultNumberOfQuestionnaires = 10;
     const questionsPerPage = 10;
@@ -63,6 +71,17 @@ const QuizUI = () => {
     const [loading, setLoading] = useState(false);
     const [regenerationAttempts, setRegenerationAttempts] = useState(5)
     const downloadPdfRef = useRef(null);
+    const [showModal, setShowModal] = useState(false);
+
+
+    const handleShowModal = () => {
+        setShowModal(true);
+    };
+
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -97,7 +116,7 @@ const QuizUI = () => {
             toast.warning('Number of questions should be exactly 10.');
             return;
         }
-        
+
         return true;
     };
 
@@ -109,7 +128,7 @@ const QuizUI = () => {
         try {
             setLoading(true);
 
-            const apiUrl = `https://teachertools-api.chimpvine.com/generate_quiz?topic=${inputData.topic}&language=${inputData.language}&subject=${inputData.subject}&number=${inputData.numberOfQuestions}&difficulty=${inputData.difficulty}`;
+            const apiUrl = `${BASE_URL}/generate_quiz?topic=${inputData.topic}&language=${inputData.language}&subject=${inputData.subject}&number=${inputData.numberOfQuestions}&difficulty=${inputData.difficulty}`;
             const response = await fetch(apiUrl);
 
             if (!response.ok) {
@@ -294,24 +313,27 @@ const QuizUI = () => {
 
     return (
         <>
-            <NavBar/>
+            <NavBar />
             <ToastContainer
                 position="top-right"
                 autoClose={1500}
             />
             <div className="container">
-                <div className="row justify-content-center mt-5">
+                <div className="row justify-content-center mt-5 mb-4">
+                    
                     <div className="col-md-6 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded">
                         {loading ? (
                             <div className="text-center">
                                 <Spinner />
                             </div>
                         ) : userQuizQuestions.length === 0 ? (
+                            <>
+                            <NavBreadcrumb items={breadcrumbItems} />
                             <form>
                                 <h4 className="text-center mb-4">Quiz Generator</h4>
                                 <div className="mb-3">
                                     <label htmlFor="subject" className="form-label">
-                                        Subjects <span style={mystyle}>*</span>
+                                        Subject <span style={mystyle}>*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -321,11 +343,11 @@ const QuizUI = () => {
                                         value={inputData.subject}
                                         onChange={handleInputChange}
                                         disabled={loading}
-                                        placeholder="Enter your subject"
+                                        placeholder="Enter your subject for eg. Science , Mathematics or History"
                                     />
 
                                     <label htmlFor="topic" className="form-label">
-                                        Topics <span style={mystyle}>*</span>
+                                        Topic <span style={mystyle}>*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -335,25 +357,25 @@ const QuizUI = () => {
                                         value={inputData.topic}
                                         onChange={handleInputChange}
                                         disabled={loading}
-                                        placeholder="Enter your topic"
+                                        placeholder="Enter your topic for eg. Force , Algebra or Ancient Egypt"
                                     />
 
-                                <label htmlFor="difficulty" className="form-label">
-                                    Difficulty <span style={mystyle}>*</span>
-                                </label>
-                                <select
-                                    className="form-select form-select-sm mb-3"
-                                    id="difficulty"
-                                    name="difficulty"
-                                    type="text"
-                                    value={inputData.difficulty}
-                                    onChange={handleInputChange}
-                                >
-                                    <option value="">Choose the Difficulty Level</option>
-                                    <option value="easy">Easy</option>
-                                    <option value="medium">Medium</option>
-                                    <option value="hard">Hard</option>
-                                </select>
+                                    <label htmlFor="difficulty" className="form-label">
+                                        Difficulty <span style={mystyle}>*</span>
+                                    </label>
+                                    <select
+                                        className="form-select form-select-sm mb-3"
+                                        id="difficulty"
+                                        name="difficulty"
+                                        type="text"
+                                        value={inputData.difficulty}
+                                        onChange={handleInputChange}
+                                    >
+                                        <option value="">Choose the Difficulty Level</option>
+                                        <option value="easy">Easy</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="hard">Hard</option>
+                                    </select>
 
                                     <label htmlFor="language" className="form-label">
                                         Language <span style={mystyle}>*</span>
@@ -366,7 +388,7 @@ const QuizUI = () => {
                                         onChange={handleInputChange}
                                         disabled={loading}
                                     >
-                                        <option defaultValue>Choose the Language</option>
+                                        <option defaultValue>Select a Language</option>
                                         <option value="english">English</option>
                                         <option value="spanish">Spanish</option>
                                         <option value="thai">Thai</option>
@@ -382,10 +404,19 @@ const QuizUI = () => {
                                         name="numberOfQuestions"
                                         value={inputData.numberOfQuestions}
                                         onChange={handleInputChange}
-                                        disabled={loading}
+                                        disabled={true}
                                     />
                                 </div>
-                                <div className="d-flex justify-content-between mb-4">
+                                <div className="d-flex justify-content-between mb-3 mt-4">
+                                    <button
+                                        type="reset"
+                                        className="btn btn-sm"
+                                        style={cancelStyle}
+                                        onClick={handleReset}
+                                        disabled={loading}
+                                    >
+                                        <FaEraser />  Reset
+                                    </button>
                                     <button
                                         type="button"
                                         className="btn btn-sm"
@@ -395,17 +426,9 @@ const QuizUI = () => {
                                     >
                                         Generate <FaArrowRight />
                                     </button>
-                                    <button
-                                        type="reset"
-                                        className="btn btn-sm"
-                                        style={cancelStyle}
-                                        onClick={handleReset}
-                                        disabled={loading}
-                                    >
-                                      <FaEraser />  Reset 
-                                    </button>
                                 </div>
                             </form>
+                            </>
                         ) : (
                             <div>
                                 {currentQuestions.length > 0 && (
@@ -503,14 +526,14 @@ const QuizUI = () => {
                                         style={backStyle}
                                         onClick={handleBack}
                                     >
-                                    <FaArrowLeft /> Back
+                                        <FaArrowLeft /> Back
                                     </button>
                                     <button
                                         type="button"
                                         className="btn btn-sm"
                                         style={btnStyle}
                                         onClick={handleToggleSelectAll}
-                                    > 
+                                    >
                                         {selectedQuestions.length === 0
                                             ? 'Select All'
                                             : selectedQuestions.length === userQuizQuestions.length

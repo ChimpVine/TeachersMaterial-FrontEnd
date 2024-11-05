@@ -5,6 +5,7 @@ import { FaArrowRight, FaRegFilePdf, FaEraser, FaArrowLeft } from "react-icons/f
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../spinner/Spinner';
+import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
 
 const grades = [
     { value: "", label: "Choose a Grade" },
@@ -40,7 +41,7 @@ const durations = [
 ];
 
 
-export default function SELGenerator() {
+export default function SELGenerator({ BASE_URL }) {
 
     const btnStyle = {
         backgroundColor: '#FF683B',
@@ -56,6 +57,12 @@ export default function SELGenerator() {
         backgroundColor: '#198754',
         color: 'white',
     };
+
+    const breadcrumbItems = [
+        { label: 'Main Panel', href: '/MainPlanner', active: false },
+        { label: 'Planner', active: true },
+        { label: 'SEL Generator', active: true }
+    ];
 
     const [formData, setFormData] = useState({
         grade: '',
@@ -85,7 +92,7 @@ export default function SELGenerator() {
             return;
         }
 
-        
+
         const formDataToSend = {
             grade,
             sel_topic,
@@ -99,7 +106,7 @@ export default function SELGenerator() {
         setIsLoading(true);
 
         try {
-            const response = await axios.post(`https://teachertools-api.chimpvine.com/generate_sel_plan`, formDataToSend);
+            const response = await axios.post(`${BASE_URL}/generate_sel_plan`, formDataToSend);
             setApiResponse(response.data);
             setFormData({
                 grade: '',
@@ -129,13 +136,16 @@ export default function SELGenerator() {
             <NavBar id="main-nav" />
             <ToastContainer position="top-right" autoClose={1500} />
             <div className="container-fluid">
-                <div className="row justify-content-center mt-5">
+                <div className="row justify-content-center mt-5 mb-4">
+                    
                     {isLoading ? (
                         <div className="col-md-5 text-center">
                             <Spinner />
                         </div>
                     ) : (
                         !apiResponse ? (
+                            <>
+                            <NavBreadcrumb items={breadcrumbItems} />
                             <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded no-print">
                                 <form onSubmit={handleSubmit}>
                                     <h4 className="text-center mb-3">SEL Plan Generator</h4>
@@ -215,9 +225,6 @@ export default function SELGenerator() {
 
 
                                     <div className="d-flex justify-content-between mt-3">
-                                        <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
-                                            Generate <FaArrowRight />
-                                        </button>
                                         <button type="button" className="btn btn-sm" style={cancelStyle} onClick={() => setFormData({
                                             grade: '',
                                             sel_topic: '',
@@ -226,9 +233,13 @@ export default function SELGenerator() {
                                         })} disabled={isLoading}>
                                             <FaEraser /> Reset
                                         </button>
+                                        <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
+                                            Generate <FaArrowRight />
+                                        </button>
                                     </div>
                                 </form>
                             </div>
+                            </>
                         ) : (
                             <div className="mt-3" ref={contentRef} id="main-btn">
                                 {renderSELPlan(apiResponse)}
@@ -236,7 +247,7 @@ export default function SELGenerator() {
                                     <FaArrowLeft /> Generate Another SEL Plan
                                 </button>
                                 <button className="btn btn-sm mt-2 mb-3 no-print" style={pdfStyle} onClick={handlePrint}>
-                                    <FaRegFilePdf /> Download PDF
+                                    <FaRegFilePdf /> View PDF
                                 </button>
                             </div>
                         )

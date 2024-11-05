@@ -5,6 +5,7 @@ import { FaArrowRight, FaEraser, FaArrowLeft, FaRegFilePdf, FaEdit } from "react
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../spinner/Spinner';
+import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
 
 // Special needs options
 const needs = [
@@ -13,7 +14,14 @@ const needs = [
     { value: "ADHD", label: "ADHD (Attention deficit hyperactivity disorder)" }
 ];
 
-export default function SocialStory() {
+const breadcrumbItems = [
+    { label: 'Main Panel', href: '/MainPlanner', active: false },
+    { label: 'Special needs', active: true },
+    { label: 'Social Story', active: true }
+];
+
+
+export default function SocialStory({ BASE_URL }) {
     const btnStyle = { backgroundColor: '#FF683B', color: 'white' };
     const cancelStyle = { backgroundColor: '#dc3545', color: 'white' };
     const pdfStyle = { backgroundColor: '#198754', color: 'white' };
@@ -62,7 +70,7 @@ export default function SocialStory() {
         setIsLoading(true);
 
         try {
-            const response = await axios.post('https://teachertools-api.chimpvine.com/Social_stories', formDataToSend);
+            const response = await axios.post(`${BASE_URL}/Social_stories`, formDataToSend);
             setApiResponse(response.data);
             setFormData({
                 child_name: '',
@@ -134,13 +142,16 @@ export default function SocialStory() {
             <NavBar id="main-nav" />
             <ToastContainer position="top-right" autoClose={1500} />
             <div className="container-fluid">
-                <div className="row justify-content-center mt-3">
+                <div className="row justify-content-center mt-5 mb-4">
+                    
                     {isLoading ? (
                         <div className="col-md-5 text-center">
                             <Spinner />
                         </div>
                     ) : (
                         !apiResponse ? (
+                            <>
+                            <NavBreadcrumb items={breadcrumbItems} />
                             <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded no-print">
                                 <form onSubmit={handleSubmit}>
                                     <h4 className="text-center mb-3">Social Story Generator</h4>
@@ -235,9 +246,6 @@ export default function SocialStory() {
                                     </div>
 
                                     <div className="d-flex justify-content-between mt-3">
-                                        <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
-                                            Generate <FaArrowRight />
-                                        </button>
                                         <button
                                             type="button"
                                             className="btn btn-sm"
@@ -254,9 +262,13 @@ export default function SocialStory() {
                                         >
                                             <FaEraser /> Reset
                                         </button>
+                                        <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
+                                            Generate <FaArrowRight />
+                                        </button>
                                     </div>
                                 </form>
                             </div>
+                            </>
                         ) : (
                             <div className="mt-3" ref={contentRef} id="main-btn">
                                 {renderSocialStory(apiResponse)}
@@ -272,7 +284,7 @@ export default function SocialStory() {
                                         <FaEdit /> Edit Social Story
                                     </button> */}
                                     <button className="btn btn-sm mt-2 mb-3 no-print" style={pdfStyle} onClick={handlePrint}>
-                                        <FaRegFilePdf /> Download PDF
+                                        <FaRegFilePdf /> View PDF
                                     </button>
                                 </div>
                             </div>

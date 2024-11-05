@@ -5,19 +5,31 @@ import { FaArrowRight, FaEraser, FaArrowLeft, FaRegFilePdf } from "react-icons/f
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../spinner/Spinner';
+import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
 
-export default function TongueTwister() {
+export default function TongueTwister({ BASE_URL }) {
     const btnStyle = { backgroundColor: '#FF683B', color: 'white' };
     const cancelStyle = { backgroundColor: '#dc3545', color: 'white' };
     const pdfStyle = {
         backgroundColor: '#198754',
         color: 'white',
-    }
+    };
 
     const [formData, setFormData] = useState({
         topic: '',
         number_of_twisters: ''
     });
+
+    const numberofTwisters = [
+        { value: "", label: "Choose Number of Twisters" },
+        ...Array.from({ length: 10 }, (_, i) => ({ value: i + 1, label: `${i + 1}` }))
+    ];
+
+    const breadcrumbItems = [
+        { label: 'Main Panel', href: '/MainPlanner', active: false },
+        { label: 'Gamification', active: true },
+        { label: 'Tongue Twister', active: true }
+    ];
 
     const [apiResponse, setApiResponse] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -43,12 +55,6 @@ export default function TongueTwister() {
             return;
         }
 
-        // Ensure number_of_twisters is between 1 and 10
-        if (number_of_twisters < 1 || number_of_twisters > 10) {
-            toast.warn('The number of twisters must be between 1 and 10.');
-            return;
-        }
-
         // Create FormData object for sending form-encoded data
         const formDataToSend = new FormData();
         formDataToSend.append('topic', topic);
@@ -57,7 +63,7 @@ export default function TongueTwister() {
         setIsLoading(true);
 
         try {
-            const response = await axios.post('https://teachertools-api.chimpvine.com/generate-tongue-twisters', formDataToSend);
+            const response = await axios.post(`${BASE_URL}/generate-tongue-twisters`, formDataToSend);
             setApiResponse(response.data);
             setFormData({
                 topic: '',
@@ -72,7 +78,6 @@ export default function TongueTwister() {
         }
     };
 
-
     // Handle print action
     const handlePrint = () => {
         window.print();
@@ -84,12 +89,15 @@ export default function TongueTwister() {
             <ToastContainer position="top-right" autoClose={1500} />
             <div className="container-fluid">
                 <div className="row justify-content-center mt-5">
+                    
                     {isLoading ? (
                         <div className="col-md-5 text-center">
                             <Spinner />
                         </div>
                     ) : (
                         !apiResponse ? (
+                            <>
+                            <NavBreadcrumb items={breadcrumbItems} />
                             <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded no-print">
                                 <form onSubmit={handleSubmit}>
                                     <h4 className="text-center mb-3">Tongue Twister Generator</h4>
@@ -105,28 +113,29 @@ export default function TongueTwister() {
                                             value={formData.topic}
                                             onChange={handleChange}
                                             disabled={isLoading}
-                                            placeholder="Enter Tongue Twister Topic For eg. Animals,Foods"
+                                            placeholder="Enter Tongue Twister Topic For eg. Animals, Foods"
                                         />
 
                                         <label htmlFor="number_of_twisters" className="form-label">
-                                            Number of Twister <span style={{ color: 'red' }}>*</span>
+                                            Number of Twisters <span style={{ color: 'red' }}>*</span>
                                         </label>
-                                        <input
-                                            type="number"
-                                            className="form-control form-control-sm mb-2"
+                                        <select
+                                            className="form-select form-select-sm mb-2"
                                             id="number_of_twisters"
                                             name="number_of_twisters"
                                             value={formData.number_of_twisters}
                                             onChange={handleChange}
                                             disabled={isLoading}
-                                            placeholder="For example: 5"
-                                        />
+                                        >
+                                            {numberofTwisters.map((option) => (
+                                                <option key={option.value} value={option.value}>
+                                                    {option.label}
+                                                </option>
+                                            ))}
+                                        </select>
                                     </div>
 
                                     <div className="d-flex justify-content-between mt-3">
-                                        <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
-                                            Generate <FaArrowRight />
-                                        </button>
                                         <button
                                             type="button"
                                             className="btn btn-sm"
@@ -139,9 +148,13 @@ export default function TongueTwister() {
                                         >
                                             <FaEraser /> Reset
                                         </button>
+                                        <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
+                                            Generate <FaArrowRight />
+                                        </button>
                                     </div>
                                 </form>
                             </div>
+                            </>
                         ) : (
                             <div className="mt-3" ref={contentRef} id="main-btn">
                                 {renderTongueTwister(apiResponse)}
@@ -149,7 +162,7 @@ export default function TongueTwister() {
                                     <FaArrowLeft /> Generate Another Tongue Twister
                                 </button>
                                 <button className="btn btn-sm mt-2 mb-3 no-print" style={pdfStyle} onClick={handlePrint}>
-                                    <FaRegFilePdf /> Download PDF
+                                    <FaRegFilePdf /> View PDF
                                 </button>
                             </div>
                         )
@@ -159,22 +172,8 @@ export default function TongueTwister() {
         </>
     );
 }
-const renderTongueTwister = (tongueTwisterData) => {
-    const nameStyle = {
-        display: "inline-block",
-        width: "200px",
-        height: "1px",
-        backgroundColor: "black",
-        borderBottom: "1px solid black",
-    };
 
-    const dateStyle = {
-        display: "inline-block",
-        width: "100px",
-        height: "1px",
-        backgroundColor: "black",
-        borderBottom: "1px solid black",
-    };
+const renderTongueTwister = (tongueTwisterData) => {
     return (
         <div className="container-fluid mt-3 mb-2 ps-5 pe-5 print-content">
             <div className='mt-4'>
@@ -185,7 +184,7 @@ const renderTongueTwister = (tongueTwisterData) => {
                 {/* Tongue Twister List */}
                 <section className='mb-5'>
                     <h4>Tongue Twister List:</h4>
-                    <table className="table table-bordered">
+                    <table className="table table-bordered" style={{ width: 'auto' }}>
                         <thead>
                             <tr>
                                 <th>S.N</th>

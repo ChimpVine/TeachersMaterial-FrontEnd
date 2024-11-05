@@ -17,20 +17,23 @@ import {
     FaFilePdf,
     FaThLarge,
     FaQuestion,
-    FaRegSmileBeam 
+    FaRegSmileBeam,
+    FaFilePowerpoint,
 } from "react-icons/fa";
+import { TbMathSymbols, TbZoomQuestion } from "react-icons/tb";
+import { GiPuzzle } from "react-icons/gi";
+import { PiCirclesFourFill , PiMathOperationsFill  } from "react-icons/pi";
 import { BiMath } from "react-icons/bi";
 import NavBar from './NavBar';
 import ReactGA from 'react-ga4';
 
 export default function MainPlanner() {
-    const [activeTab, setActiveTab] = useState('All'); // State to track the active tab
+    const [activeTab, setActiveTab] = useState('All'); 
 
     useEffect(() => {
         ReactGA.send({ hitType: "pageview", page: window.location.pathname });
     }, []);
 
-    // Function to track button clicks (event tracking)
     const trackButtonClick = (label) => {
         ReactGA.event({
             category: 'Button Click',
@@ -47,15 +50,6 @@ export default function MainPlanner() {
     const cards = [
         {
             id: 1,
-            category: 'Assessment',
-            icon: <FaQuestionCircle size={50} style={{ color: "#0d6efd" }} />,
-            title: 'Quiz Generator',
-            description: 'Effortlessly create customized and interactive quizzes with our easy-to-use Quiz Generator.',
-            link: '/Quiz-generator',
-            btnColor: 'primary'
-        },
-        {
-            id: 2,
             category: 'Planner',
             icon: <FaBookOpen  size={50} style={{ color: "#198754" }} />,
             title: 'Lesson Planner',
@@ -64,7 +58,7 @@ export default function MainPlanner() {
             btnColor: 'success'
         },
         {
-            id: 3,
+            id: 2,
             category: 'Assessment',
             icon: <FaReadme size={50} />,
             title: 'Workbook Planner',
@@ -73,16 +67,21 @@ export default function MainPlanner() {
             btnColor: 'dark'
         },
         {
-            id: 4,
+            id: 3,
             category: 'Assessment',
-            icon: <FaReceipt size={50} style={{ color: "#dc3545" }} />,
+            icon: (
+                <div className="position-relative">
+                    <FaReceipt size={50} style={{ color: "#dc3545" }} />
+                    <span className="badge rounded-pill bg-success position-absolute top-0 end-0">Popular</span>
+                </div>
+            ),
             title: 'Worksheet Planner',
             description: 'Easily create and customize worksheets for your students with our Worksheet Planner.',
             link: '/Worksheet',
             btnColor: 'danger'
         },
         {
-            id: 5,
+            id: 4,
             category: 'Learning',
             icon: <FaBook size={50} style={{ color: "#6c757d" }} />,
             title: 'Vocabulary Builder',
@@ -91,40 +90,64 @@ export default function MainPlanner() {
             btnColor: 'secondary'
         },
         {
-            id: 6,
+            id: 5,
             category: 'Gamification',
-            icon: <FaGrinTongueSquint size={50} style={{ color: "#0d6efd" }} />,
+            icon: (
+                <div className="position-relative">
+                    <FaGrinTongueSquint size={50} style={{ color: "#0d6efd" }} />
+                    <span className="badge rounded-pill bg-success position-absolute top-0 end-0">Popular</span>
+                </div>
+            ),
             title: 'Tongue Twister',
             description: 'Easily craft personalized and challenging tongue twisters with our intuitive Tongue Twister.',
             link: '/TongueTwister',
             btnColor: 'primary'
         },
         {
-            id: 7,
+            id: 6,
             category: 'Gamification',
-            icon: <FaPuzzlePiece size={50} />,
+            icon: (
+                <div className="position-relative">
+                    <FaPuzzlePiece size={50} />
+                    <span className="badge rounded-pill bg-success position-absolute top-0 end-0">Popular</span>
+                </div>
+            ),
             title: 'Word Puzzle',
             description: 'Easily create engaging and interactive word puzzles with our intuitive Word Puzzle.',
             link: '/WordPuzzle',
             btnColor: 'dark'
         },
         {
-            id: 8,
+            id: 7,
             category: 'Planner',
-            icon: <FaTasks size={50} style={{ color: "#dc3545" }}/>,
-            title: 'Rubric Generator',
-            description: 'Easily design personalized and detailed rubrics with our intuitive Rubric Generator.',
-            link: '/Comingsoon',
+            icon: (
+                <div className="position-relative">
+                   <FaFilePowerpoint  size={50} style={{ color: "#dc3545" }}/>
+                    <span className="badge rounded-pill bg-success position-absolute top-0 end-0">Popular</span>
+                </div>
+            ),
+            title: 'Slide Generator',
+            description: 'Create stunning, engaging slides that captivate and deliver your message clearly.',
+            link: '/SlideGenerator',
             btnColor: 'danger'
+        },
+        {
+            id: 8,
+            category: 'Assessment',
+            icon: <FaUsers size={50} style={{ color: "#6c757d" }} />,
+            title: 'Group Work',
+            description: 'Effortlessly collaborate and manage tasks with ease using our Group Work Organizer.',
+            link: '/GroupWork',
+            btnColor: 'secondary'
         },
         {
             id: 9,
             category: 'Assessment',
-            icon: <FaBookReader  size={50} style={{ color: "#198754" }} />,
-            title: 'Comprehension',
-            description: 'Easily design personalized and detailed assessments with our intuitive Comprehension.',
-            link: '/Comingsoon',
-            btnColor: 'success'
+            icon: <FaQuestionCircle size={50} style={{ color: "#0d6efd" }} />,
+            title: 'Quiz Generator',
+            description: 'Effortlessly create customized and interactive quizzes with our easy-to-use Quiz Generator.',
+            link: '/Quiz-generator',
+            btnColor: 'primary'
         },
         {
             id: 10,
@@ -138,43 +161,68 @@ export default function MainPlanner() {
         {
             id: 11,
             category: 'Summarizer',
-            icon: <FaYoutubeSquare size={50} style={{ color: "#dc3545" }} />,
-            title: 'YouTube Summarizer',
-            description: 'Effortlessly create clear and concise video summaries with our YouTube Summarizer.',
-            link: '/YTSummarizer',
-            btnColor: 'danger'
+            icon: (
+                <div className="position-relative">
+                    <FaTenge size={50} style={{ color: "#0d6efd" }}/>
+                    <span className="badge rounded-pill bg-success position-absolute top-0 end-0">Popular</span>
+                </div>
+            ),
+            title: 'Text Summarizer',
+            description: 'Effortlessly produce clear and concise text summaries with our Text Summarizer.',
+            link: '/TextSummarizer',
+            btnColor: 'dark'
         },
         {
             id: 12,
             category: 'Summarizer',
-            icon: <FaYoutubeSquare size={50} style={{ color: "#dc3545" }} />,
-            title: 'YouTube Q&A',
-            description: 'Effortlessly craft dynamic and custom assessments with our YouTube Q&A Generator.',
+            icon: (
+                <div className="position-relative">
+                    <FaYoutubeSquare size={50} style={{ color: "#dc3545" }} />
+                    <span className="badge rounded-pill bg-danger small-badge position-absolute top-0 end-0">Coming Soon</span>
+                </div>
+            ),
+            title: 'YouTube Summarizer',
+            description: 'Effortlessly create clear and concise video summaries with our YouTube Summarizer.',
             link: '/Comingsoon',
             btnColor: 'danger'
         },
         {
             id: 13,
             category: 'Assessment',
-            icon: <FaUsers size={50} style={{ color: "#6c757d" }} />,
-            title: 'Group Work',
-            description: 'Effortlessly create quick and concise video summaries with our YouTube Summarizer.',
+            icon: (
+                <div className="position-relative">
+                    <FaBookReader size={50}  style={{ color: "#198754" }}/>
+                    <span className="badge rounded-pill bg-danger small-badge position-absolute top-0 end-0">Coming Soon</span>
+                </div>
+            ),
+            title: 'Comprehension',
+            description: 'Easily design personalized and detailed assessments with our intuitive Comprehension.',
             link: '/Comingsoon',
-            btnColor: 'secondary'
+            btnColor: 'success'
         },
         {
             id: 14,
             category: 'Summarizer',
-            icon: <FaTenge size={50} />,
-            title: 'Text Summarizer',
-            description: 'Effortlessly produce clear and concise text summaries with our Text Summarizer.',
+            icon: (
+                <div className="position-relative">
+                    <FaYoutubeSquare size={50} style={{ color: "#dc3545" }} />
+                    <span className="badge rounded-pill bg-danger small-badge position-absolute top-0 end-0">Coming Soon</span>
+                </div>
+            ),
+            title: 'YouTube Q&A',
+            description: 'Effortlessly craft dynamic and custom assessments with our YouTube Q&A Generator.',
             link: '/Comingsoon',
-            btnColor: 'dark'
+            btnColor: 'danger'
         },
         {
             id: 15,
             category: 'Summarizer',
-            icon: <FaFilePdf size={50} style={{ color: "#6c757d" }} />,
+            icon: (
+                <div className="position-relative">
+                     <FaFilePdf size={50} style={{ color: "#6c757d" }} />
+                    <span className="badge rounded-pill bg-danger small-badge position-absolute top-0 end-0">Coming Soon</span>
+                </div>
+            ),
             title: 'PDF Summarizer',
             description: 'Effortlessly create clear and concise document summaries with our PDF Summarizer.',
             link: '/Comingsoon',
@@ -184,24 +232,34 @@ export default function MainPlanner() {
             id: 16,
             category: 'Gamification',
             icon: <FaThLarge size={50} style={{ color: "#6c757d" }} />,
-            title: 'Guess the Word',
-            description: 'Quickly create fun and interactive challenges with our Guess the Word Generator.',
-            link: '/Comingsoon',
+            title: 'Make the Word',
+            description: 'Quickly create fun and interactive challenges with our Make the Word Generator.',
+            link: '/Maketheword',
             btnColor: 'secondary'
         },
         {
             id: 17,
             category: 'Gamification',
-            icon: <FaQuestion size={50} style={{ color: "#dc3545" }} />,
-            title: 'Bingo Card',
-            description: 'Effortlessly design fun and interactive custom games with our Bingo Card Generator.',
+            icon: (
+                <div className="position-relative">
+                    <PiMathOperationsFill  size={50} style={{ color: "#6c757d" }} />
+                    <span className="badge rounded-pill bg-danger small-badge position-absolute top-0 end-0">Coming Soon</span>
+                </div>
+            ),
+            title: 'Fun Math',
+            description: 'Create fun, engaging math activities that captivate and simplify complex concepts.',
             link: '/Comingsoon',
-            btnColor: 'danger'
+            btnColor: 'secondary'
         },
         {
             id: 18,
             category: 'Learning',
-            icon: <BiMath size={50} />,
+            icon: (
+                <div className="position-relative">
+                    <BiMath size={50} />
+                    <span className="badge rounded-pill bg-danger small-badge position-absolute top-0 end-0">Coming Soon</span>
+                </div>
+            ),
             title: 'Vedic Math',
             description: 'Effortlessly create engaging and powerful Vedic Math summaries with precision.',
             link: '/Comingsoon',
@@ -210,15 +268,103 @@ export default function MainPlanner() {
         {
             id: 19,
             category: 'Planner',
-            icon: <FaRegSmileBeam  size={50} style={{ color: "#0d6efd" }}/>,
+            icon: (
+                <div className="position-relative">
+                    <FaRegSmileBeam  size={50} style={{ color: "#0d6efd" }}/>
+                    <span className="badge rounded-pill bg-success position-absolute top-0 end-0">Popular</span>
+                </div>
+            ),
             title: 'SEL Generator',
             description: 'Masterfully curate holistic and engaging SEL content for deep, meaningful learning.',
             link: '/SelGenerator',
             btnColor: 'primary'
-        }
+        },
+        {
+            id: 20,
+            category: 'Planner',
+            icon: (
+                <div className="position-relative">
+                   <FaTasks size={50} style={{ color: "#dc3545" }}/>
+                    <span className="badge rounded-pill bg-danger small-badge position-absolute top-0 end-0">Coming Soon</span>
+                </div>
+            ),
+            title: 'Rubric Generator',
+            description: 'Easily design personalized and detailed rubrics with our intuitive Rubric Generator.',
+            link: '/Comingsoon',
+            btnColor: 'danger'
+        },
+        {
+            id: 21,
+            category: 'Assessment',
+            icon: (
+                <div className="position-relative">
+                   <TbMathSymbols size={50} />
+                    <span className="badge rounded-pill bg-danger small-badge position-absolute top-0 end-0">Coming Soon</span>
+                </div>
+            ),
+            title: 'SAT Maths',
+            description: 'Master math concepts with clear, engaging lessons to boost your SAT score.',
+            link: '/Comingsoon',
+            btnColor: 'dark'
+        },
+        {
+            id: 22,
+            category: 'Gamification',
+            icon: (
+                <div className="position-relative">
+                   <GiPuzzle  size={50} style={{ color: "#198754" }}/>
+                    <span className="badge rounded-pill bg-danger small-badge position-absolute top-0 end-0">Coming Soon</span>
+                </div>
+            ),
+            title: 'Cross Word Puzzle',
+            description: 'Create engaging crossword puzzles that challenge and sharpen your mind.',
+            link: '/Comingsoon',
+            btnColor: 'success'
+        },
+        {
+            id: 23,
+            category: 'Assessment',
+            icon: (
+                <div className="position-relative">
+                   <PiCirclesFourFill size={50} style={{ color: "#0d6efd" }} />
+                    <span className="badge rounded-pill bg-danger small-badge position-absolute top-0 end-0">Coming Soon</span>
+                </div>
+            ),
+            title: 'SAT English',
+            description: 'Create clear, engaging SAT English lessons that captivate and boost performance.',
+            link: '/Comingsoon',
+            btnColor: 'primary'
+        },
+        {
+            id: 24,
+            category: 'Gamification',
+            icon: (
+                <div className="position-relative">
+                    <FaQuestion size={50} style={{ color: "#dc3545" }} />
+                    <span className="badge rounded-pill bg-danger small-badge position-absolute top-0 end-0">Coming Soon</span>
+                </div>
+            ),
+            title: 'Bingo Card',
+            description: 'Effortlessly design fun and interactive custom games with our Bingo Card Generator.',
+            link: '/Comingsoon',
+            btnColor: 'danger'
+        },
+        {
+            id: 25,
+            category: 'Gamification',
+            icon: (
+                <div className="position-relative">
+                   <TbZoomQuestion size={50}/>
+                    <span className="badge rounded-pill bg-danger small-badge position-absolute top-0 end-0">Coming Soon</span>
+                </div>
+            ),
+            title: 'Mystery Case',
+            description: 'Create intriguing mystery cases that captivate and challenge your investigative skills.',
+            link: '/Comingsoon',
+            btnColor: 'dark'
+        },
     ];
 
-    // Filter cards based on the active tab
     const filteredCards = cards.filter(card => activeTab === 'All' || card.category === activeTab);
 
     return (
@@ -232,7 +378,6 @@ export default function MainPlanner() {
             />
             <NavBar />
             <div className="container py-5">
-                {/* Navigation Pills */}
                 <div className="d-flex justify-content-center">
                     <ul className="nav nav-pills nav-fill">
                         <li className="nav-item me-2">
@@ -293,7 +438,6 @@ export default function MainPlanner() {
                     </ul>
                 </div>
                 <hr />
-                {/* Card Grid */}
                 <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 py-5">
                     {filteredCards.map((card) => (
                         <div className="col" key={card.id}>
