@@ -1,8 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import NavBar from './NavBar';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useSearchParams } from 'react-router-dom';
 import Footer from '../pages/Footer.jsx';
 import HeroSection from '../pages/HeroSection.jsx';
+import { UserContext } from '../context/UserContext';
+
 
 const TypingEffect = () => {
     const [text, setText] = useState('');
@@ -62,6 +64,34 @@ const scrollToSection = (e, targetId) => {
 };
 
 const GetStarted = () => {
+
+    const { login } = useContext(UserContext);
+    const [searchParams] = useSearchParams();
+
+    useEffect(() => {
+        const token = searchParams.get('token');
+        if (token && typeof login === 'function') {
+            login(token);
+            console.log("Token found and processed:", token);
+            window.history.replaceState(null, '', window.location.origin + window.location.pathname);
+        } else if (!login) {
+            console.warn("Login function not available in UserContext.");
+        }
+    }, [searchParams, login]);
+    
+
+    const textStyle = {
+        color: '#8F47D7',
+        backgroundImage: 'linear-gradient(179deg, #FF683B 0%, #fba11a 50%, transparent 54%, transparent 100%)',
+        fontWeight: 700,
+        marginBottom: '3.5rem',
+        backgroundSize: '100% 15%',
+        backgroundRepeat: 'repeat-x',
+        backgroundPosition: 'left 0% bottom 10%',
+        paddingBottom: '7px'
+    };
+    
+
     return (
         <>
             <NavBar />
@@ -69,11 +99,14 @@ const GetStarted = () => {
                 <div className="container center-text mt-5">
                     <section className="py-4">
                         <div className="d-flex justify-content-center align-items-center flex-column text-center w-100">
-                            <div className="w-50 mt-3">
-                                <p className="display-5 fw-bold">Unlock the Ultimate Teaching Toolkit:</p>
-                            </div>
+                            <h2 className="display-4 fw-bold">
+                                All your <span style={textStyle}>AI Tools</span> in one place
+                            </h2>
+                            <p className="lead text-muted w-75">
+                                Explore a wide range of AI-driven tools created to maximize productivity and provide everything you need in just a click.
+                            </p>
                             <div>
-                                <TypingEffect />
+                                <TypingEffect/>
                                 <NavLink to="/MainPlanner">
                                     <button className="unique-button mt-5 mb-4" aria-label="Start Planning">
                                         <span>Get Started</span>

@@ -6,6 +6,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../spinner/Spinner';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
+import Cookies from 'js-cookie'; 
+
 
 export default function TongueTwister({ BASE_URL }) {
     const btnStyle = { backgroundColor: '#FF683B', color: 'white' };
@@ -60,10 +62,20 @@ export default function TongueTwister({ BASE_URL }) {
         formDataToSend.append('topic', topic);
         formDataToSend.append('number_of_twisters', number_of_twisters);
 
+
+        // Retrieve cookies for headers
+        const authToken = Cookies.get('authToken');
+        const siteUrl = Cookies.get('site_url');
+
         setIsLoading(true);
 
         try {
-            const response = await axios.post(`${BASE_URL}/generate-tongue-twisters`, formDataToSend);
+            const response = await axios.post(`${BASE_URL}/generate-tongue-twisters`, formDataToSend, {
+                headers: {
+                    Authorization: `Bearer ${authToken}`,
+                    'X-Site-Url': siteUrl
+                },
+            });
             setApiResponse(response.data);
             setFormData({
                 topic: '',

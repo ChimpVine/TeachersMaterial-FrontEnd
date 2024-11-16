@@ -6,6 +6,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../spinner/Spinner';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
+import Cookies from 'js-cookie'; 
+
 
 const grades = [
     { value: "", label: "Choose a Grade" },
@@ -103,10 +105,24 @@ export default function SELGenerator({ BASE_URL }) {
         const learningObjectivesArray = learning_objectives.split('\n');
         const totalWords = learningObjectivesArray.reduce((acc, objective) => acc + objective.split(' ').length, 0);
 
+        // Retrieve cookies for headers
+        const authToken = Cookies.get('authToken');
+        const siteUrl = Cookies.get('site_url');
+
         setIsLoading(true);
 
         try {
-            const response = await axios.post(`${BASE_URL}/generate_sel_plan`, formDataToSend);
+            const response = await axios.post(
+                `${BASE_URL}/generate_sel_plan`,
+                formDataToSend,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`,
+                        'X-Site-Url': siteUrl
+                    }
+                }
+            );
             setApiResponse(response.data);
             setFormData({
                 grade: '',

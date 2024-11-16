@@ -10,24 +10,27 @@ export default function Footer() {
                 <div className="container">
                     <div className="row pt-5">
                         <div className="col-md-3">
-                            <NavLink className="navbar-brand" to="https://site.chimpvine.com/">
+                            <NavLink className="navbar-brand" to="/">
                                 <img src={logo} alt="ChimpVineLogo" width="185" height="56" className='mb-3' />
                             </NavLink>
                             <h6>Gamified learning platform to engage young minds.</h6>
                             <div className="d-flex mt-3">
                                 <NavLink 
                                 className="social-content" 
-                                to="https://www.facebook.com/ChimpVineGlobal">
+                                to="https://www.facebook.com/ChimpVineGlobal"
+                                target='_blank'>
                                     <FaFacebook className="me-3" size={25}/>
                                 </NavLink>
                                 <NavLink 
                                 className="social-content" 
-                                to="https://www.linkedin.com/company/chimpvineinternational/">
+                                to="https://www.linkedin.com/company/chimpvine/"
+                                target='_blank'>
                                     <FaLinkedin className="me-3" size={25}/>
                                 </NavLink>
                                 <NavLink 
                                 className="social-content" 
-                                to="https://www.instagram.com/chimpvine.global/">
+                                to="https://www.instagram.com/chimpvine.global/"
+                                target='_blank'>
                                     <FaInstagramSquare className="me-3" size={25}/>
                                 </NavLink>
                             </div>
@@ -36,12 +39,14 @@ export default function Footer() {
                             <h5>Our Products</h5>
                             <ul className="list-unstyled">
                                 <li>
-                                    <NavLink className="content" to="https://site.chimpvine.com/">
+                                    <NavLink className="content" to="https://site.chimpvine.com/"
+                                    target='_blank'>
                                         Education Games
                                     </NavLink>
                                 </li>
                                 <li>
-                                    <NavLink className="content" to="https://chatbot.chimpvine.com/math-cal">
+                                    <NavLink className="content" to="https://chatbot.chimpvine.com/math-cal"
+                                    target='_blank'>
                                         Math Homework Help
                                     </NavLink>
                                 </li>
@@ -53,21 +58,24 @@ export default function Footer() {
                                 <li>
                                     <NavLink
                                         className="content"
-                                        to="https://site.chimpvine.com/become-an-affiliate/">
+                                        to="https://site.chimpvine.com/become-an-affiliate/"
+                                        target='_blank'>
                                         Become an affiliate
                                     </NavLink>
                                 </li>
                                 <li>
                                     <NavLink
                                         className="content"
-                                        to="https://site.chimpvine.com/affiliate-terms-conditions/">
+                                        to="https://site.chimpvine.com/affiliate-terms-conditions/"
+                                        target='_blank'>
                                         Affiliate Terms and Condition
                                     </NavLink>
                                 </li>
                                 <li>
                                     <NavLink
                                         className="content"
-                                        to="https://site.chimpvine.com/affiliate-faqs/">
+                                        to="https://site.chimpvine.com/affiliate-faqs/"
+                                        target='_blank'>
                                         Affiliate FAQ
                                     </NavLink>
                                 </li>
@@ -79,7 +87,8 @@ export default function Footer() {
                                 <li>
                                     <NavLink
                                         className="content"
-                                        to="https://site.chimpvine.com/policy/">
+                                        to="https://site.chimpvine.com/policy/"
+                                        target='_blank'>
                                         Privacy Policy
                                     </NavLink>
 
@@ -87,14 +96,16 @@ export default function Footer() {
                                 <li>
                                     <NavLink
                                         className="content"
-                                        to="https://site.chimpvine.com/faqs/">
+                                        to="https://site.chimpvine.com/faqs/"
+                                        target='_blank'>
                                         FAQ's
                                     </NavLink>
                                 </li>
                                 <li>
                                     <NavLink
                                         className="content"
-                                        to="https://site.chimpvine.com/contact-us/">
+                                        to="/RequestForm"
+                                        >
                                         Contact Us
                                     </NavLink>
                                 </li>

@@ -5,11 +5,14 @@ import "bootstrap";
 import RoutingConfig from "./routing/RoutingConfig"
 import { BrowserRouter as Router } from 'react-router-dom';
 import "./assests/css/style.css";
+import UserProvider from './context/UserContext';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Router>
+    <UserProvider>
       <RoutingConfig />
+    </UserProvider>
     </Router>
   </React.StrictMode>,
 )

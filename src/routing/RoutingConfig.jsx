@@ -21,34 +21,41 @@ import TextSummarizer from '../components/Summarizer/TextSummarizer.jsx';
 import GroupWork from '../components/Assessment/GroupWork.jsx';
 import ReactGA from 'react-ga4';
 import Maketheword from '../components/Gamification/Maketheword.jsx';
+import PrivateRoute from '../components/PrivateRoute';
+import Login from '../pages/Login/Login.jsx';
+import Aboutus from '../pages/AboutUs/Aboutus.jsx';
 
 export default function RoutingConfig() {
 
-  const BASE_URL ='https://teachertools-api.chimpvine.com';
-  
+  const BASE_URL = 'https://teachertools-api.chimpvine.com';
+
   ReactGA.initialize('G-TBNNYXX21K');
   return (
     <>
       <Routes>
         <Route path="/" element={<GetStarted />} />
-        <Route path="/MainPlanner" element={<MainPlanner />} />
-        <Route path="/LessonPlanner" element={<LessonPlanner BASE_URL={BASE_URL}/>} />
-        <Route path="/Quiz-generator" element={<QuizUI BASE_URL={BASE_URL}/>} />
-        <Route path="/Workbook" element={<WorkBook BASE_URL={BASE_URL}/>} />
-        <Route path="/Worksheet" element={<WorkSheet BASE_URL={BASE_URL}/>} />
-        <Route path="/Vocabulary" element={<Vocabulary BASE_URL={BASE_URL}/>} />
-        <Route path="/TongueTwister" element={<TongueTwister BASE_URL={BASE_URL}/>} />
-        <Route path="/WordPuzzle" element={<WordPuzzle BASE_URL={BASE_URL}/>} />
-        {/* <Route path="/YTSummarizer" element={<YTSummarizer BASE_URL={BASE_URL}/>} /> */}
-        <Route path="/SocialStory" element={<SocialStory BASE_URL={BASE_URL}/>} />
-        <Route path="/SelGenerator" element={<SelGenerator BASE_URL={BASE_URL}/>} />
-        <Route path="/SlideGenerator" element={<SlideGenerator BASE_URL={BASE_URL}/>} />
-        <Route path="/TextSummarizer" element={<TextSummarizer BASE_URL={BASE_URL}/>} />
-        <Route path="/GroupWork" element={<GroupWork BASE_URL={BASE_URL}/>} />
-        <Route path="/Maketheword" element={<Maketheword BASE_URL={BASE_URL}/>} />
-        <Route path="/RequestForm" element={<RequestForm BASE_URL={BASE_URL}/>} />
+        <Route path="/Login" element={<Login />} />
+        <Route path="/Aboutus" element={<Aboutus />} />
+        <Route element={<PrivateRoute />} >
+          <Route path="/MainPlanner" element={<MainPlanner />} />
+          <Route path="/LessonPlanner" element={<LessonPlanner BASE_URL={BASE_URL} />} />
+          <Route path="/Quiz-generator" element={<QuizUI BASE_URL={BASE_URL} />} />
+          <Route path="/Workbook" element={<WorkBook BASE_URL={BASE_URL} />} />
+          <Route path="/Worksheet" element={<WorkSheet BASE_URL={BASE_URL} />} />
+          <Route path="/Vocabulary" element={<Vocabulary BASE_URL={BASE_URL} />} />
+          <Route path="/TongueTwister" element={<TongueTwister BASE_URL={BASE_URL} />} />
+          <Route path="/WordPuzzle" element={<WordPuzzle BASE_URL={BASE_URL} />} />
+          {/* <Route path="/YTSummarizer" element={<YTSummarizer BASE_URL={BASE_URL} />} /> */}
+          <Route path="/SocialStory" element={<SocialStory BASE_URL={BASE_URL} />} />
+          <Route path="/SelGenerator" element={<SelGenerator BASE_URL={BASE_URL} />} />
+          <Route path="/SlideGenerator" element={<SlideGenerator BASE_URL={BASE_URL} />} />
+          <Route path="/TextSummarizer" element={<TextSummarizer BASE_URL={BASE_URL} />} />
+          <Route path="/GroupWork" element={<GroupWork BASE_URL={BASE_URL} />} />
+          <Route path="/Maketheword" element={<Maketheword BASE_URL={BASE_URL} />} />
+          <Route path="/Comingsoon" element={<ComingSoon />} />
+        </Route>
+        <Route path="/RequestForm" element={<RequestForm BASE_URL={BASE_URL} />} />
         <Route path="/PdfSplitter" element={<PdfSplitter />} />
-        <Route path="/Comingsoon" element={<ComingSoon />} />
         <Route path="*" element={<Error404Page />} />
       </Routes>
     </>

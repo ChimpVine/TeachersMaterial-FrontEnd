@@ -7,6 +7,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useForm } from 'react-hook-form';
 import Spinner from '../../spinner/Spinner';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
+import Cookies from 'js-cookie'; 
+
 
 export default function TextSummarizer({ BASE_URL }) {
     const btnStyle = { backgroundColor: '#FF683B', color: 'white' };
@@ -36,10 +38,25 @@ export default function TextSummarizer({ BASE_URL }) {
 
     const onSubmit = async (data) => {
         const { text, summary_format } = data;
+
+        // Retrieve cookies for headers
+        const authToken = Cookies.get('authToken');
+        const siteUrl = Cookies.get('site_url');
+
         setIsLoading(true);
 
         try {
-            const { data: response } = await axios.post(`${BASE_URL}/text_summarizer`, { text, summary_format });
+            const { data: response } = await axios.post(
+                `${BASE_URL}/text_summarizer`,
+                { text, summary_format },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`, 
+                        'X-Site-Url': siteUrl
+                    }
+                }
+            );
             setApiResponse(response);
             reset();
             toast.success('Summary generated successfully!');

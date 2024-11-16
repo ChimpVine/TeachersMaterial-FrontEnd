@@ -8,6 +8,8 @@ import NavBar from '../NavBar';
 import Spinner from '../../spinner/Spinner';
 import { Modal, Button, Form } from 'react-bootstrap';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
+import Cookies from 'js-cookie'; 
+
 
 const slideNumbers = [
     { value: "5", label: "5" },
@@ -105,12 +107,18 @@ export default function SlideGenerator({ BASE_URL }) {
             number_of_slides: slide_number
         };
 
+        // Retrieve cookies for headers
+        const authToken = Cookies.get('authToken');
+        const siteUrl = Cookies.get('site_url');
+
         setIsLoading(true);
 
         try {
             const response = await axios.post(`${BASE_URL}/slide_one`, formDataToSend, {
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${authToken}`, 
+                    'X-Site-Url': siteUrl
                 },
             });
             setApiResponse(response.data);
@@ -191,12 +199,18 @@ export default function SlideGenerator({ BASE_URL }) {
             return;
         }
 
+        // Retrieve cookies for headers
+        const authToken = Cookies.get('authToken');
+        const siteUrl = Cookies.get('site_url');
+        
         setIsLoadingPptx(true); // Start spinner for PPTX generation
 
         try {
             const response = await axios.post(`${BASE_URL}/slide_two`, apiResponse, {
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${authToken}`, 
+                    'X-Site-Url': siteUrl
                 },
             });
 

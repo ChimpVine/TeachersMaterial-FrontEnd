@@ -19,7 +19,7 @@ ul li {
 }
 
 .bg-body-tertiary {
-    background-color: #8172DB !important;
+    background-color: #8F47D7 !important;
 }
 
 body {
@@ -61,21 +61,20 @@ body {
 }
 
 .unique-navbar {
-    background-color: #8172DB !important;
+    background-color: #8F47D7 !important;
 }
 
 a {
     text-decoration: none;
-    color: #8172DB;
+    color: #8F47D7;
 }
 
 a:hover {
-    color: #8172DB;
+    color: #8F47D7;
 }
 
 .unique-typewrite>.wrap {
-    border-right: 0.08em solid #8172DB;
-
+    border-right: 0.08em solid #8F47D7;
 }
 
 .unique-button {
@@ -174,7 +173,7 @@ a:hover {
 
 .nav-link,
 .text-style {
-    color: #8172DB;
+    color: #8F47D7;
 }
 
 .nav-pills .nav-link.active,

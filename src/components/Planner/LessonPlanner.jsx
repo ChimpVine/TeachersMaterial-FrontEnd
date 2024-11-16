@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../spinner/Spinner';
 import { NavLink } from 'react-router-dom';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
+import Cookies from 'js-cookie'; 
 
 const subjects = [
     { value: "", label: "Choose a Subject" },
@@ -122,12 +123,18 @@ export default function LessonPlan({ BASE_URL }) {
         formDataToSend.append('command', textarea);
         formDataToSend.append('file', pdf_file);
 
+         // Retrieve cookies for headers
+         const authToken = Cookies.get('authToken');
+         const siteUrl = Cookies.get('site_url');
+
         setIsLoading(true);
 
         try {
             const response = await axios.post(`${BASE_URL}/generate_lesson_plan`, formDataToSend, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${authToken}`, 
+                    'X-Site-Url': siteUrl
                 },
             });
             setApiResponse(response.data);
@@ -252,7 +259,7 @@ export default function LessonPlan({ BASE_URL }) {
                                             />
                                             <p className="text-center" style={{ fontSize: '14px' }}>
                                                 <span className="fw-bold" style={{ color: 'red' }}>Note: * </span>
-                                                If you have a larger PDF and want to shorten it ,
+                                                If you have a large PDF and want to shorten it ,
                                                 <NavLink to="/PdfSplitter" target='_blank'>
                                                     Click here
                                                 </NavLink>

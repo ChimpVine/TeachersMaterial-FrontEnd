@@ -6,6 +6,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../spinner/Spinner';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
+import Cookies from 'js-cookie'; 
+
 
 // Special needs options
 const needs = [
@@ -67,10 +69,24 @@ export default function SocialStory({ BASE_URL }) {
             ideal_behavior
         };
 
+         // Retrieve cookies for headers
+         const authToken = Cookies.get('authToken');
+         const siteUrl = Cookies.get('site_url');
+
         setIsLoading(true);
 
         try {
-            const response = await axios.post(`${BASE_URL}/Social_stories`, formDataToSend);
+            const response = await axios.post(
+                `${BASE_URL}/Social_stories`,
+                formDataToSend,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`, 
+                        'X-Site-Url': siteUrl
+                    }
+                }
+            );
             setApiResponse(response.data);
             setFormData({
                 child_name: '',

@@ -6,6 +6,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../spinner/Spinner';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
+import Cookies from 'js-cookie'; 
+
 
 export default function WordPuzzle({ BASE_URL }) {
     const btnStyle = { backgroundColor: '#FF683B', color: 'white' };
@@ -47,11 +49,19 @@ export default function WordPuzzle({ BASE_URL }) {
         formDataToSend.append('numberofword', numberofword);
         formDataToSend.append('difficulty_level', difficulty_level);
 
+        // Retrieve cookies for headers
+        const authToken = Cookies.get('authToken');
+        const siteUrl = Cookies.get('site_url');
+
         setIsLoading(true);
 
         try {
             const response = await axios.post(`${BASE_URL}/word_puzzle`, formDataToSend, {
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken}`,
+                    'X-Site-Url': siteUrl
+                }
             });
             setApiResponse(response.data);
             setFormData({ topic: '', numberofword: '', difficulty_level: '' });

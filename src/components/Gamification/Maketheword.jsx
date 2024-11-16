@@ -7,6 +7,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../spinner/Spinner';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
+import Cookies from 'js-cookie'; 
+
 
 const difficultyLevels = [
     { value: "", label: "Choose the Difficulty Level" },
@@ -37,11 +39,26 @@ export default function Maketheword({ BASE_URL }) {
     const pdfStyle = { backgroundColor: '#198754', color: 'white' };
 
     const onSubmit = async (data) => {
+
+        // Retrieve cookies for headers
+        const authToken = Cookies.get('authToken');
+        const siteUrl = Cookies.get('site_url');
+
         setIsLoading(true);
         setApiResponse(null);
 
         try {
-            const response = await axios.post(`${BASE_URL}/make_the_word`, data);
+            const response = await axios.post(
+                `${BASE_URL}/make_the_word`,
+                data,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`, // Explicitly set Authorization header
+                        'X-Site-Url': siteUrl
+                    }
+                }
+            );
             setApiResponse(response.data);
             toast.success('Words generated successfully!');
             reset();
@@ -70,7 +87,7 @@ export default function Maketheword({ BASE_URL }) {
             <ToastContainer position="top-right" autoClose={1500} />
             <div className="container-fluid">
                 <div className="row justify-content-center mt-5 mb-4">
-                    
+
                     {isLoading ? (
                         <div className="col-md-5 text-center">
                             <Spinner />
@@ -78,74 +95,74 @@ export default function Maketheword({ BASE_URL }) {
                     ) : (
                         !apiResponse ? (
                             <>
-                            <NavBreadcrumb items={breadcrumbItems} />
-                            <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded no-print">
-                                <form onSubmit={handleSubmit(onSubmit)}>
-                                    <h4 className="text-center mb-3">Make the Word Generator</h4>
+                                <NavBreadcrumb items={breadcrumbItems} />
+                                <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded no-print">
+                                    <form onSubmit={handleSubmit(onSubmit)}>
+                                        <h4 className="text-center mb-3">Make the Word Generator</h4>
 
-                                    {/* Theme */}
-                                    <div className="mb-2">
-                                        <label htmlFor="theme" className="form-label">
-                                            Theme <span style={{ color: 'red' }}>*</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className={`form-control form-control-sm mb-2 ${errors.theme ? 'is-invalid' : ''}`}
-                                            id="theme"
-                                            {...register('theme', { required: 'Theme is required' })}
-                                            placeholder="Enter Theme For E.g. Animals, Foods, Planets"
-                                        />
-                                        {errors.theme && <div className="invalid-feedback">{errors.theme.message}</div>}
-                                    </div>
+                                        {/* Theme */}
+                                        <div className="mb-2">
+                                            <label htmlFor="theme" className="form-label">
+                                                Theme <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className={`form-control form-control-sm mb-2 ${errors.theme ? 'is-invalid' : ''}`}
+                                                id="theme"
+                                                {...register('theme', { required: 'Theme is required' })}
+                                                placeholder="Enter Theme For E.g. Animals, Foods, Planets"
+                                            />
+                                            {errors.theme && <div className="invalid-feedback">{errors.theme.message}</div>}
+                                        </div>
 
-                                    {/* Difficulty Level */}
-                                    <div className="mb-2">
-                                        <label htmlFor="difficulty_level" className="form-label">
-                                            Difficulty Level <span style={{ color: 'red' }}>*</span>
-                                        </label>
-                                        <select
-                                            className={`form-select form-select-sm mb-2 ${errors.difficulty_level ? 'is-invalid' : ''}`}
-                                            id="difficulty_level"
-                                            {...register('difficulty_level', { required: 'Difficulty level is required' })}
-                                        >
-                                            {difficultyLevels.map((level, index) => (
-                                                <option key={index} value={level.value}>
-                                                    {level.label}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        {errors.difficulty_level && <div className="invalid-feedback">{errors.difficulty_level.message}</div>}
-                                    </div>
+                                        {/* Difficulty Level */}
+                                        <div className="mb-2">
+                                            <label htmlFor="difficulty_level" className="form-label">
+                                                Difficulty Level <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <select
+                                                className={`form-select form-select-sm mb-2 ${errors.difficulty_level ? 'is-invalid' : ''}`}
+                                                id="difficulty_level"
+                                                {...register('difficulty_level', { required: 'Difficulty level is required' })}
+                                            >
+                                                {difficultyLevels.map((level, index) => (
+                                                    <option key={index} value={level.value}>
+                                                        {level.label}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            {errors.difficulty_level && <div className="invalid-feedback">{errors.difficulty_level.message}</div>}
+                                        </div>
 
-                                    {/* Number of Words */}
-                                    <div className="mb-2">
-                                        <label htmlFor="number_of_words" className="form-label">
-                                            Number of Words <span style={{ color: 'red' }}>*</span>
-                                        </label>
-                                        <select
-                                            className={`form-select form-select-sm mb-2 ${errors.number_of_words ? 'is-invalid' : ''}`}
-                                            id="number_of_words"
-                                            {...register('number_of_words', { required: 'Number of words is required' })}
-                                        >
-                                            {numberOfWords.map((num, index) => (
-                                                <option key={index} value={num.value}>
-                                                    {num.label}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        {errors.number_of_words && <div className="invalid-feedback">{errors.number_of_words.message}</div>}
-                                    </div>
+                                        {/* Number of Words */}
+                                        <div className="mb-2">
+                                            <label htmlFor="number_of_words" className="form-label">
+                                                Number of Words <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <select
+                                                className={`form-select form-select-sm mb-2 ${errors.number_of_words ? 'is-invalid' : ''}`}
+                                                id="number_of_words"
+                                                {...register('number_of_words', { required: 'Number of words is required' })}
+                                            >
+                                                {numberOfWords.map((num, index) => (
+                                                    <option key={index} value={num.value}>
+                                                        {num.label}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            {errors.number_of_words && <div className="invalid-feedback">{errors.number_of_words.message}</div>}
+                                        </div>
 
-                                    <div className="d-flex justify-content-between mt-3">
-                                        <button type="button" className="btn btn-sm" style={cancelStyle} onClick={() => reset()} disabled={isLoading}>
-                                            <FaEraser /> Reset
-                                        </button>
-                                        <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
-                                            Generate <FaArrowRight />
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
+                                        <div className="d-flex justify-content-between mt-3">
+                                            <button type="button" className="btn btn-sm" style={cancelStyle} onClick={() => reset()} disabled={isLoading}>
+                                                <FaEraser /> Reset
+                                            </button>
+                                            <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
+                                                Generate <FaArrowRight />
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
                             </>
                         ) : (
                             <div id="main-btn">

@@ -7,6 +7,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../spinner/Spinner';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
+import Cookies from 'js-cookie'; 
+
 
 const subjects = [
   { value: "", label: "Choose a Subject" },
@@ -53,11 +55,26 @@ export default function GroupWork({ BASE_URL }) {
   const pdfStyle = { backgroundColor: '#198754', color: 'white' };
 
   const onSubmit = async (data) => {
+
+     // Retrieve cookies for headers
+     const authToken = Cookies.get('authToken');
+     const siteUrl = Cookies.get('site_url');
+
     setIsLoading(true);
     setApiResponse(null);
 
     try {
-      const response = await axios.post(`${BASE_URL}/group_work`, data);
+      const response = await axios.post(
+        `${BASE_URL}/group_work`,
+        data,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`,
+            'X-Site-Url': siteUrl
+          }
+        }
+      );
       setApiResponse(response.data);
       toast.success('Group work created successfully!');
       reset();

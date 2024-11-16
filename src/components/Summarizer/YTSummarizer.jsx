@@ -6,6 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../spinner/Spinner';
 import NavBar from '../NavBar';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
+import Cookies from 'js-cookie'; 
+
 
 export default function YTSummarizer({ BASE_URL }) {
     const btnStyle = { backgroundColor: '#FF683B', color: 'white' };
@@ -38,9 +40,23 @@ export default function YTSummarizer({ BASE_URL }) {
             return;
         }
 
+        // Retrieve cookies for headers
+        const authToken = Cookies.get('authToken');
+        const siteUrl = Cookies.get('site_url');
+
         setIsLoading(true);
         try {
-            const response = await axios.post(`${BASE_URL}/YT_summarize`, { video_url });
+            const response = await axios.post(
+                `${BASE_URL}/YT_summarize`,
+                { video_url },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`,
+                        'X-Site-Url': siteUrl
+                    }
+                }
+            );
             setApiResponse(response.data);
             setFormData({ video_url: '' });
             toast.success('Summary generated successfully!');
@@ -114,7 +130,7 @@ export default function YTSummarizer({ BASE_URL }) {
             <ToastContainer position="top-right" autoClose={1500} />
             <div className="container-fluid">
                 <div className="row justify-content-center mt-5">
-                    
+
                     {isLoading ? (
                         <div className="col-md-5 text-center">
                             <Spinner />
@@ -122,51 +138,51 @@ export default function YTSummarizer({ BASE_URL }) {
                     ) : (
                         !apiResponse ? (
                             <>
-                            <NavBreadcrumb items={breadcrumbItems} />
-                            <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded">
-                                <form onSubmit={handleSubmit}>
-                                    <h4 className="text-center mb-3">YouTube Summarizer</h4>
-                                    <div className="mb-3">
-                                        <label htmlFor="video_url" className="form-label">
-                                            Youtube Video URL <span style={{ color: 'red' }}>*</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className="form-control form-control-sm mb-2"
-                                            id="video_url"
-                                            name="video_url"
-                                            value={formData.video_url}
-                                            onChange={handleChange}
-                                            disabled={isLoading}
-                                            placeholder="Enter YouTube Video URL"
-                                        />
-                                    </div>
-                                    <div className="mb-3">
-                                        <small className="text-muted">
-                                            <strong className='text-danger'>Note:</strong>
-                                            <ul>
-                                                <li>Please ensure the YouTube video includes subtitles.</li>
-                                                <li>The video should not exceed 30 minutes in duration.</li>
-                                            </ul>
-                                        </small>
-                                    </div>
+                                <NavBreadcrumb items={breadcrumbItems} />
+                                <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded">
+                                    <form onSubmit={handleSubmit}>
+                                        <h4 className="text-center mb-3">YouTube Summarizer</h4>
+                                        <div className="mb-3">
+                                            <label htmlFor="video_url" className="form-label">
+                                                Youtube Video URL <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control form-control-sm mb-2"
+                                                id="video_url"
+                                                name="video_url"
+                                                value={formData.video_url}
+                                                onChange={handleChange}
+                                                disabled={isLoading}
+                                                placeholder="Enter YouTube Video URL"
+                                            />
+                                        </div>
+                                        <div className="mb-3">
+                                            <small className="text-muted">
+                                                <strong className='text-danger'>Note:</strong>
+                                                <ul>
+                                                    <li>Please ensure the YouTube video includes subtitles.</li>
+                                                    <li>The video should not exceed 30 minutes in duration.</li>
+                                                </ul>
+                                            </small>
+                                        </div>
 
-                                    <div className="d-flex justify-content-between mt-3">
-                                        <button
-                                            type="button"
-                                            className="btn btn-sm"
-                                            style={cancelStyle}
-                                            onClick={() => setFormData({ video_url: '' })}
-                                            disabled={isLoading}
-                                        >
-                                            <FaEraser /> Reset
-                                        </button>
-                                        <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
-                                            Summarize <FaArrowRight />
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
+                                        <div className="d-flex justify-content-between mt-3">
+                                            <button
+                                                type="button"
+                                                className="btn btn-sm"
+                                                style={cancelStyle}
+                                                onClick={() => setFormData({ video_url: '' })}
+                                                disabled={isLoading}
+                                            >
+                                                <FaEraser /> Reset
+                                            </button>
+                                            <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
+                                                Summarize <FaArrowRight />
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
                             </>
                         ) : (
                             <div className="mt-3">

@@ -1,8 +1,19 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import logo from "../assests/img/ChimpVine_Logo.png";
 import { NavLink } from 'react-router-dom';
+import { UserContext } from '../context/UserContext.jsx';
 
 export default function NavBar() {
+    const { user, logout } = useContext(UserContext);
+    const userEmail = user ? user.user_email : null;
+    const [loading, setLoading] = useState(false);
+
+    const handleLogout = async () => {
+        setLoading(true); 
+        await logout();    
+        setLoading(false); 
+    };
+
     return (
         <div>
             <nav className="navbar navbar-expand-lg bg-body-tertiary no-print">
@@ -25,6 +36,9 @@ export default function NavBar() {
                             <li className="nav-item mt-2">
                                 <NavLink className="nav-link-home me-5" to="/">Home</NavLink>
                             </li>
+                            <li className="nav-item mt-2">
+                                <NavLink className="nav-link-home me-5" to="/Aboutus">About Us</NavLink>
+                            </li>
                             <li className="nav-item dropdown">
                                 <NavLink className="nav-link dropdown-toggle text-light me-4" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Resources
@@ -36,7 +50,6 @@ export default function NavBar() {
                                             to="/PdfSplitter">PDF Splitter
                                         </NavLink>
                                     </li>
-
                                 </ul>
                             </li>
                             <li className="nav-item dropdown">
@@ -48,11 +61,32 @@ export default function NavBar() {
                                         <NavLink
                                             className="nav-link-navigate p-2"
                                             to="/RequestForm">
-                                            Request for Tools
+                                            Contact Us
                                         </NavLink>
                                     </li>
                                 </ul>
                             </li>
+                            {user ? (
+                                <li className="nav-item text-white mt-1">
+                                    Welcome, {userEmail} 
+                                    <button
+                                        onClick={handleLogout}
+                                        className="btn btn-outline-light btn-sm ms-2"
+                                        disabled={loading} 
+                                    >
+                                        {loading ? "Logging out..." : "Logout"}
+                                    </button>
+                                </li>
+                            ) : (
+                                <>
+                                    <NavLink to="/Login">
+                                        <button className='btn btn-outline-light btn-sm mt-1 me-2'>Login</button>
+                                    </NavLink>
+                                    <NavLink to="https://site.chimpvine.com/register/chimpvine-membership/" target='_blank'>
+                                        <button className='btn btn-outline-light btn-sm mt-1'>Register</button>
+                                    </NavLink>
+                                </>
+                            )}
                         </ul>
                     </div>
                 </div>

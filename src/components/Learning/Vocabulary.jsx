@@ -359,6 +359,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../spinner/Spinner';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
+import Cookies from 'js-cookie'; 
+
 
 // Subjects list
 const subjects = [
@@ -466,12 +468,25 @@ export default function VocabularyPlan({ BASE_URL }) {
             difficulty_level: difficultyLevel
         };
 
+        // Retrieve cookies for headers
+        const authToken = Cookies.get('authToken');
+        const siteUrl = Cookies.get('site_url');
+
+
         setIsLoading(true);
 
         try {
-            const response = await axios.post(`${BASE_URL}/generate-vocab-list`, formDataToSend, {
-                headers: { 'Content-Type': 'application/json' },
-            });
+            const response = await axios.post(
+                `${BASE_URL}/generate-vocab-list`,
+                formDataToSend,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${authToken}`, 
+                        'X-Site-Url': siteUrl
+                    }
+                }
+            );
             setApiResponse(response.data);
             setFormData({
                 subject: '',
@@ -500,7 +515,7 @@ export default function VocabularyPlan({ BASE_URL }) {
             <ToastContainer position="top-right" autoClose={1500} />
             <div className="container-fluid">
                 <div className="row justify-content-center mt-5 mb-4">
-                    
+
                     {isLoading ? (
                         <div className="col-md-5 text-center">
                             <Spinner />
@@ -508,120 +523,120 @@ export default function VocabularyPlan({ BASE_URL }) {
                     ) : (
                         !apiResponse ? (
                             <>
-                            <NavBreadcrumb items={breadcrumbItems} />
-                            <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded no-print">
-                                <form onSubmit={handleSubmit}>
-                                    <h4 className="text-center mb-3">Vocabulary Generator</h4>
-                                    <div className="mb-2">
-                                        <label htmlFor="subject" className="form-label">
-                                            Subject <span style={{ color: 'red' }}>*</span>
-                                        </label>
-                                        <select
-                                            className="form-select form-select-sm mb-3"
-                                            id="subject"
-                                            name="subject"
-                                            value={formData.subject}
-                                            onChange={handleChange}
-                                            disabled={isLoading}
-                                        >
-                                            {subjects.map((element, index) => (
-                                                <option key={index} value={element.value}>
-                                                    {element.label}
-                                                </option>
-                                            ))}
-                                        </select>
+                                <NavBreadcrumb items={breadcrumbItems} />
+                                <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded no-print">
+                                    <form onSubmit={handleSubmit}>
+                                        <h4 className="text-center mb-3">Vocabulary Generator</h4>
+                                        <div className="mb-2">
+                                            <label htmlFor="subject" className="form-label">
+                                                Subject <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <select
+                                                className="form-select form-select-sm mb-3"
+                                                id="subject"
+                                                name="subject"
+                                                value={formData.subject}
+                                                onChange={handleChange}
+                                                disabled={isLoading}
+                                            >
+                                                {subjects.map((element, index) => (
+                                                    <option key={index} value={element.value}>
+                                                        {element.label}
+                                                    </option>
+                                                ))}
+                                            </select>
 
-                                        <label htmlFor="grade" className="form-label">
-                                            Grade <span style={{ color: 'red' }}>*</span>
-                                        </label>
-                                        <select
-                                            className="form-select form-select-sm mb-3"
-                                            id="grade"
-                                            name="grade"
-                                            value={formData.grade}
-                                            onChange={handleChange}
-                                            disabled={isLoading}
-                                        >
-                                            {grades.map((grade, index) => (
-                                                <option key={index} value={grade.value}>
-                                                    {grade.label}
-                                                </option>
-                                            ))}
-                                        </select>
+                                            <label htmlFor="grade" className="form-label">
+                                                Grade <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <select
+                                                className="form-select form-select-sm mb-3"
+                                                id="grade"
+                                                name="grade"
+                                                value={formData.grade}
+                                                onChange={handleChange}
+                                                disabled={isLoading}
+                                            >
+                                                {grades.map((grade, index) => (
+                                                    <option key={index} value={grade.value}>
+                                                        {grade.label}
+                                                    </option>
+                                                ))}
+                                            </select>
 
-                                        <label htmlFor="difficultyLevel" className="form-label">
-                                            Difficulty Level <span style={{ color: 'red' }}>*</span>
-                                        </label>
-                                        <select
-                                            className="form-select form-select-sm mb-3"
-                                            id="difficultyLevel"
-                                            name="difficultyLevel"
-                                            value={formData.difficultyLevel}
-                                            onChange={handleChange}
-                                            disabled={isLoading}
-                                        >
-                                            {difficultyLevels.map((level, index) => (
-                                                <option key={index} value={level.value}>
-                                                    {level.label}
-                                                </option>
-                                            ))}
-                                        </select>
+                                            <label htmlFor="difficultyLevel" className="form-label">
+                                                Difficulty Level <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <select
+                                                className="form-select form-select-sm mb-3"
+                                                id="difficultyLevel"
+                                                name="difficultyLevel"
+                                                value={formData.difficultyLevel}
+                                                onChange={handleChange}
+                                                disabled={isLoading}
+                                            >
+                                                {difficultyLevels.map((level, index) => (
+                                                    <option key={index} value={level.value}>
+                                                        {level.label}
+                                                    </option>
+                                                ))}
+                                            </select>
 
-                                        <label htmlFor="topic" className="form-label">
-                                            Topic <span style={{ color: 'red' }}>*</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className="form-control form-control-sm mb-2"
-                                            id="topic"
-                                            name="topic"
-                                            value={formData.topic}
-                                            onChange={handleChange}
-                                            disabled={isLoading}
-                                            placeholder="Enter Vocabulary Topic For eg.Force , Algebra or Ancient Egypt"
-                                        />
+                                            <label htmlFor="topic" className="form-label">
+                                                Topic <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control form-control-sm mb-2"
+                                                id="topic"
+                                                name="topic"
+                                                value={formData.topic}
+                                                onChange={handleChange}
+                                                disabled={isLoading}
+                                                placeholder="Enter Vocabulary Topic For eg.Force , Algebra or Ancient Egypt"
+                                            />
 
-                                        <label htmlFor="numberOfWords" className="form-label">
-                                            Number of Words <span style={{ color: 'red' }}>*</span>
-                                        </label>
-                                        <select
-                                            className="form-select form-select-sm mb-2"
-                                            id="numberOfWords"
-                                            name="numberOfWords"
-                                            value={formData.numberOfWords}
-                                            onChange={handleChange}
-                                            disabled={isLoading}
-                                        >
-                                            {numbers.map((number, index) => (
-                                                <option key={index} value={number.value}>
-                                                    {number.label}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
+                                            <label htmlFor="numberOfWords" className="form-label">
+                                                Number of Words <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <select
+                                                className="form-select form-select-sm mb-2"
+                                                id="numberOfWords"
+                                                name="numberOfWords"
+                                                value={formData.numberOfWords}
+                                                onChange={handleChange}
+                                                disabled={isLoading}
+                                            >
+                                                {numbers.map((number, index) => (
+                                                    <option key={index} value={number.value}>
+                                                        {number.label}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
 
-                                    <div className="d-flex justify-content-between mt-3">
-                                        <button
-                                            type="button"
-                                            className="btn btn-sm"
-                                            style={cancelStyle}
-                                            onClick={() => setFormData({
-                                                subject: '',
-                                                grade: '',
-                                                difficultyLevel: '',
-                                                topic: '',
-                                                numberOfWords: ''
-                                            })}
-                                            disabled={isLoading}
-                                        >
-                                            <FaEraser /> Reset
-                                        </button>
-                                        <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
-                                            Generate <FaArrowRight />
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
+                                        <div className="d-flex justify-content-between mt-3">
+                                            <button
+                                                type="button"
+                                                className="btn btn-sm"
+                                                style={cancelStyle}
+                                                onClick={() => setFormData({
+                                                    subject: '',
+                                                    grade: '',
+                                                    difficultyLevel: '',
+                                                    topic: '',
+                                                    numberOfWords: ''
+                                                })}
+                                                disabled={isLoading}
+                                            >
+                                                <FaEraser /> Reset
+                                            </button>
+                                            <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
+                                                Generate <FaArrowRight />
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
                             </>
                         ) : (
                             <div className="mt-3" ref={contentRef}>

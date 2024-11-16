@@ -18,6 +18,8 @@ import ProblemSolving from '../../pages/ProblemSolving';
 import SeqEvents from '../../pages/SeqEvents';
 import { NavLink } from 'react-router-dom';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
+import Cookies from 'js-cookie'; 
+
 
 export default function WorkSheet({ BASE_URL }) {
     const [selectedQuestionType, setSelectedQuestionType] = useState('');
@@ -177,6 +179,10 @@ export default function WorkSheet({ BASE_URL }) {
             return;
         }
 
+        // Retrieve cookies for headers
+        const authToken = Cookies.get('authToken');
+        const siteUrl = Cookies.get('site_url');
+
         setLoading(true);
         setFormVisible(false);
         setApiResponse(null);
@@ -194,7 +200,13 @@ export default function WorkSheet({ BASE_URL }) {
         }
 
         try {
-            const response = await axios.post(`${BASE_URL}/generate`, formPayload);
+            const response = await axios.post(`${BASE_URL}/generate`, formPayload, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${authToken}`, 
+                    'X-Site-Url': siteUrl
+                },
+            });
             setApiResponse(response.data);
             localStorage.setItem("worksheet", JSON.stringify(response.data));
             toast.success('Worksheet generated successfully!');
@@ -440,7 +452,7 @@ export default function WorkSheet({ BASE_URL }) {
                                                 <span style={{ color: 'red' }}> Workbook</span> PDF.
                                             </p>
                                             <p>
-                                                If you have a larger PDF and want to shorten it ,
+                                                If you have a large PDF and want to shorten it ,
                                                 <NavLink to="/PdfSplitter" target='_blank'>
                                                     Click here
                                                 </NavLink>

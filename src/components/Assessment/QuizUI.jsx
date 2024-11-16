@@ -14,6 +14,8 @@ import {
 } from "react-icons/fa";
 import NavBar from '../NavBar.jsx';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb.jsx'
+import Cookies from 'js-cookie'; 
+
 
 
 const QuizUI = ({ BASE_URL }) => {
@@ -126,10 +128,22 @@ const QuizUI = ({ BASE_URL }) => {
         }
 
         try {
+
+            // Retrieve cookies for headers
+            const authToken = Cookies.get('authToken');
+            const siteUrl = Cookies.get('site_url');
+
             setLoading(true);
 
             const apiUrl = `${BASE_URL}/generate_quiz?topic=${inputData.topic}&language=${inputData.language}&subject=${inputData.subject}&number=${inputData.numberOfQuestions}&difficulty=${inputData.difficulty}`;
-            const response = await fetch(apiUrl);
+
+            const response = await fetch(apiUrl, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken}`, 
+                    'X-Site-Url': siteUrl 
+                }
+            });
 
             if (!response.ok) {
                 // throw new Error(`HTTP error! Status: ${response.status}`);
