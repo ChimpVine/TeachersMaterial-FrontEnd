@@ -1,7 +1,7 @@
 import React from 'react'
 import NavBar from '../../components/NavBar'
 import logo from '../../assests/img/AI-Tools-Template.png'
-import bcklogo from '../../assests/img/UI.png'
+// import bcklogo from '../../assests/img/UI.png'
 import Footer from '../Footer';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { FaChalkboardTeacher, FaUserGraduate, FaBookOpen } from "react-icons/fa";
