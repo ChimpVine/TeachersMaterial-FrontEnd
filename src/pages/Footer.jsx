@@ -41,7 +41,7 @@ export default function Footer() {
                                 <li>
                                     <NavLink className="content" to="https://site.chimpvine.com/"
                                     target='_blank'>
-                                        Education Games
+                                        Educational Games
                                     </NavLink>
                                 </li>
                                 <li>
