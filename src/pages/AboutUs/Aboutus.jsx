@@ -1,7 +1,6 @@
 import React from 'react'
 import NavBar from '../../components/NavBar'
 import logo from '../../assests/img/AI-Tools-Template.png'
-// import bcklogo from '../../assests/img/UI.png'
 import Footer from '../Footer';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { FaChalkboardTeacher, FaUserGraduate, FaBookOpen } from "react-icons/fa";
@@ -28,8 +27,13 @@ export default function Aboutus() {
         color: '#6c757d'
     };
 
+    const btnStyle = {
+        backgroundColor: '#FF683B',
+        color: 'white',
+    };
+
     const pointerStyle = {
-        cursor: 'pointer'
+        cursor: 'default'
     };
 
     const goals = [
@@ -80,6 +84,9 @@ export default function Aboutus() {
                             At ChimpVine AI, we believe that teaching should be inspiring, not overwhelming. We harness the power of AI to create intuitive tools that simplify lesson planning, assessment, and classroom engagement. Our mission is to empower
                             educators and enrich student experiences by providing a seamless, innovative teaching toolkit designed for today's classrooms. Unlock your potential with ChimpVine AI where teaching meets technology.
                         </p>
+                        <NavLink to="/MainPlanner">
+                            <button className='btn btn-md mt-3 me-2' style={btnStyle}>Go to AI Tools</button>
+                        </NavLink>
                     </div>
                     <div className="col-md-7 mt-4 d-flex justify-content-center">
                         <img src={logo} alt="AI Tools" className='img-fluid w-75' />
@@ -88,10 +95,10 @@ export default function Aboutus() {
             </div>
             <Container className="text-center my-5">
                 <h2 className="mb-4 fw-bold">Our Goals</h2>
-                <Row className="justify-content-center">
+                <Row className="justify-content-center" style={pointerStyle}>
                     {goals.map((goal, index) => (
                         <Col key={index} md={4} className="mb-4">
-                            <Card className="h-100 shadow-sm" style={pointerStyle}>
+                            <Card className="h-100 shadow-sm">
                                 <Card.Body>
                                     <Card.Title>
                                         {goal.icon}
@@ -105,7 +112,7 @@ export default function Aboutus() {
                 </Row>
             </Container>
             <Container fluid style={{ backgroundColor: '#E9E7FC', padding: '40px' }}>
-                <Row className="justify-content-center">
+                <Row className="justify-content-center" style={pointerStyle}>
                     <Col md={4} className="d-flex flex-column justify-content-center">
                         <h2 className="fw-bold" style={{ fontSize: '2rem' }}>
                             Why <span style={{ color: '#8F47D7' }}>Us</span>
@@ -120,7 +127,7 @@ export default function Aboutus() {
                             {features.map((feature, index) => (
                                 <Col md={4} key={index} className="mb-4">
                                     <Card className="h-100 shadow-sm">
-                                        <Card.Body style={pointerStyle}>
+                                        <Card.Body>
                                             <Card.Title className="fw-bold">{feature.title}</Card.Title>
                                             <Card.Text>{feature.description}</Card.Text>
                                         </Card.Body>

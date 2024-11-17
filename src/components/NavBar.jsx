@@ -9,9 +9,14 @@ export default function NavBar() {
     const [loading, setLoading] = useState(false);
 
     const handleLogout = async () => {
-        setLoading(true); 
-        await logout();    
-        setLoading(false); 
+        setLoading(true);
+        await logout();
+        setLoading(false);
+    };
+
+    const btnStyle = {
+        backgroundColor: '#FF683B',
+        color: 'white',
     };
 
     return (
@@ -36,11 +41,11 @@ export default function NavBar() {
                             <li className="nav-item mt-2">
                                 <NavLink className="nav-link-home me-5" to="/">Home</NavLink>
                             </li>
-                            <li className="nav-item mt-2">
-                                <NavLink className="nav-link-home me-5" to="/Aboutus">About Us</NavLink>
-                            </li>
+                            <NavLink to="/MainPlanner">
+                                <button className='btn btn-md me-5' style={btnStyle}>AI Tools</button>
+                            </NavLink>
                             <li className="nav-item dropdown">
-                                <NavLink className="nav-link dropdown-toggle text-light me-4" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <NavLink className="nav-link dropdown-toggle text-light me-5" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Resources
                                 </NavLink>
                                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -52,27 +57,20 @@ export default function NavBar() {
                                     </li>
                                 </ul>
                             </li>
-                            <li className="nav-item dropdown">
-                                <NavLink className="nav-link dropdown-toggle text-light me-4" id="navbarDropdown1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Support
+                            <li className="nav-item mt-2 ">
+                                <NavLink
+                                    className="nav-link-navigate me-5 text-light"
+                                    to="/RequestForm">
+                                    Contact Us
                                 </NavLink>
-                                <ul className="dropdown-menu" aria-labelledby="navbarDropdown1">
-                                    <li>
-                                        <NavLink
-                                            className="nav-link-navigate p-2"
-                                            to="/RequestForm">
-                                            Contact Us
-                                        </NavLink>
-                                    </li>
-                                </ul>
                             </li>
                             {user ? (
                                 <li className="nav-item text-white mt-1">
-                                    Welcome, {userEmail} 
+                                    Welcome, {userEmail}
                                     <button
                                         onClick={handleLogout}
                                         className="btn btn-outline-light btn-sm ms-2"
-                                        disabled={loading} 
+                                        disabled={loading}
                                     >
                                         {loading ? "Logging out..." : "Logout"}
                                     </button>
@@ -82,7 +80,7 @@ export default function NavBar() {
                                     <NavLink to="/Login">
                                         <button className='btn btn-outline-light btn-sm mt-1 me-2'>Login</button>
                                     </NavLink>
-                                    <NavLink to="https://site.chimpvine.com/register/chimpvine-membership/" target='_blank'>
+                                    <NavLink to="https://site.chimpvine.com/test161803/register/subscription-free-for-2-months/">
                                         <button className='btn btn-outline-light btn-sm mt-1'>Register</button>
                                     </NavLink>
                                 </>

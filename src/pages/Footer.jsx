@@ -87,6 +87,15 @@ export default function Footer() {
                                 <li>
                                     <NavLink
                                         className="content"
+                                        to="/Aboutus"
+                                        target='_blank'>
+                                        About Us
+                                    </NavLink>
+
+                                </li>
+                                <li>
+                                    <NavLink
+                                        className="content"
                                         to="https://site.chimpvine.com/policy/"
                                         target='_blank'>
                                         Privacy Policy

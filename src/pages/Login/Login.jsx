@@ -1,11 +1,13 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { PulseLoader } from 'react-spinners';
 import logo from "../../assests/img/ChimpVine-UI.png";
 import NavBar from '../../components/NavBar';
 import { UserContext } from '../../context/UserContext';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+
 
 const containerStyle = {
     display: 'flex',
@@ -48,12 +50,17 @@ const errorMessageStyle = {
     maxWidth: '100%',
 };
 
+const pointerStyle = {
+    cursor: 'pointer'
+};
+
 const Login = () => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [errorMessage, setErrorMessage] = useState('');
     const [loading, setLoading] = useState(true);
     const { login, verifyToken } = useContext(UserContext);
     const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
 
     useEffect(() => {
         if (verifyToken()) {
@@ -84,6 +91,7 @@ const Login = () => {
             setLoading(false);
         }
     };
+
 
     const handleReset = () => {
         reset();
@@ -119,22 +127,42 @@ const Login = () => {
                             </div>
                             <div className="form-group mb-4">
                                 <label>Password</label>
-                                <input
-                                    type="password"
-                                    className={`form-control form-control-sm ${errors.password ? 'is-invalid' : ''}`}
-                                    placeholder="Enter your password"
-                                    autoComplete="current-password"
-                                    disabled={loading}
-                                    {...register('password', { required: 'Password is required' })}
-                                />
-                                {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
+                                <div style={{ position: 'relative' }}> 
+                                    <input
+                                        type={showPassword ? 'text' : 'password'} 
+                                        className={`form-control form-control-sm ${errors.password ? 'is-invalid' : ''}`}
+                                        placeholder="Enter your password"
+                                        autoComplete="current-password"
+                                        disabled={loading}
+                                        {...register('password', { required: 'Password is required' })}
+                                    />
+                                    <div
+                                        style={{
+                                            position: 'absolute',
+                                            right: '10px',
+                                            top: '50%',
+                                            transform: 'translateY(-50%)',
+                                            cursor: 'pointer'
+                                        }}
+                                        onClick={() => setShowPassword(!showPassword)} 
+                                    >
+                                        {showPassword ? <FaEye size={15} /> : <FaEyeSlash size={15} />} 
+                                    </div>
+                                    {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
+                                </div>
+                            </div>
+                            <div className='mb-3'>
+                                <span>Dont have an account? </span>
+                                <NavLink to="https://site.chimpvine.com/test161803/register/subscription-free-for-2-months/">
+                                    <label className='fw-bold' style={pointerStyle}>Sign Up Now</label>
+                                </NavLink>
                             </div>
                             <div className="d-flex justify-content-between">
-                                <button type="submit" className='btn btn-outline-dark btn-sm' disabled={loading}>
-                                    Login
-                                </button>
                                 <button type="button" className='btn btn-outline-danger btn-sm' onClick={handleReset} disabled={loading}>
                                     Reset
+                                </button>
+                                <button type="submit" className='btn btn-outline-dark btn-sm' disabled={loading}>
+                                    Login
                                 </button>
                             </div>
                             {errorMessage && <div style={errorMessageStyle}>{errorMessage}</div>}

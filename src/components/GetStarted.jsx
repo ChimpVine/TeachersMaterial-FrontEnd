@@ -65,7 +65,7 @@ const scrollToSection = (e, targetId) => {
 
 const GetStarted = () => {
 
-    const { login } = useContext(UserContext);
+    const { login, user } = useContext(UserContext);
     const [searchParams] = useSearchParams();
 
     useEffect(() => {
@@ -78,7 +78,7 @@ const GetStarted = () => {
             console.warn("Login function not available in UserContext.");
         }
     }, [searchParams, login]);
-    
+
 
     const textStyle = {
         color: '#8F47D7',
@@ -90,7 +90,11 @@ const GetStarted = () => {
         backgroundPosition: 'left 0% bottom 10%',
         paddingBottom: '7px'
     };
-    
+
+    const fontStyle = {
+        color: '#dc3545',
+        fontWeight: 700
+    }
 
     return (
         <>
@@ -99,25 +103,35 @@ const GetStarted = () => {
                 <div className="container center-text mt-5">
                     <section className="py-4">
                         <div className="d-flex justify-content-center align-items-center flex-column text-center w-100">
-                            <h2 className="display-4 fw-bold">
-                                All your <span style={textStyle}>AI Tools</span> in one place
+                            <h2 className="display-4 fw-bold mb-4">
+                                <span style={textStyle}>AI Tools</span> For Teachers
                             </h2>
-                            <p className="lead text-muted w-75">
-                                Explore a wide range of AI-driven tools created to maximize productivity and provide everything you need in just a click.
-                            </p>
                             <div>
-                                <TypingEffect/>
-                                <NavLink to="/MainPlanner">
-                                    <button className="unique-button mt-5 mb-4" aria-label="Start Planning">
-                                        <span>Get Started</span>
-                                    </button>
-                                </NavLink>
+                                <h6 className="display-6 fw-bold mb-4">
+                                    <span className="me-2" style={{ fontSize: "2rem" }}>2 months</span>
+                                    <span className="display-5" style={fontStyle}>FREE</span>
+                                    <span className="ms-2" style={{ fontSize: "1.2rem" }}>if you sign up today !</span>
+                                </h6>
+                                <div className='mb-4'>
+                                    <span className="ms-2" style={{ fontSize: "1.4rem" }}> 
+                                        (No Credit Card Required)
+                                    </span>
+                                </div>
+                                <TypingEffect />
+                                {user ? (
+                                    <NavLink to="/MainPlanner">
+                                        <button className="unique-button mt-5 mb-4" aria-label="Go to AI Tools">
+                                            <span>Go AI Tools</span>
+                                        </button>
+                                    </NavLink>
+                                ) : (
+                                    <NavLink to="/MainPlanner">
+                                        <button className="unique-button mt-5 mb-4" aria-label="Start Planning">
+                                            <span>Sign In Now</span>
+                                        </button>
+                                    </NavLink>
+                                )}
                             </div>
-                            <section id="section07" className="demo">
-                                <a href="#target-section" onClick={(e) => scrollToSection(e, '#target-section')} aria-label="Scroll to more information">
-                                    <span></span><span></span><span></span>Explore More
-                                </a>
-                            </section>
                         </div>
                     </section>
                 </div>
