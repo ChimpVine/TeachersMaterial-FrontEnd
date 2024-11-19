@@ -3,6 +3,12 @@ import NavBar from '../components/NavBar'
 import { NavLink } from 'react-router-dom'
 
 export default function Error404Page() {
+
+  const btnStyle = {
+    backgroundColor: '#FF683B',
+    color: 'white',
+  };
+
   return (
     <>
       <NavBar />
@@ -10,7 +16,7 @@ export default function Error404Page() {
         <div className="text-center">
           <h1 className="display-1 fw-bold">Coming Soon</h1>
           <NavLink to="/MainPlanner">
-            <button className='btn btn-outline-primary btn-lg mt-3 me-2 mb-5'>All our Tools</button>
+            <button className='btn btn-lg mt-4 mb-5' style={btnStyle}>Go to AI Tools</button>
           </NavLink>
           <p className="lead">
             We are working hard to bring something amazing. Check back soon for updates!

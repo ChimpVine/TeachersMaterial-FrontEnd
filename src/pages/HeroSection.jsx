@@ -4,7 +4,7 @@ export default function HeroSection() {
 
     return (
         <>
-        
+
             <div className="container">
                 {/* Title Section */}
                 <div className="text-center py-5">
@@ -312,8 +312,8 @@ export default function HeroSection() {
                                     </div>
                                 </div>
                             </div>
-                             {/* Fifth FAQ */}
-                             <div className="accordion-item mb-3">
+                            {/* Fifth FAQ */}
+                            <div className="accordion-item mb-3">
                                 <h2 className="accordion-header" id="headingFifthRight">
                                     <button
                                         className="accordion-button collapsed"
@@ -323,7 +323,7 @@ export default function HeroSection() {
                                         aria-expanded="false"
                                         aria-controls="collapseFifthRight"
                                     >
-                                        Are your tools available in multiple languages?
+                                        How can we suggest new features for your tools?
                                     </button>
                                 </h2>
                                 <div
@@ -333,7 +333,7 @@ export default function HeroSection() {
                                     data-bs-parent="#faqAccordionRight"
                                 >
                                     <div className="accordion-body">
-                                        Currently, we do have options to generate the output in Spanish and Thai. We are working on providing multilingual support to ensure accessibility for diverse educational environments.
+                                        Educators can provide feedback and feature suggestions through the ‘Contact Us’ button on our website.
                                     </div>
                                 </div>
                             </div>

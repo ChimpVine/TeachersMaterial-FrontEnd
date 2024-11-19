@@ -245,14 +245,15 @@ export default function LessonPlan({ BASE_URL }) {
                                             />
 
                                             <label htmlFor="textarea" className="form-label">
-                                                Your Input <span style={{ color: 'red' }}>*</span>
+                                            File Description Label <span style={{ color: 'red' }}>*</span>
                                             </label>
                                             <textarea
                                                 type="text"
                                                 className="form-control form-control-sm mb-2"
-                                                placeholder="Eg. Chapter 1 Lessons 1"
+                                                placeholder="Briefly describe the file you are uploading (e.g., Chapter 1 - The Solar System Notes, or Midterm Study Guide)"
                                                 id="textarea"
                                                 name="textarea"
+                                                rows={3}
                                                 value={formData.textarea}
                                                 onChange={handleChange}
                                                 disabled={isLoading}

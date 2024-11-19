@@ -62,6 +62,8 @@ const Login = () => {
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
 
+    const API_BASE_URL = 'https://site.chimpvine.com/test161803';
+
     useEffect(() => {
         if (verifyToken()) {
             navigate('/MainPlanner');
@@ -75,12 +77,12 @@ const Login = () => {
         setLoading(true);
 
         try {
-            const response = await axios.post('https://site.chimpvine.com/dev314159/wp-json/custom/v1/login', {
+            const response = await axios.post(`${API_BASE_URL}/wp-json/custom/v1/login`, {
                 username: data.username,
                 password: data.password,
             });
             if (response.data.status === 'success') {
-                login(response.data.token);
+                login(response.data.token, response.data.Display_name);
                 navigate('/MainPlanner');
             } else {
                 setErrorMessage(response.data.message);
@@ -127,9 +129,9 @@ const Login = () => {
                             </div>
                             <div className="form-group mb-4">
                                 <label>Password</label>
-                                <div style={{ position: 'relative' }}> 
+                                <div style={{ position: 'relative' }}>
                                     <input
-                                        type={showPassword ? 'text' : 'password'} 
+                                        type={showPassword ? 'text' : 'password'}
                                         className={`form-control form-control-sm ${errors.password ? 'is-invalid' : ''}`}
                                         placeholder="Enter your password"
                                         autoComplete="current-password"
@@ -144,17 +146,16 @@ const Login = () => {
                                             transform: 'translateY(-50%)',
                                             cursor: 'pointer'
                                         }}
-                                        onClick={() => setShowPassword(!showPassword)} 
+                                        onClick={() => setShowPassword(!showPassword)}
                                     >
-                                        {showPassword ? <FaEye size={15} /> : <FaEyeSlash size={15} />} 
+                                        {showPassword ? <FaEye size={15} /> : <FaEyeSlash size={15} />}
                                     </div>
                                     {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
                                 </div>
                             </div>
                             <div className='mb-3'>
-                                <span>Dont have an account? </span>
-                                <NavLink to="https://site.chimpvine.com/test161803/register/subscription-free-for-2-months/">
-                                    <label className='fw-bold' style={pointerStyle}>Sign Up Now</label>
+                                <NavLink to="https://site.chimpvine.com/test161803/login/?action=forgot_password">
+                                    <label style={pointerStyle}>Forgot Password?</label>
                                 </NavLink>
                             </div>
                             <div className="d-flex justify-content-between">
@@ -167,6 +168,12 @@ const Login = () => {
                             </div>
                             {errorMessage && <div style={errorMessageStyle}>{errorMessage}</div>}
                         </form>
+                        <div className='mt-3'>
+                            <span>Dont have an account? </span>
+                            <NavLink to="https://site.chimpvine.com/test161803/register/subscription-free-for-2-months/">
+                                <label className='fw-bold' style={pointerStyle}>Sign Up Now</label>
+                            </NavLink>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -2,7 +2,7 @@ import React from 'react'
 import NavBar from '../../components/NavBar'
 import logo from '../../assests/img/AI-Tools-Template.png'
 import Footer from '../Footer';
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import { Container, Row, Col, Card } from 'react-bootstrap';
 import { FaChalkboardTeacher, FaUserGraduate, FaBookOpen } from "react-icons/fa";
 import { NavLink } from 'react-router-dom';
 
@@ -85,7 +85,7 @@ export default function Aboutus() {
                             educators and enrich student experiences by providing a seamless, innovative teaching toolkit designed for today's classrooms. Unlock your potential with ChimpVine AI where teaching meets technology.
                         </p>
                         <NavLink to="/MainPlanner">
-                            <button className='btn btn-md mt-3 me-2' style={btnStyle}>Go to AI Tools</button>
+                            <button className='btn btn-md mt-3 me-2' style={btnStyle}>Go to AI Tools</button>
                         </NavLink>
                     </div>
                     <div className="col-md-7 mt-4 d-flex justify-content-center">

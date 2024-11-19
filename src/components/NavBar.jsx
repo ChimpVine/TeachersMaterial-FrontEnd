@@ -5,7 +5,7 @@ import { UserContext } from '../context/UserContext.jsx';
 
 export default function NavBar() {
     const { user, logout } = useContext(UserContext);
-    const userEmail = user ? user.user_email : null;
+    const userName = user?.Display_name || user?.user_email; 
     const [loading, setLoading] = useState(false);
 
     const handleLogout = async () => {
@@ -66,7 +66,7 @@ export default function NavBar() {
                             </li>
                             {user ? (
                                 <li className="nav-item text-white mt-1">
-                                    Welcome, {userEmail}
+                                    Welcome, {userName}
                                     <button
                                         onClick={handleLogout}
                                         className="btn btn-outline-light btn-sm ms-2"
@@ -81,7 +81,7 @@ export default function NavBar() {
                                         <button className='btn btn-outline-light btn-sm mt-1 me-2'>Login</button>
                                     </NavLink>
                                     <NavLink to="https://site.chimpvine.com/test161803/register/subscription-free-for-2-months/">
-                                        <button className='btn btn-outline-light btn-sm mt-1'>Register</button>
+                                        <button className='btn btn-sm mt-1' style={btnStyle}>Register</button>
                                     </NavLink>
                                 </>
                             )}

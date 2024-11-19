@@ -121,11 +121,11 @@ const GetStarted = () => {
                                 {user ? (
                                     <NavLink to="/MainPlanner">
                                         <button className="unique-button mt-5 mb-4" aria-label="Go to AI Tools">
-                                            <span>Go AI Tools</span>
+                                            <span>Go to AI Tools</span>
                                         </button>
                                     </NavLink>
                                 ) : (
-                                    <NavLink to="/MainPlanner">
+                                    <NavLink to="/Login">
                                         <button className="unique-button mt-5 mb-4" aria-label="Start Planning">
                                             <span>Sign In Now</span>
                                         </button>

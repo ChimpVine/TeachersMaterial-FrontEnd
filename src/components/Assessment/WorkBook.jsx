@@ -212,7 +212,8 @@ export default function WorkBook({ BASE_URL }) {
                                             <textarea
                                                 type="text"
                                                 className="form-control form-control-sm mb-2"
-                                                placeholder="Eg. Arithmetic, History, or Ancient Egypt related to PDF upload."
+                                                placeholder="Briefly describe the file you are uploading (e.g., Arithmetic, History, or Ancient Egypt)"
+                                               
                                                 id="textarea"
                                                 name="textarea"
                                                 value={formData.textarea}
