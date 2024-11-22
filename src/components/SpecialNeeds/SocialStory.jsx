@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../spinner/Spinner';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
 import Cookies from 'js-cookie';
-
+import { useNavigate } from 'react-router-dom';
 
 // Special needs options
 const needs = [
@@ -24,6 +24,7 @@ const breadcrumbItems = [
 
 
 export default function SocialStory({ BASE_URL }) {
+    const navigate = useNavigate();
     const btnStyle = { backgroundColor: '#FF683B', color: 'white' };
     const cancelStyle = { backgroundColor: '#dc3545', color: 'white' };
     const pdfStyle = { backgroundColor: '#198754', color: 'white' };
@@ -100,7 +101,7 @@ export default function SocialStory({ BASE_URL }) {
         } catch (error) {
             if (
                 error.response &&
-                error.response.status === 403 &&
+                error.response.status === 401 &&
                 error.response.data.error === "Unauthorized - Invalid token"
             ) {
                 console.error('Error: Invalid token.');

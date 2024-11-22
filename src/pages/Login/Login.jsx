@@ -130,7 +130,7 @@ const Login = () => {
                             </div>
                             <div className="form-group mb-4">
                                 <label>Password</label>
-                                <div style={{ position: 'relative' }}>
+                                <div className="input-group">
                                     <input
                                         type={showPassword ? 'text' : 'password'}
                                         className={`form-control form-control-sm ${errors.password ? 'is-invalid' : ''}`}
@@ -139,21 +139,25 @@ const Login = () => {
                                         disabled={loading}
                                         {...register('password', { required: 'Password is required' })}
                                     />
-                                    <div
+                                    <span
+                                        className="input-group-text"
                                         style={{
-                                            position: 'absolute',
-                                            right: '10px',
-                                            top: '50%',
-                                            transform: 'translateY(-50%)',
-                                            cursor: 'pointer'
+                                            cursor: 'pointer',
+                                            backgroundColor: 'white', 
+                                            border: errors.password ? '1px solid red' : '', 
                                         }}
                                         onClick={() => setShowPassword(!showPassword)}
                                     >
                                         {showPassword ? <FaEye size={15} /> : <FaEyeSlash size={15} />}
-                                    </div>
-                                    {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
+                                    </span>
                                 </div>
+                                {errors.password && (
+                                    <div className="invalid-feedback" style={{ display: 'block' }}>
+                                        {errors.password.message}
+                                    </div>
+                                )}
                             </div>
+
                             <div className='mb-3'>
                                 <NavLink to="https://site.chimpvine.com/test161803/login/?action=forgot_password">
                                     <label style={pointerStyle}>Forgot Password?</label>

@@ -8,6 +8,7 @@ import Spinner from '../../spinner/Spinner';
 import { NavLink } from 'react-router-dom';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 const subjects = [
     { value: "", label: "Choose a Subject" },
@@ -60,6 +61,8 @@ const lessonDurations = [
 ];
 
 export default function LessonPlan({ BASE_URL }) {
+
+    const navigate = useNavigate();
 
     const btnStyle = {
         backgroundColor: '#FF683B',
@@ -149,7 +152,7 @@ export default function LessonPlan({ BASE_URL }) {
         } catch (error) {
             if (
                 error.response &&
-                error.response.status === 403 &&
+                error.response.status === 401 &&
                 error.response.data.error === "Unauthorized - Invalid token"
             ) {
                 console.error('Error: Invalid token.');

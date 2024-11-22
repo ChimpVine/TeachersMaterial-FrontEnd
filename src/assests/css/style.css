@@ -183,7 +183,9 @@ a:hover {
 }
 
 .nav-link-home,
-.nav-link-contact{
+.nav-link-contact,
+.nav-link-elearning,
+.nav-link-tools{
     color: white;
 }
 
@@ -192,15 +194,17 @@ a:hover {
 }
 
 .nav-link-home:hover,
+.nav-link-tools:hover,
 .nav-link-contact:hover,
 .nav-link-splitter:hover,
-.nav-link-navigate:hover {
+.nav-link-navigate:hover{
     color: #FF683B;
 }
 
 .nav-link-home,
 .nav-link-navigate,
-.nav-link-splitter {
+.nav-link-splitter,
+.nav-link-tools {
     padding-bottom: 4px; /* Add space for the bottom border */
     transition: color 0.3s ease, border-bottom 0.3s ease;
 }
@@ -208,7 +212,8 @@ a:hover {
 /* Active link style */
 .nav-link-home.active-link,
 .nav-link-navigate.active-link,
-.nav-link-splitter.active-link {
+.nav-link-splitter.active-link,
+.nav-link-tools.active-link{
     border-bottom: 3px solid #FF683B; /* Blue border for active page */
     color: #ffffff; /* Change text color to blue */
 }
@@ -271,6 +276,22 @@ a:hover {
     padding: 0.2em 0.4em;
 }
 
+ /* Center text for small devices */
+@media (max-width: 768px) {
+    .footer .row {
+        text-align: center;
+    }
+    .footer ul {
+        padding: 0;
+        list-style: none;
+    }
+    .footer ul li {
+        margin-bottom: 10px;
+    }
+    .footer .social-media{
+        justify-content: center;
+    }
+}
 
 
 

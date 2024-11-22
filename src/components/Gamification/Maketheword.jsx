@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../spinner/Spinner';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
 import Cookies from 'js-cookie'; 
-
+import { useNavigate } from 'react-router-dom';
 
 const difficultyLevels = [
     { value: "", label: "Choose the Difficulty Level" },
@@ -29,6 +29,7 @@ const numberOfWords = [
 ];
 
 export default function Maketheword({ BASE_URL }) {
+    const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [isLoading, setIsLoading] = useState(false);
     const [apiResponse, setApiResponse] = useState(null);
@@ -65,7 +66,7 @@ export default function Maketheword({ BASE_URL }) {
         } catch (error) { 
             if (
                 error.response &&
-                error.response.status === 403 &&
+                error.response.status === 401 &&
                 error.response.data.error === "Unauthorized - Invalid token"
             ) {
                 console.error('Error: Invalid token.');
@@ -77,7 +78,7 @@ export default function Maketheword({ BASE_URL }) {
                 Cookies.remove('user_email');
 
                 setTimeout(() => {
-                    window.location.href = '/Login'; 
+                    navigate('/Login'); 
                 }, 2000); 
             } else {
                 const errorMessage = error.response?.data?.error || 'Failed to generate words. Please try again.';

@@ -2,11 +2,23 @@ import React from 'react'
 import logo from "../assests/img/ChimpVine_Logo.png";
 import { NavLink } from 'react-router-dom';
 import { FaFacebook, FaLinkedin, FaInstagramSquare } from "react-icons/fa";
+import background from "../assests/img/footer_img.png";
 
 export default function Footer() {
+
+    const footerStyle = {
+        backgroundImage: `url(${background})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        minHeight: '400px',
+        display: 'flex',
+        alignItems: 'center', 
+    };
     return (
         <>
-            <footer className="footer mt-5 bg-body-tertiary text-white">
+            <footer className="footer mt-5 bg-body-tertiary text-white"
+                style={footerStyle}>
                 <div className="container">
                     <div className="row pt-5">
                         <div className="col-md-3">
@@ -14,24 +26,24 @@ export default function Footer() {
                                 <img src={logo} alt="ChimpVineLogo" width="185" height="56" className='mb-3' />
                             </NavLink>
                             <h6>Gamified learning platform to engage young minds.</h6>
-                            <div className="d-flex mt-3">
-                                <NavLink 
-                                className="social-content" 
-                                to="https://www.facebook.com/ChimpVineGlobal"
-                                target='_blank'>
-                                    <FaFacebook className="me-3" size={25}/>
+                            <div className="d-flex mt-3 social-media">
+                                <NavLink
+                                    className="social-content"
+                                    to="https://www.facebook.com/ChimpVineGlobal"
+                                    target='_blank'>
+                                    <FaFacebook className="me-3" size={25} />
                                 </NavLink>
-                                <NavLink 
-                                className="social-content" 
-                                to="https://www.linkedin.com/company/chimpvine/"
-                                target='_blank'>
-                                    <FaLinkedin className="me-3" size={25}/>
+                                <NavLink
+                                    className="social-content"
+                                    to="https://www.linkedin.com/company/chimpvine/"
+                                    target='_blank'>
+                                    <FaLinkedin className="me-3" size={25} />
                                 </NavLink>
-                                <NavLink 
-                                className="social-content" 
-                                to="https://www.instagram.com/chimpvine.global/"
-                                target='_blank'>
-                                    <FaInstagramSquare className="me-3" size={25}/>
+                                <NavLink
+                                    className="social-content"
+                                    to="https://www.instagram.com/chimpvine.global/"
+                                    target='_blank'>
+                                    <FaInstagramSquare className="me-3" size={25} />
                                 </NavLink>
                             </div>
                         </div>
@@ -40,13 +52,13 @@ export default function Footer() {
                             <ul className="list-unstyled">
                                 <li>
                                     <NavLink className="content" to="https://site.chimpvine.com/"
-                                    target='_blank'>
+                                        target='_blank'>
                                         Educational Games
                                     </NavLink>
                                 </li>
                                 <li>
                                     <NavLink className="content" to="https://chatbot.chimpvine.com/math-cal"
-                                    target='_blank'>
+                                        target='_blank'>
                                         Math Homework Help
                                     </NavLink>
                                 </li>
@@ -114,7 +126,7 @@ export default function Footer() {
                                     <NavLink
                                         className="content"
                                         to="/RequestForm"
-                                        >
+                                    >
                                         Contact Us
                                     </NavLink>
                                 </li>
@@ -124,7 +136,7 @@ export default function Footer() {
                     <hr />
                     <div className="row">
                         <div className="col-12 text-center">
-                            <p> Copyright &copy; 2024 | Product of ChimpVine</p>
+                            <p className='fw-bold'> Copyright &copy; 2024 | Product of ChimpVine</p>
                         </div>
                     </div>
                 </div>

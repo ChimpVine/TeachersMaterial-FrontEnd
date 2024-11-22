@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../spinner/Spinner';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
 import Cookies from 'js-cookie';
-import { NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 const subjects = [
@@ -46,6 +46,7 @@ const grades = [
 ];
 
 export default function GroupWork({ BASE_URL }) {
+  const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const [isLoading, setIsLoading] = useState(false);
   const [apiResponse, setApiResponse] = useState(null);
@@ -82,7 +83,7 @@ export default function GroupWork({ BASE_URL }) {
     } catch (error) {
       if (
         error.response &&
-        error.response.status === 403 &&
+        error.response.status === 401 &&
         error.response.data.error === "Unauthorized - Invalid token"
       ) {
         console.error('Error: Invalid token.');

@@ -19,9 +19,10 @@ import SeqEvents from '../../pages/SeqEvents';
 import { NavLink } from 'react-router-dom';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
 import Cookies from 'js-cookie';
-
+import { useNavigate } from 'react-router-dom';
 
 export default function WorkSheet({ BASE_URL }) {
+    const navigate = useNavigate();
     const [selectedQuestionType, setSelectedQuestionType] = useState('');
     const [subOptions, setSubOptions] = useState([]);
     const [formData, setFormData] = useState({
@@ -214,7 +215,7 @@ export default function WorkSheet({ BASE_URL }) {
         } catch (error) {
             if (
                 error.response &&
-                error.response.status === 403 &&
+                error.response.status === 401 &&
                 error.response.data.error === "Unauthorized - Invalid token"
             ) {
                 console.error('Error: Invalid token.');
@@ -650,14 +651,18 @@ export default function WorkSheet({ BASE_URL }) {
                                     <FaCloudDownloadAlt /> View Questions
                                 </button>
 
-                                <button
-                                    type="button"
-                                    className="btn btn-sm mb-3 no-print"
-                                    style={pdfStyle}
-                                    onClick={() => generatePdf(true, true)}
-                                >
-                                    <FaFilePdf /> View Answers
-                                </button>
+                                {!(formData.subQuestionType === 'Short_Answer_List' ||
+                                    formData.subQuestionType === 'Short_Answer_Explain' ||
+                                    formData.subQuestionType === 'Long_Answer_Explain') && (
+                                        <button
+                                            type="button"
+                                            className="btn btn-sm mb-3 no-print"
+                                            style={pdfStyle}
+                                            onClick={() => generatePdf(true, true)}
+                                        >
+                                            <FaFilePdf /> View Answers
+                                        </button>
+                                    )}
                             </div>
                         </div>
                     )}

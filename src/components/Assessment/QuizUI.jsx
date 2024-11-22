@@ -15,9 +15,11 @@ import {
 import NavBar from '../NavBar.jsx';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb.jsx'
 import Cookies from 'js-cookie'; 
+import { useNavigate } from 'react-router-dom';
 
 
 const QuizUI = ({ BASE_URL }) => {
+    const navigate = useNavigate();
     const mystyle = {
         color: 'red',
     };
@@ -168,7 +170,7 @@ const QuizUI = ({ BASE_URL }) => {
         } catch (error) {
             if (
                 error.response &&
-                error.response.status === 403 &&
+                error.response.status === 401 &&
                 error.response.data.error === "Unauthorized - Invalid token"
             ) {
                 console.error('Error: Invalid token.');

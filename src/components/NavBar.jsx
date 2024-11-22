@@ -58,7 +58,7 @@ export default function NavBar() {
                             <li className="nav-item mt-2 p-2">
                                 <NavLink
                                     className={({ isActive }) =>
-                                        isActive ? "nav-link-home me-5 active-link" : "nav-link-home me-5"
+                                        isActive ? "nav-link-tools me-5 active-link" : "nav-link-tools me-5"
                                     }
                                     to="/MainPlanner"
                                 >
@@ -94,6 +94,16 @@ export default function NavBar() {
                                     to="/RequestForm"
                                 >
                                     Contact Us
+                                </NavLink>
+                            </li>
+                            <li className="nav-item mt-2 p-2">
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        isActive ? "nav-link-elearning me-5 text-light active-link" : "nav-link-elearning me-5 text-light"
+                                    }
+                                    to="https://site.chimpvine.com/test161803/"
+                                >
+                                    eLearning 
                                 </NavLink>
                             </li>
                             {user ? (
