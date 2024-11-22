@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaCheck } from "react-icons/fa";
 
 const MCQSingle = ({ worksheet, answers, modalVisible, handleUpdate, setApiResponse }) => {
+  const [errors, setErrors] = useState({});
+
   const handleQuestionChange = (index, newQuestion) => {
     const updatedWorksheet = [...worksheet];
     updatedWorksheet[index].question = newQuestion;
@@ -22,11 +24,36 @@ const MCQSingle = ({ worksheet, answers, modalVisible, handleUpdate, setApiRespo
 
   const handleAnswerChange = (index, selectedAnswer) => {
     const updatedAnswers = { ...answers };
-    updatedAnswers[index + 1] = selectedAnswer; 
+    updatedAnswers[index + 1] = selectedAnswer;
     setApiResponse((prevState) => ({
       ...prevState,
       answers: updatedAnswers,
     }));
+  };
+
+  const validateWorksheet = () => {
+    const newErrors = {};
+    worksheet.forEach((item, index) => {
+      if (!item.question.trim()) {
+        newErrors[index] = newErrors[index] || {};
+        newErrors[index].question = "Question cannot be empty.";
+      }
+      Object.keys(item.options).forEach((optionKey) => {
+        if (!item.options[optionKey].trim()) {
+          newErrors[index] = newErrors[index] || {};
+          newErrors[index].options = newErrors[index].options || {};
+          newErrors[index].options[optionKey] = "Option cannot be empty.";
+        }
+      });
+    });
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSaveChanges = () => {
+    if (validateWorksheet()) {
+      handleUpdate(); // Call the parent-provided update handler
+    }
   };
 
   return (
@@ -63,7 +90,6 @@ const MCQSingle = ({ worksheet, answers, modalVisible, handleUpdate, setApiRespo
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="modal-title">Edit Worksheet</h5>
-                  {/* <button type="button" className="btn-close" onClick={closeModal}></button> */}
                 </div>
                 <div className="modal-body" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
                   {worksheet.map((item, index) => (
@@ -71,21 +97,37 @@ const MCQSingle = ({ worksheet, answers, modalVisible, handleUpdate, setApiRespo
                       <label className="form-label fw-bold">Question {index + 1}</label>
                       <input
                         type="text"
-                        className="form-control"
+                        className={`form-control ${errors[index]?.question ? 'is-invalid' : ''}`}
                         value={item.question}
                         onChange={(e) => handleQuestionChange(index, e.target.value)}
                       />
+                      {errors[index]?.question && (
+                        <div className="invalid-feedback">
+                          {errors[index].question}
+                        </div>
+                      )}
+
                       {item.options && (
                         <>
                           <label className="form-label mt-2 fw-bold">Options</label>
                           {Object.keys(item.options).map((optionKey) => (
-                            <input
-                              key={optionKey}
-                              type="text"
-                              className="form-control mb-1"
-                              value={item.options[optionKey]}
-                              onChange={(e) => handleOptionChange(index, optionKey, e.target.value)}
-                            />
+                            <div key={optionKey}>
+                              <input
+                                type="text"
+                                className={`form-control mb-1 ${
+                                  errors[index]?.options?.[optionKey] ? 'is-invalid' : ''
+                                }`}
+                                value={item.options[optionKey]}
+                                onChange={(e) =>
+                                  handleOptionChange(index, optionKey, e.target.value)
+                                }
+                              />
+                              {errors[index]?.options?.[optionKey] && (
+                                <div className="invalid-feedback">
+                                  {errors[index].options[optionKey]}
+                                </div>
+                              )}
+                            </div>
                           ))}
                         </>
                       )}
@@ -97,10 +139,10 @@ const MCQSingle = ({ worksheet, answers, modalVisible, handleUpdate, setApiRespo
                             <input
                               className="form-check-input"
                               type="radio"
-                              name={`correctAnswer${index}`}  
+                              name={`correctAnswer${index}`}
                               value={optionKey}
-                              checked={answers[index + 1] === optionKey}  
-                              onChange={() => handleAnswerChange(index, optionKey)}  
+                              checked={answers[index + 1] === optionKey}
+                              onChange={() => handleAnswerChange(index, optionKey)}
                             />
                             <label className="form-check-label">
                               {optionKey}. {item.options[optionKey]}
@@ -112,7 +154,7 @@ const MCQSingle = ({ worksheet, answers, modalVisible, handleUpdate, setApiRespo
                   ))}
                 </div>
                 <div className="modal-footer">
-                  <button className="btn btn-success" onClick={handleUpdate}>
+                  <button className="btn btn-success" onClick={handleSaveChanges}>
                     Save Changes
                   </button>
                 </div>

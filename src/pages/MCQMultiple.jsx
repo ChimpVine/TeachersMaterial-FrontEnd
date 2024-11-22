@@ -1,7 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaCheck } from "react-icons/fa";
 
 const MCQMultiple = ({ worksheet, answers, modalVisible, handleUpdate, setApiResponse }) => {
+  const [errors, setErrors] = useState({}); // State to store validation errors
+
+  // Validation function to check for empty questions and options
+  const validateWorksheet = () => {
+    const newErrors = {};
+    worksheet.forEach((item, index) => {
+      if (!item.question.trim()) {
+        newErrors[index] = newErrors[index] || {};
+        newErrors[index].question = "Question cannot be empty.";
+      }
+      Object.keys(item.options).forEach((optionKey) => {
+        if (!item.options[optionKey].trim()) {
+          newErrors[index] = newErrors[index] || {};
+          newErrors[index].options = newErrors[index].options || {};
+          newErrors[index].options[optionKey] = "Option cannot be empty.";
+        }
+      });
+    });
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  // Enhanced handleUpdate function with validation
+  const handleUpdateWithValidation = () => {
+    if (validateWorksheet()) {
+      handleUpdate(); // Proceed to save changes if validation passes
+    }
+  };
+
   const handleQuestionChange = (index, newQuestion) => {
     const updatedWorksheet = [...worksheet];
     updatedWorksheet[index].question = newQuestion;
@@ -9,6 +38,17 @@ const MCQMultiple = ({ worksheet, answers, modalVisible, handleUpdate, setApiRes
       ...prevState,
       worksheet: updatedWorksheet,
     }));
+    // Clear the error for the question if it was resolved
+    setErrors((prevErrors) => {
+      const updatedErrors = { ...prevErrors };
+      if (updatedErrors[index]?.question) {
+        delete updatedErrors[index].question;
+        if (Object.keys(updatedErrors[index]).length === 0) {
+          delete updatedErrors[index];
+        }
+      }
+      return updatedErrors;
+    });
   };
 
   const handleOptionChange = (index, optionKey, newOptionValue) => {
@@ -18,6 +58,20 @@ const MCQMultiple = ({ worksheet, answers, modalVisible, handleUpdate, setApiRes
       ...prevState,
       worksheet: updatedWorksheet,
     }));
+    // Clear the error for the option if it was resolved
+    setErrors((prevErrors) => {
+      const updatedErrors = { ...prevErrors };
+      if (updatedErrors[index]?.options?.[optionKey]) {
+        delete updatedErrors[index].options[optionKey];
+        if (Object.keys(updatedErrors[index].options).length === 0) {
+          delete updatedErrors[index].options;
+        }
+        if (Object.keys(updatedErrors[index]).length === 0) {
+          delete updatedErrors[index];
+        }
+      }
+      return updatedErrors;
+    });
   };
 
   const handleAnswerChange = (index, optionKey) => {
@@ -25,10 +79,8 @@ const MCQMultiple = ({ worksheet, answers, modalVisible, handleUpdate, setApiRes
     const currentAnswers = updatedAnswers[index + 1]?.split(',') || [];
 
     if (currentAnswers.includes(optionKey)) {
-      // If option is already selected, remove it
       updatedAnswers[index + 1] = currentAnswers.filter(answer => answer !== optionKey).join(',');
     } else {
-      // Add new answer option
       updatedAnswers[index + 1] = [...currentAnswers, optionKey].join(',');
     }
 
@@ -45,7 +97,9 @@ const MCQMultiple = ({ worksheet, answers, modalVisible, handleUpdate, setApiRes
       </h5>
       {worksheet.map((item, index) => (
         <div className='mb-3' key={index}>
-          <p><strong>Question {index + 1}:</strong> {item.question}</p>
+          <p>
+            <strong>Question {index + 1}:</strong> {item.question}
+          </p>
           <div className='options'>
             {Object.keys(item.options).map((optionKey) => (
               <div key={optionKey}>
@@ -80,25 +134,35 @@ const MCQMultiple = ({ worksheet, answers, modalVisible, handleUpdate, setApiRes
                       <label className="form-label fw-bold">Question {index + 1}</label>
                       <input
                         type="text"
-                        className="form-control"
+                        className={`form-control ${errors[index]?.question ? 'is-invalid' : ''}`}
                         value={item.question}
                         onChange={(e) => handleQuestionChange(index, e.target.value)}
                       />
+                      {errors[index]?.question && (
+                        <div className="invalid-feedback">{errors[index].question}</div>
+                      )}
                       {item.options && (
                         <>
                           <label className="form-label mt-2 fw-bold">Options</label>
                           {Object.keys(item.options).map((optionKey) => (
-                            <input
-                              key={optionKey}
-                              type="text"
-                              className="form-control mb-1"
-                              value={item.options[optionKey]}
-                              onChange={(e) => handleOptionChange(index, optionKey, e.target.value)}
-                            />
+                            <div key={optionKey}>
+                              <input
+                                type="text"
+                                className={`form-control mb-1 ${
+                                  errors[index]?.options?.[optionKey] ? 'is-invalid' : ''
+                                }`}
+                                value={item.options[optionKey]}
+                                onChange={(e) => handleOptionChange(index, optionKey, e.target.value)}
+                              />
+                              {errors[index]?.options?.[optionKey] && (
+                                <div className="invalid-feedback">
+                                  {errors[index].options[optionKey]}
+                                </div>
+                              )}
+                            </div>
                           ))}
                         </>
                       )}
-
                       <label className="form-label mt-2 fw-bold">Select Correct Answers</label>
                       <div>
                         {Object.keys(item.options).map((optionKey) => (
@@ -121,7 +185,7 @@ const MCQMultiple = ({ worksheet, answers, modalVisible, handleUpdate, setApiRes
                   ))}
                 </div>
                 <div className="modal-footer">
-                  <button className="btn btn-success" onClick={handleUpdate}>
+                  <button className="btn btn-success" onClick={handleUpdateWithValidation}>
                     Save Changes
                   </button>
                 </div>

@@ -28,7 +28,7 @@ import Aboutus from '../pages/AboutUs/Aboutus.jsx';
 export default function RoutingConfig() {
 
   const BASE_URL = 'https://teachertools-api.chimpvine.com';
- 
+
   ReactGA.initialize('G-TBNNYXX21K');
   return (
     <>

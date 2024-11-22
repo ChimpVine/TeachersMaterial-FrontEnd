@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../spinner/Spinner';
 import { NavLink } from 'react-router-dom';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
-import Cookies from 'js-cookie'; 
+import Cookies from 'js-cookie';
 
 const subjects = [
     { value: "", label: "Choose a Subject" },
@@ -123,9 +123,9 @@ export default function LessonPlan({ BASE_URL }) {
         formDataToSend.append('command', textarea);
         formDataToSend.append('file', pdf_file);
 
-         // Retrieve cookies for headers
-         const authToken = Cookies.get('authToken');
-         const siteUrl = Cookies.get('site_url');
+        // Retrieve cookies for headers
+        const authToken = Cookies.get('authToken');
+        const siteUrl = Cookies.get('site_url');
 
         setIsLoading(true);
 
@@ -133,7 +133,7 @@ export default function LessonPlan({ BASE_URL }) {
             const response = await axios.post(`${BASE_URL}/generate_lesson_plan`, formDataToSend, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    Authorization: `Bearer ${authToken}`, 
+                    Authorization: `Bearer ${authToken}`,
                     'X-Site-Url': siteUrl
                 },
             });
@@ -147,8 +147,26 @@ export default function LessonPlan({ BASE_URL }) {
             });
             toast.success('Lesson plan generated successfully!');
         } catch (error) {
-            console.error('Error:', error);
-            toast.error('Failed to generate the lesson plan. Please try again.');
+            if (
+                error.response &&
+                error.response.status === 403 &&
+                error.response.data.error === "Unauthorized - Invalid token"
+            ) {
+                console.error('Error: Invalid token.');
+                toast.error('This email has been already used on another device.');
+    
+                Cookies.remove('authToken');
+                Cookies.remove('site_url');
+                Cookies.remove('display_name');
+                Cookies.remove('user_email');
+    
+                setTimeout(() => {
+                    navigate('/Login');
+                }, 2000); 
+            } else {
+                console.error('Error:', error);
+                toast.error('Failed to generate the lesson plan. Please try again.');
+            }
         } finally {
             setIsLoading(false);
         }
@@ -245,7 +263,7 @@ export default function LessonPlan({ BASE_URL }) {
                                             />
 
                                             <label htmlFor="textarea" className="form-label">
-                                            File Description Label <span style={{ color: 'red' }}>*</span>
+                                                File Description Label <span style={{ color: 'red' }}>*</span>
                                             </label>
                                             <textarea
                                                 type="text"
@@ -258,13 +276,17 @@ export default function LessonPlan({ BASE_URL }) {
                                                 onChange={handleChange}
                                                 disabled={isLoading}
                                             />
-                                            <p className="text-center" style={{ fontSize: '14px' }}>
-                                                <span className="fw-bold" style={{ color: 'red' }}>Note: * </span>
-                                                If you have a large PDF and want to shorten it ,
-                                                <NavLink to="/PdfSplitter" target='_blank'>
-                                                    Click here
-                                                </NavLink>
-                                            </p>
+                                            <div className="mb-3">
+                                                <small className="text-muted">
+                                                    <strong className='text-danger'>Note:</strong>
+                                                    <ul>
+                                                        <li>Upload a single PDF file under 250KB.</li>
+                                                        <li>To shorten a large PDF,<NavLink to="/PdfSplitter" target='_blank'>
+                                                            <span style={{ fontWeight: 'bold' }}> Click here</span>
+                                                        </NavLink></li>
+                                                    </ul>
+                                                </small>
+                                            </div>
                                         </div>
 
                                         <div className="d-flex justify-content-between mt-3">

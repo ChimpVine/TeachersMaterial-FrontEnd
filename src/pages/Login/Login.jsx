@@ -82,7 +82,8 @@ const Login = () => {
                 password: data.password,
             });
             if (response.data.status === 'success') {
-                login(response.data.token, response.data.Display_name);
+                login(response.data.token);
+                // console.log(response.data.token);
                 navigate('/MainPlanner');
             } else {
                 setErrorMessage(response.data.message);

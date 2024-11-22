@@ -2549,6 +2549,11 @@ side-channel@^1.0.4, side-channel@^1.0.6:
     get-intrinsic "^1.2.4"
     object-inspect "^1.13.1"
 
+smartlook-client@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/smartlook-client/-/smartlook-client-10.0.0.tgz#8c322bfa5866f5d9c1553c22aa98382367f798bd"
+  integrity sha512-KAyy+MXxgqfQJOqsnJhlFiBP29g7rE50hmdoSB3YYq15Dl9y8WEdh1OhdUAYWnENkyDHu3v5lE39O6VuhQMgrA==
+
 source-map-js@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.2.0.tgz#16b809c162517b5b8c3e7dcd315a2a5c2612b2af"

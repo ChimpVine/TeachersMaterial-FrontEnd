@@ -6,7 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../spinner/Spinner';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
-import Cookies from 'js-cookie'; 
+import Cookies from 'js-cookie';
 
 
 // Special needs options
@@ -69,9 +69,9 @@ export default function SocialStory({ BASE_URL }) {
             ideal_behavior
         };
 
-         // Retrieve cookies for headers
-         const authToken = Cookies.get('authToken');
-         const siteUrl = Cookies.get('site_url');
+        // Retrieve cookies for headers
+        const authToken = Cookies.get('authToken');
+        const siteUrl = Cookies.get('site_url');
 
         setIsLoading(true);
 
@@ -82,7 +82,7 @@ export default function SocialStory({ BASE_URL }) {
                 {
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${authToken}`, 
+                        'Authorization': `Bearer ${authToken}`,
                         'X-Site-Url': siteUrl
                     }
                 }
@@ -98,8 +98,26 @@ export default function SocialStory({ BASE_URL }) {
             });
             toast.success('Social story generated successfully!');
         } catch (error) {
-            console.error('Error:', error);
-            toast.error('Failed to generate the social story. Please try again.');
+            if (
+                error.response &&
+                error.response.status === 403 &&
+                error.response.data.error === "Unauthorized - Invalid token"
+            ) {
+                console.error('Error: Invalid token.');
+                toast.error('This email has been already used on another device.');
+
+                Cookies.remove('authToken');
+                Cookies.remove('site_url');
+                Cookies.remove('display_name');
+                Cookies.remove('user_email');
+
+                setTimeout(() => {
+                    navigate('/Login');
+                }, 2000);
+            } else {
+                console.error('Error:', error);
+                toast.error('Failed to generate the social story. Please try again.');
+            }
         } finally {
             setIsLoading(false);
         }
@@ -159,7 +177,7 @@ export default function SocialStory({ BASE_URL }) {
             <ToastContainer position="top-right" autoClose={1500} />
             <div className="container-fluid">
                 <div className="row justify-content-center mt-5 mb-4">
-                    
+
                     {isLoading ? (
                         <div className="col-md-5 text-center">
                             <Spinner />
@@ -167,123 +185,123 @@ export default function SocialStory({ BASE_URL }) {
                     ) : (
                         !apiResponse ? (
                             <>
-                            <NavBreadcrumb items={breadcrumbItems} />
-                            <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded no-print">
-                                <form onSubmit={handleSubmit}>
-                                    <h4 className="text-center mb-3">Social Story Generator</h4>
-                                    <div className="mb-2">
-                                        <label htmlFor="child_name" className="form-label">
-                                            Child's Name <span style={{ color: 'red' }}>*</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className="form-control form-control-sm mb-2"
-                                            id="child_name"
-                                            name="child_name"
-                                            value={formData.child_name}
-                                            onChange={handleChange}
-                                            disabled={isLoading}
-                                            placeholder="Eg. Alex"
-                                        />
+                                <NavBreadcrumb items={breadcrumbItems} />
+                                <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded no-print">
+                                    <form onSubmit={handleSubmit}>
+                                        <h4 className="text-center mb-3">Social Story Generator</h4>
+                                        <div className="mb-2">
+                                            <label htmlFor="child_name" className="form-label">
+                                                Child's Name <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control form-control-sm mb-2"
+                                                id="child_name"
+                                                name="child_name"
+                                                value={formData.child_name}
+                                                onChange={handleChange}
+                                                disabled={isLoading}
+                                                placeholder="Eg. Alex"
+                                            />
 
-                                        <label htmlFor="child_age" className="form-label">
-                                            Child's Age <span style={{ color: 'red' }}>*</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className="form-control form-control-sm mb-2"
-                                            id="child_age"
-                                            name="child_age"
-                                            value={formData.child_age}
-                                            onChange={handleChange}
-                                            disabled={isLoading}
-                                            placeholder="Eg. 7"
-                                        />
+                                            <label htmlFor="child_age" className="form-label">
+                                                Child's Age <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control form-control-sm mb-2"
+                                                id="child_age"
+                                                name="child_age"
+                                                value={formData.child_age}
+                                                onChange={handleChange}
+                                                disabled={isLoading}
+                                                placeholder="Eg. 7"
+                                            />
 
-                                        <label htmlFor="needs" className="form-label">
-                                            Special Needs <span style={{ color: 'red' }}>*</span>
-                                        </label>
-                                        <select
-                                            className="form-select form-select-sm mb-3"
-                                            id="needs"
-                                            name="needs"
-                                            value={formData.needs}
-                                            onChange={handleChange}
-                                            disabled={isLoading}
-                                        >
-                                            {needs.map((needs, index) => (
-                                                <option key={index} value={needs.value}>
-                                                    {needs.label}
-                                                </option>
-                                            ))}
-                                        </select>
+                                            <label htmlFor="needs" className="form-label">
+                                                Special Needs <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <select
+                                                className="form-select form-select-sm mb-3"
+                                                id="needs"
+                                                name="needs"
+                                                value={formData.needs}
+                                                onChange={handleChange}
+                                                disabled={isLoading}
+                                            >
+                                                {needs.map((needs, index) => (
+                                                    <option key={index} value={needs.value}>
+                                                        {needs.label}
+                                                    </option>
+                                                ))}
+                                            </select>
 
-                                        <label htmlFor="scenario" className="form-label">
-                                            Scenario <span style={{ color: 'red' }}>*</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className="form-control form-control-sm mb-2"
-                                            id="scenario"
-                                            name="scenario"
-                                            value={formData.scenario}
-                                            onChange={handleChange}
-                                            disabled={isLoading}
-                                            placeholder="Eg. Playing in the park"
-                                        />
+                                            <label htmlFor="scenario" className="form-label">
+                                                Scenario <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control form-control-sm mb-2"
+                                                id="scenario"
+                                                name="scenario"
+                                                value={formData.scenario}
+                                                onChange={handleChange}
+                                                disabled={isLoading}
+                                                placeholder="Eg. Playing in the park"
+                                            />
 
-                                        <label htmlFor="behavior_challenge" className="form-label">
-                                            Behavior Challenge <span style={{ color: 'red' }}>*</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className="form-control form-control-sm mb-2"
-                                            id="behavior_challenge"
-                                            name="behavior_challenge"
-                                            value={formData.behavior_challenge}
-                                            onChange={handleChange}
-                                            disabled={isLoading}
-                                            placeholder="Eg. Finding it hard to wait for a turn"
-                                        />
+                                            <label htmlFor="behavior_challenge" className="form-label">
+                                                Behavior Challenge <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control form-control-sm mb-2"
+                                                id="behavior_challenge"
+                                                name="behavior_challenge"
+                                                value={formData.behavior_challenge}
+                                                onChange={handleChange}
+                                                disabled={isLoading}
+                                                placeholder="Eg. Finding it hard to wait for a turn"
+                                            />
 
-                                        <label htmlFor="ideal_behavior" className="form-label">
-                                            Ideal Behavior <span style={{ color: 'red' }}>*</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className="form-control form-control-sm mb-2"
-                                            id="ideal_behavior"
-                                            name="ideal_behavior"
-                                            value={formData.ideal_behavior}
-                                            onChange={handleChange}
-                                            disabled={isLoading}
-                                            placeholder="Eg. Waiting patiently and taking turns"
-                                        />
-                                    </div>
+                                            <label htmlFor="ideal_behavior" className="form-label">
+                                                Ideal Behavior <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control form-control-sm mb-2"
+                                                id="ideal_behavior"
+                                                name="ideal_behavior"
+                                                value={formData.ideal_behavior}
+                                                onChange={handleChange}
+                                                disabled={isLoading}
+                                                placeholder="Eg. Waiting patiently and taking turns"
+                                            />
+                                        </div>
 
-                                    <div className="d-flex justify-content-between mt-3">
-                                        <button
-                                            type="button"
-                                            className="btn btn-sm"
-                                            style={cancelStyle}
-                                            onClick={() => setFormData({
-                                                child_name: '',
-                                                child_age: '',
-                                                needs: '',
-                                                scenario: '',
-                                                behavior_challenge: '',
-                                                ideal_behavior: ''
-                                            })}
-                                            disabled={isLoading}
-                                        >
-                                            <FaEraser /> Reset
-                                        </button>
-                                        <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
-                                            Generate <FaArrowRight />
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
+                                        <div className="d-flex justify-content-between mt-3">
+                                            <button
+                                                type="button"
+                                                className="btn btn-sm"
+                                                style={cancelStyle}
+                                                onClick={() => setFormData({
+                                                    child_name: '',
+                                                    child_age: '',
+                                                    needs: '',
+                                                    scenario: '',
+                                                    behavior_challenge: '',
+                                                    ideal_behavior: ''
+                                                })}
+                                                disabled={isLoading}
+                                            >
+                                                <FaEraser /> Reset
+                                            </button>
+                                            <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
+                                                Generate <FaArrowRight />
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
                             </>
                         ) : (
                             <div className="mt-3" ref={contentRef} id="main-btn">

@@ -8,7 +8,7 @@ import NavBar from '../NavBar';
 import Spinner from '../../spinner/Spinner';
 import { Modal, Button, Form } from 'react-bootstrap';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
-import Cookies from 'js-cookie'; 
+import Cookies from 'js-cookie';
 
 
 const slideNumbers = [
@@ -117,7 +117,7 @@ export default function SlideGenerator({ BASE_URL }) {
             const response = await axios.post(`${BASE_URL}/slide_one`, formDataToSend, {
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${authToken}`, 
+                    Authorization: `Bearer ${authToken}`,
                     'X-Site-Url': siteUrl
                 },
             });
@@ -131,8 +131,26 @@ export default function SlideGenerator({ BASE_URL }) {
             });
             toast.success('Slide generated successfully!');
         } catch (error) {
-            console.error('Error:', error);
-            toast.error('Failed to generate the Slides. Please try again.');
+            if (
+                error.response &&
+                error.response.status === 403 &&
+                error.response.data.error === "Unauthorized - Invalid token"
+            ) {
+                console.error('Error: Invalid token.');
+                toast.error('This email has been already used on another device.');
+
+                Cookies.remove('authToken');
+                Cookies.remove('site_url');
+                Cookies.remove('display_name');
+                Cookies.remove('user_email');
+
+                setTimeout(() => {
+                    navigate('/Login');
+                }, 2000);
+            } else {
+                console.error('Error:', error);
+                toast.error('Failed to generate the Slides. Please try again.');
+            }
         } finally {
             setIsLoading(false);
         }
@@ -202,14 +220,14 @@ export default function SlideGenerator({ BASE_URL }) {
         // Retrieve cookies for headers
         const authToken = Cookies.get('authToken');
         const siteUrl = Cookies.get('site_url');
-        
+
         setIsLoadingPptx(true); // Start spinner for PPTX generation
 
         try {
             const response = await axios.post(`${BASE_URL}/slide_two`, apiResponse, {
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${authToken}`, 
+                    Authorization: `Bearer ${authToken}`,
                     'X-Site-Url': siteUrl
                 },
             });
@@ -269,7 +287,7 @@ export default function SlideGenerator({ BASE_URL }) {
             <ToastContainer position="top-right" autoClose={1500} />
             <div className="container-fluid">
                 <div className="row justify-content-center mt-5 mb-4">
-                    
+
                     {isLoading ? (
                         <div className="col-md-5 text-center">
                             <Spinner />
@@ -281,98 +299,105 @@ export default function SlideGenerator({ BASE_URL }) {
                     ) : (
                         !apiResponse ? (
                             <>
-                            <NavBreadcrumb items={breadcrumbItems} />
-                            <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded no-print">
-                                <form onSubmit={handleSubmit}>
-                                    <h4 className="text-center mb-3">Slide Generator</h4>
-                                    <div className="mb-2">
-                                        <label htmlFor="grade" className="form-label">
-                                            Grade <span style={{ color: 'red' }}>*</span>
-                                        </label>
-                                        <select
-                                            className="form-select form-select-sm mb-3"
-                                            id="grade"
-                                            name="grade"
-                                            value={formData.grade}
-                                            onChange={handleChange}
-                                            disabled={isLoading}
-                                        >
-                                            {grades.map((grade, index) => (
-                                                <option key={index} value={grade.value}>
-                                                    {grade.label}
-                                                </option>
-                                            ))}
-                                        </select>
+                                <NavBreadcrumb items={breadcrumbItems} />
+                                <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded no-print">
+                                    <form onSubmit={handleSubmit}>
+                                        <h4 className="text-center mb-3">Slide Generator</h4>
+                                        <div className="mb-2">
+                                            <label htmlFor="grade" className="form-label">
+                                                Grade <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <select
+                                                className="form-select form-select-sm mb-3"
+                                                id="grade"
+                                                name="grade"
+                                                value={formData.grade}
+                                                onChange={handleChange}
+                                                disabled={isLoading}
+                                            >
+                                                {grades.map((grade, index) => (
+                                                    <option key={index} value={grade.value}>
+                                                        {grade.label}
+                                                    </option>
+                                                ))}
+                                            </select>
 
-                                        <label htmlFor="title" className="form-label">
-                                            Title <span style={{ color: 'red' }}>*</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className="form-control form-control-sm mb-3"
-                                            id="title"
-                                            name="title"
-                                            value={formData.title}
-                                            onChange={handleChange}
-                                            placeholder="For example: About Nepal."
-                                        />
+                                            <label htmlFor="title" className="form-label">
+                                                Title <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control form-control-sm mb-3"
+                                                id="title"
+                                                name="title"
+                                                value={formData.title}
+                                                onChange={handleChange}
+                                                placeholder="For example: About Nepal."
+                                            />
 
-                                        <label htmlFor="objective" className="form-label">
-                                            Objective <span style={{ color: 'red' }}>*</span><br />
-                                            <small className="text-muted">
-                                                Add objectives as bullet points or a paragraph
-                                            </small>
-                                        </label>
-                                        <textarea
-                                            className="form-control form-control-sm mb-3"
-                                            id="objective"
-                                            name="objective"
-                                            value={formData.objective}
-                                            onChange={handleChange}
-                                            rows={4}
-                                            placeholder="For example: To enhance the dignity of the nation by safeguarding sovereignty, territorial integrity, independence, and promoting economic wellbeing and prosperity of Nepal."
-                                        />
+                                            <label htmlFor="objective" className="form-label">
+                                                Objective <span style={{ color: 'red' }}>*</span><br />
+                                                <small className="text-muted">
+                                                    Add objectives as bullet points or a paragraph
+                                                </small>
+                                            </label>
+                                            <textarea
+                                                className="form-control form-control-sm mb-3"
+                                                id="objective"
+                                                name="objective"
+                                                value={formData.objective}
+                                                onChange={handleChange}
+                                                rows={4}
+                                                placeholder="For example: To enhance the dignity of the nation by safeguarding sovereignty, territorial integrity, independence, and promoting economic wellbeing and prosperity of Nepal."
+                                            />
 
-                                        <label htmlFor="slide_number" className="form-label">
-                                            Number of Slides <span style={{ color: 'red' }}>*</span>
-                                        </label>
-                                        <select
-                                            className="form-select form-select-sm mb-3"
-                                            id="slide_number"
-                                            name="slide_number"
-                                            value={formData.slide_number}
-                                            onChange={handleChange}
-                                        >
-                                            <option value="">Choose the Number of Slides</option>
-                                            {slideNumbers.map((slide, index) => (
-                                                <option key={index} value={slide.value}>
-                                                    {slide.label}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-
-                                    <div className="d-flex justify-content-between mt-3">
-                                        <button
-                                            type="button"
-                                            className="btn btn-sm"
-                                            style={cancelStyle}
-                                            onClick={() => setFormData({
-                                                grade: '',
-                                                title: '',
-                                                objective: '',
-                                                slide_number: ''
-                                            })}
-                                            disabled={isLoading}
-                                        >
-                                            <FaEraser /> Reset
-                                        </button>
-                                        <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
-                                            Generate <FaArrowRight />
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
+                                            <label htmlFor="slide_number" className="form-label">
+                                                Number of Slides <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <select
+                                                className="form-select form-select-sm mb-3"
+                                                id="slide_number"
+                                                name="slide_number"
+                                                value={formData.slide_number}
+                                                onChange={handleChange}
+                                            >
+                                                <option value="">Choose the Number of Slides</option>
+                                                {slideNumbers.map((slide, index) => (
+                                                    <option key={index} value={slide.value}>
+                                                        {slide.label}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            <div className="mb-3">
+                                                <small className="text-muted">
+                                                    <strong className='text-danger'>Note:</strong>
+                                                    <ul>
+                                                        <li>Please ensure that the objectives are concise and do not exceed 250 words.</li>
+                                                    </ul>
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <div className="d-flex justify-content-between mt-3">
+                                            <button
+                                                type="button"
+                                                className="btn btn-sm"
+                                                style={cancelStyle}
+                                                onClick={() => setFormData({
+                                                    grade: '',
+                                                    title: '',
+                                                    objective: '',
+                                                    slide_number: ''
+                                                })}
+                                                disabled={isLoading}
+                                            >
+                                                <FaEraser /> Reset
+                                            </button>
+                                            <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
+                                                Generate <FaArrowRight />
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
                             </>
                         ) : (
                             <div className="mt-3" ref={contentRef} id="main-btn">

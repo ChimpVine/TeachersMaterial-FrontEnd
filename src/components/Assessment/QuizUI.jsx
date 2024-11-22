@@ -17,7 +17,6 @@ import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb.jsx'
 import Cookies from 'js-cookie'; 
 
 
-
 const QuizUI = ({ BASE_URL }) => {
     const mystyle = {
         color: 'red',
@@ -167,8 +166,26 @@ const QuizUI = ({ BASE_URL }) => {
                 toast.error('Some error encountered. Please try again later.');
             }
         } catch (error) {
-            // console.error('Error fetching quiz questions:', error);
-            toast.error('Failed to fetch quiz questions. Please try again later.');
+            if (
+                error.response &&
+                error.response.status === 403 &&
+                error.response.data.error === "Unauthorized - Invalid token"
+            ) {
+                console.error('Error: Invalid token.');
+                toast.error('This email has been already used on another device.');
+    
+                Cookies.remove('authToken');
+                Cookies.remove('site_url');
+                Cookies.remove('display_name');
+                Cookies.remove('user_email');
+    
+                setTimeout(() => {
+                    navigate('/Login');
+                }, 2000); 
+            } else {
+                console.error('Error:', error);
+                toast.error('Failed to fetch quiz questions. Please try again later.');
+            }
         } finally {
             setLoading(false);
         }

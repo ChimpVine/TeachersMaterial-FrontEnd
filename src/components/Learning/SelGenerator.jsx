@@ -132,11 +132,24 @@ export default function SELGenerator({ BASE_URL }) {
             });
             toast.success('SEL plan generated successfully!');
         } catch (error) {
-            console.error('Error:', error);
-            if (totalWords > 250) {
-                toast.warning(`${error.response.data.error}`);
+            if (
+                error.response &&
+                error.response.status === 403 &&
+                error.response.data.error === "Unauthorized - Invalid token"
+            ) {
+                console.error('Error: Invalid token.');
+                toast.error('This email has been already used on another device.');
+
+                Cookies.remove('authToken');
+                Cookies.remove('site_url');
+                Cookies.remove('display_name');
+                Cookies.remove('user_email');
+
+                setTimeout(() => {
+                    navigate('/Login');
+                }, 2000);
             } else {
-                toast.error(`${error.response.data.error}`);
+                toast.error('Error:', error);
             }
         } finally {
             setIsLoading(false);
@@ -238,8 +251,6 @@ export default function SELGenerator({ BASE_URL }) {
                                             </ul>
                                         </small>
                                     </div>
-
-
                                     <div className="d-flex justify-content-between mt-3">
                                         <button type="button" className="btn btn-sm" style={cancelStyle} onClick={() => setFormData({
                                             grade: '',

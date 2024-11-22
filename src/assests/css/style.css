@@ -198,6 +198,23 @@ a:hover {
     color: #FF683B;
 }
 
+.nav-link-home,
+.nav-link-navigate,
+.nav-link-splitter {
+    padding-bottom: 4px; /* Add space for the bottom border */
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+/* Active link style */
+.nav-link-home.active-link,
+.nav-link-navigate.active-link,
+.nav-link-splitter.active-link {
+    border-bottom: 3px solid #FF683B; /* Blue border for active page */
+    color: #ffffff; /* Change text color to blue */
+}
+
+
+
 #sel_topic,
 #learning_objectives,
 #learning_objective,
@@ -253,6 +270,8 @@ a:hover {
     font-size: 0.7rem;
     padding: 0.2em 0.4em;
 }
+
+
 
 
 

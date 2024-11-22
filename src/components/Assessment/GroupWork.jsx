@@ -7,7 +7,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../spinner/Spinner';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
-import Cookies from 'js-cookie'; 
+import Cookies from 'js-cookie';
+import { NavLink } from 'react-router-dom';
 
 
 const subjects = [
@@ -56,9 +57,9 @@ export default function GroupWork({ BASE_URL }) {
 
   const onSubmit = async (data) => {
 
-     // Retrieve cookies for headers
-     const authToken = Cookies.get('authToken');
-     const siteUrl = Cookies.get('site_url');
+    // Retrieve cookies for headers
+    const authToken = Cookies.get('authToken');
+    const siteUrl = Cookies.get('site_url');
 
     setIsLoading(true);
     setApiResponse(null);
@@ -79,8 +80,26 @@ export default function GroupWork({ BASE_URL }) {
       toast.success('Group work created successfully!');
       reset();
     } catch (error) {
-      const errorMessage = error.response?.data?.error || 'Failed to create group work. Please try again.';
-      toast.error(errorMessage);
+      if (
+        error.response &&
+        error.response.status === 403 &&
+        error.response.data.error === "Unauthorized - Invalid token"
+      ) {
+        console.error('Error: Invalid token.');
+        toast.error('This email has been already used on another device.');
+
+        Cookies.remove('authToken');
+        Cookies.remove('site_url');
+        Cookies.remove('display_name');
+        Cookies.remove('user_email');
+
+        setTimeout(() => {
+          navigate('/Login');
+        }, 2000);
+      } else {
+        const errorMessage = error.response?.data?.error || 'Failed to create group work. Please try again.';
+        toast.error(errorMessage);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -102,7 +121,7 @@ export default function GroupWork({ BASE_URL }) {
       <ToastContainer position="top-right" autoClose={1500} />
       <div className="container-fluid">
         <div className="row justify-content-center mt-5 mb-4">
-          
+
           {isLoading ? (
             <div className="col-md-5 text-center">
               <Spinner />
@@ -110,102 +129,108 @@ export default function GroupWork({ BASE_URL }) {
           ) : (
             !apiResponse ? (
               <>
-             <NavBreadcrumb items={breadcrumbItems} />
-              <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded no-print">
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <h4 className="text-center mb-3">Group Work Generator</h4>
+                <NavBreadcrumb items={breadcrumbItems} />
+                <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded no-print">
+                  <form onSubmit={handleSubmit(onSubmit)}>
+                    <h4 className="text-center mb-3">Group Work Generator</h4>
 
-                  {/* Subject */}
-                  <div className="mb-2">
-                    <label htmlFor="subject" className="form-label">
-                      Subject <span style={{ color: 'red' }}>*</span>
-                    </label>
-                    <select
-                      className={`form-select form-select-sm mb-2 ${errors.subject ? 'is-invalid' : ''}`}
-                      id="subject"
-                      {...register('subject', { required: 'Subject is required' })}
-                    >
-                      {subjects.map((element, index) => (
-                        <option key={index} value={element.value}>
-                          {element.label}
-                        </option>
-                      ))}
-                    </select>
-                    {errors.subject && <div className="invalid-feedback">{errors.subject.message}</div>}
+                    {/* Subject */}
+                    <div className="mb-2">
+                      <label htmlFor="subject" className="form-label">
+                        Subject <span style={{ color: 'red' }}>*</span>
+                      </label>
+                      <select
+                        className={`form-select form-select-sm mb-2 ${errors.subject ? 'is-invalid' : ''}`}
+                        id="subject"
+                        {...register('subject', { required: 'Subject is required' })}
+                      >
+                        {subjects.map((element, index) => (
+                          <option key={index} value={element.value}>
+                            {element.label}
+                          </option>
+                        ))}
+                      </select>
+                      {errors.subject && <div className="invalid-feedback">{errors.subject.message}</div>}
 
-                    {/* Grade */}
-                    <label htmlFor="grade" className="form-label">
-                      Grade <span style={{ color: 'red' }}>*</span>
-                    </label>
-                    <select
-                      className={`form-select form-select-sm mb-2 ${errors.grade ? 'is-invalid' : ''}`}
-                      id="grade"
-                      {...register('grade', { required: 'Grade is required' })}
-                    >
-                      {grades.map((grade, index) => (
-                        <option key={index} value={grade.value}>
-                          {grade.label}
-                        </option>
-                      ))}
-                    </select>
-                    {errors.grade && <div className="invalid-feedback">{errors.grade.message}</div>}
+                      {/* Grade */}
+                      <label htmlFor="grade" className="form-label">
+                        Grade <span style={{ color: 'red' }}>*</span>
+                      </label>
+                      <select
+                        className={`form-select form-select-sm mb-2 ${errors.grade ? 'is-invalid' : ''}`}
+                        id="grade"
+                        {...register('grade', { required: 'Grade is required' })}
+                      >
+                        {grades.map((grade, index) => (
+                          <option key={index} value={grade.value}>
+                            {grade.label}
+                          </option>
+                        ))}
+                      </select>
+                      {errors.grade && <div className="invalid-feedback">{errors.grade.message}</div>}
 
-                    {/* Topic */}
-                    <label htmlFor="topic" className="form-label">
-                      Topic <span style={{ color: 'red' }}>*</span>
-                    </label>
-                    <input
-                      type="text"
-                      className={`form-control form-control-sm mb-2 ${errors.topic ? 'is-invalid' : ''}`}
-                      id="topic"
-                      placeholder="Enter your topic for eg. Force , Algebra or Ancient Egypt"
-                      {...register('topic', { required: 'Topic is required' })}
-                    />
-                    {errors.topic && <div className="invalid-feedback">{errors.topic.message}</div>}
+                      {/* Topic */}
+                      <label htmlFor="topic" className="form-label">
+                        Topic <span style={{ color: 'red' }}>*</span>
+                      </label>
+                      <input
+                        type="text"
+                        className={`form-control form-control-sm mb-2 ${errors.topic ? 'is-invalid' : ''}`}
+                        id="topic"
+                        placeholder="Enter your topic for eg. Force , Algebra or Ancient Egypt"
+                        {...register('topic', { required: 'Topic is required' })}
+                      />
+                      {errors.topic && <div className="invalid-feedback">{errors.topic.message}</div>}
 
-                    {/* Learning Objective */}
-                    <label htmlFor="learning_objective" className="form-label">
-                      Learning Objective <span style={{ color: 'red' }}>*</span>
-                    </label>
-                    <textarea
-                      className={`form-control form-control-sm mb-2 ${errors.learning_objective ? 'is-invalid' : ''}`}
-                      id="learning_objective"
-                      placeholder="Enter learning objectives for eg. Objectives focus on describing movement, observing changes in motion under varying forces, and understanding how mass affects the force needed for motion."
-                      rows={3}
-                      {...register('learning_objective', { required: 'Learning objective is required' })}
-                    />
-                    {errors.learning_objective && <div className="invalid-feedback">{errors.learning_objective.message}</div>}
+                      {/* Learning Objective */}
+                      <label htmlFor="learning_objective" className="form-label">
+                        Learning Objective <span style={{ color: 'red' }}>*</span>
+                      </label>
+                      <textarea
+                        className={`form-control form-control-sm mb-2 ${errors.learning_objective ? 'is-invalid' : ''}`}
+                        id="learning_objective"
+                        placeholder="Enter learning objectives for eg. Objectives focus on describing movement, observing changes in motion under varying forces, and understanding how mass affects the force needed for motion."
+                        rows={3}
+                        {...register('learning_objective', { required: 'Learning objective is required' })}
+                      />
+                      {errors.learning_objective && <div className="invalid-feedback">{errors.learning_objective.message}</div>}
 
-                    {/* Group Size */}
-                    <label htmlFor="group_size" className="form-label">
-                      Group Size <span style={{ color: 'red' }}>*</span>
-                    </label>
-                    <select
-                      className={`form-select form-select-sm mb-2 ${errors.group_size ? 'is-invalid' : ''}`}
-                      id="group_size"
-                      {...register('group_size', { required: 'Group size is required' })}
-                    >
-                      <option value="">Choose group size</option>
-                      {[1, 2, 3, 4, 5].map((size) => (
-                        <option key={size} value={size}>
-                          {size}
-                        </option>
-                      ))}
-                    </select>
-                    {errors.group_size && <div className="invalid-feedback">{errors.group_size.message}</div>}
-                  </div>
-
-                  <div className="d-flex justify-content-between mt-3">
-                    <button type="button" className="btn btn-sm" style={cancelStyle} onClick={() => reset()} disabled={isLoading}>
-                      <FaEraser /> Reset
-                    </button>
-                    <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
-                      Generate <FaArrowRight />
-                    </button>
-
-                  </div>
-                </form>
-              </div>
+                      {/* Group Size */}
+                      <label htmlFor="group_size" className="form-label">
+                        Group Size <span style={{ color: 'red' }}>*</span>
+                      </label>
+                      <select
+                        className={`form-select form-select-sm mb-2 ${errors.group_size ? 'is-invalid' : ''}`}
+                        id="group_size"
+                        {...register('group_size', { required: 'Group size is required' })}
+                      >
+                        <option value="">Choose group size</option>
+                        {[1, 2, 3, 4, 5].map((size) => (
+                          <option key={size} value={size}>
+                            {size}
+                          </option>
+                        ))}
+                      </select>
+                      {errors.group_size && <div className="invalid-feedback">{errors.group_size.message}</div>}
+                    </div>
+                    <div className="mb-3">
+                      <small className="text-muted">
+                        <strong className='text-danger'>Note:</strong>
+                        <ul>
+                          <li>Please ensure that the learning objectives are concise and do not exceed 250 words.</li>
+                        </ul>
+                      </small>
+                    </div>
+                    <div className="d-flex justify-content-between mt-3">
+                      <button type="button" className="btn btn-sm" style={cancelStyle} onClick={() => reset()} disabled={isLoading}>
+                        <FaEraser /> Reset
+                      </button>
+                      <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
+                        Generate <FaArrowRight />
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </>
             ) : (
               <div className="mt-3" id="main-btn">

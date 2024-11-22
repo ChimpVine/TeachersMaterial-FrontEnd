@@ -18,7 +18,7 @@ import ProblemSolving from '../../pages/ProblemSolving';
 import SeqEvents from '../../pages/SeqEvents';
 import { NavLink } from 'react-router-dom';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
-import Cookies from 'js-cookie'; 
+import Cookies from 'js-cookie';
 
 
 export default function WorkSheet({ BASE_URL }) {
@@ -203,7 +203,7 @@ export default function WorkSheet({ BASE_URL }) {
             const response = await axios.post(`${BASE_URL}/generate`, formPayload, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    Authorization: `Bearer ${authToken}`, 
+                    Authorization: `Bearer ${authToken}`,
                     'X-Site-Url': siteUrl
                 },
             });
@@ -211,11 +211,28 @@ export default function WorkSheet({ BASE_URL }) {
             localStorage.setItem("worksheet", JSON.stringify(response.data));
             toast.success('Worksheet generated successfully!');
             setLoading(false);
-        } catch (err) {
-            setError('Failed to generate worksheet. Please try again.');
-            toast.error('Failed to generate worksheet!');
-            setLoading(false);
-            setFormVisible(true);
+        } catch (error) {
+            if (
+                error.response &&
+                error.response.status === 403 &&
+                error.response.data.error === "Unauthorized - Invalid token"
+            ) {
+                console.error('Error: Invalid token.');
+                toast.error('This email has been already used on another device.');
+
+                Cookies.remove('authToken');
+                Cookies.remove('site_url');
+                Cookies.remove('display_name');
+                Cookies.remove('user_email');
+
+                setTimeout(() => {
+                    navigate('/Login');
+                }, 2000);
+            } else {
+                toast.error('Failed to generate worksheet!');
+                setLoading(false);
+                setFormVisible(true);
+            }
         }
     };
 
@@ -445,18 +462,16 @@ export default function WorkSheet({ BASE_URL }) {
                                             accept="application/pdf"
                                             onChange={handleFileChange}
                                         />
-                                        <div className="text-center" style={{ fontSize: '14px' }}>
-                                            <p>
-                                                <span className="fw-bold" style={{ color: 'red' }}>Note: *</span>
-                                                For better results, please upload a
-                                                <span style={{ color: 'red' }}> Workbook</span> PDF.
-                                            </p>
-                                            <p>
-                                                If you have a large PDF and want to shorten it ,
-                                                <NavLink to="/PdfSplitter" target='_blank'>
-                                                    Click here
-                                                </NavLink>
-                                            </p>
+                                        <div className="mb-3">
+                                            <small className="text-muted">
+                                                <strong className='text-danger'>Note:</strong>
+                                                <ul>
+                                                    <li>For better results, Upload a <span style={{ color: 'red' }}>Workbook</span> PDF under 250KB.</li>
+                                                    <li>To shorten a large PDF,<NavLink to="/PdfSplitter" target='_blank'>
+                                                        <span style={{ fontWeight: 'bold' }}> Click here</span>
+                                                    </NavLink></li>
+                                                </ul>
+                                            </small>
                                         </div>
                                     </div>
 

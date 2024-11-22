@@ -62,10 +62,29 @@ export default function Maketheword({ BASE_URL }) {
             setApiResponse(response.data);
             toast.success('Words generated successfully!');
             reset();
-        } catch (error) {
-            const errorMessage = error.response?.data?.error || 'Failed to generate words. Please try again.';
-            toast.error(errorMessage);
-        } finally {
+        } catch (error) { 
+            if (
+                error.response &&
+                error.response.status === 403 &&
+                error.response.data.error === "Unauthorized - Invalid token"
+            ) {
+                console.error('Error: Invalid token.');
+                toast.error('This email has been already used on another device.');
+    
+                Cookies.remove('authToken');
+                Cookies.remove('site_url');
+                Cookies.remove('display_name');
+                Cookies.remove('user_email');
+
+                setTimeout(() => {
+                    window.location.href = '/Login'; 
+                }, 2000); 
+            } else {
+                const errorMessage = error.response?.data?.error || 'Failed to generate words. Please try again.';
+                toast.error(errorMessage);
+            }
+        }
+         finally {
             setIsLoading(false);
         }
     };

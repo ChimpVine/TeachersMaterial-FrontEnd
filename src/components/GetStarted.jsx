@@ -50,18 +50,6 @@ const TypingEffect = () => {
     );
 };
 
-const scrollToSection = (e, targetId) => {
-    e.preventDefault();
-    const targetElement = document.querySelector(targetId);
-    if (targetElement) {
-        window.scrollTo({
-            top: targetElement.offsetTop,
-            behavior: 'smooth'
-        });
-    } else {
-        console.error(`Element with id ${targetId} not found.`);
-    }
-};
 
 const GetStarted = () => {
 

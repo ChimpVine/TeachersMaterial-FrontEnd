@@ -6,7 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../spinner/Spinner';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
-import Cookies from 'js-cookie'; 
+import Cookies from 'js-cookie';
 
 
 // Subjects list
@@ -129,7 +129,7 @@ export default function VocabularyPlan({ BASE_URL }) {
                 {
                     headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `Bearer ${authToken}`, 
+                        Authorization: `Bearer ${authToken}`,
                         'X-Site-Url': siteUrl
                     }
                 }
@@ -144,8 +144,26 @@ export default function VocabularyPlan({ BASE_URL }) {
             });
             toast.success('Vocabulary generated successfully!');
         } catch (error) {
-            console.error('Error:', error);
-            toast.error('Failed to generate the Vocabulary. Please try again.');
+            if (
+                error.response &&
+                error.response.status === 403 &&
+                error.response.data.error === "Unauthorized - Invalid token"
+            ) {
+                console.error('Error: Invalid token.');
+                toast.error('This email has been already used on another device.');
+
+                Cookies.remove('authToken');
+                Cookies.remove('site_url');
+                Cookies.remove('display_name');
+                Cookies.remove('user_email');
+
+                setTimeout(() => {
+                    navigate('/Login');
+                }, 2000);
+            } else {
+                console.error('Error:', error);
+                toast.error('Failed to generate the Vocabulary. Please try again.');
+            }
         } finally {
             setIsLoading(false);
         }

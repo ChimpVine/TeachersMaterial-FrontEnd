@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useForm } from 'react-hook-form';
 import Spinner from '../../spinner/Spinner';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
-import Cookies from 'js-cookie'; 
+import Cookies from 'js-cookie';
 
 
 export default function TextSummarizer({ BASE_URL }) {
@@ -52,7 +52,7 @@ export default function TextSummarizer({ BASE_URL }) {
                 {
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${authToken}`, 
+                        'Authorization': `Bearer ${authToken}`,
                         'X-Site-Url': siteUrl
                     }
                 }
@@ -61,7 +61,25 @@ export default function TextSummarizer({ BASE_URL }) {
             reset();
             toast.success('Summary generated successfully!');
         } catch (error) {
-            toast.warning(`${error.response.data.error}`);
+            if (
+                error.response &&
+                error.response.status === 403 &&
+                error.response.data.error === "Unauthorized - Invalid token"
+            ) {
+                console.error('Error: Invalid token.');
+                toast.error('This email has been already used on another device.');
+
+                Cookies.remove('authToken');
+                Cookies.remove('site_url');
+                Cookies.remove('display_name');
+                Cookies.remove('user_email');
+
+                setTimeout(() => {
+                    navigate('/Login');
+                }, 2000);
+            } else {
+                toast.warning(`${error.response.data.error}`);
+            }
         } finally {
             setIsLoading(false);
         }
@@ -78,7 +96,7 @@ export default function TextSummarizer({ BASE_URL }) {
             <ToastContainer position="top-right" autoClose={1500} />
             <div className="container-fluid">
                 <div className="row justify-content-center mt-5 mb-4">
-                    
+
                     {isLoading ? (
                         <div className="col-md-5 text-center">
                             <Spinner />
@@ -86,69 +104,76 @@ export default function TextSummarizer({ BASE_URL }) {
                     ) : (
                         !apiResponse ? (
                             <>
-                            <NavBreadcrumb items={breadcrumbItems} />
-                            <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded no-print">
-                                <form onSubmit={handleSubmit(onSubmit)}>
-                                    <h4 className="text-center mb-3">Text Summarizer</h4>
-                                    <div className="mb-3">
-                                        <label htmlFor="text" className="form-label-sm">Your Text Input<span style={{ color: 'red' }}>*</span></label>
-                                        <textarea
-                                            className={`form-control form-control-sm resizeStyle ${errors.text ? 'is-invalid' : ''}`}
-                                            id="text"
-                                            name="text"
-                                            rows="10"
-                                            placeholder="Enter the text you want to summarize For Eg.On a misty morning, the purple sky reflected a thousand shimmering stars, though the sun was only moments away from rising. The forest below buzzed with life, and the distant call of a bird echoed across the valley. Amidst the tall trees, an old stone path led to a forgotten garden, overgrown with ivy and wildflowers. The scent of rain lingered in the air, mixing with the earthy fragrance of the moss-covered stones. A single leaf fluttered down, landing softly on the surface of a quiet, hidden pond."
-                                            disabled={isLoading}
-                                            {...register('text', {
-                                                required: 'Text is required',
-                                                validate: validateWordCount
-                                            })}
-                                        ></textarea>
-                                        {errors.text && <div className="invalid-feedback">{errors.text.message}</div>}
+                                <NavBreadcrumb items={breadcrumbItems} />
+                                <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded no-print">
+                                    <form onSubmit={handleSubmit(onSubmit)}>
+                                        <h4 className="text-center mb-3">Text Summarizer</h4>
+                                        <div className="mb-3">
+                                            <label htmlFor="text" className="form-label-sm">Your Text Input<span style={{ color: 'red' }}>*</span></label>
+                                            <textarea
+                                                className={`form-control form-control-sm resizeStyle ${errors.text ? 'is-invalid' : ''}`}
+                                                id="text"
+                                                name="text"
+                                                rows="10"
+                                                placeholder="Enter the text you want to summarize For Eg.On a misty morning, the purple sky reflected a thousand shimmering stars, though the sun was only moments away from rising. The forest below buzzed with life, and the distant call of a bird echoed across the valley. Amidst the tall trees, an old stone path led to a forgotten garden, overgrown with ivy and wildflowers. The scent of rain lingered in the air, mixing with the earthy fragrance of the moss-covered stones. A single leaf fluttered down, landing softly on the surface of a quiet, hidden pond."
+                                                disabled={isLoading}
+                                                {...register('text', {
+                                                    required: 'Text is required',
+                                                    validate: validateWordCount
+                                                })}
+                                            ></textarea>
+                                            {errors.text && <div className="invalid-feedback">{errors.text.message}</div>}
 
-                                        {/* Word count aligned to the right side */}
-                                        <div className="d-flex justify-content-end mt-1">
-                                            <small className={`${wordCount > 1000 ? 'text-danger' : 'text-muted'}`}>
-                                                Word count: {wordCount}/1000
+                                            {/* Word count aligned to the right side */}
+                                            <div className="d-flex justify-content-end mt-1">
+                                                <small className={`${wordCount > 1000 ? 'text-danger' : 'text-muted'}`}>
+                                                    Word count: {wordCount}/1000
+                                                </small>
+                                            </div>
+                                        </div>
+
+                                        <div className="mb-3">
+                                            <label htmlFor="summary_format" className="form-label-sm">Your Text Format <span style={{ color: 'red' }}>*</span></label>
+                                            <select
+                                                className={`form-select form-select-sm mb-3 ${errors.summary_format ? 'is-invalid' : ''}`}
+                                                id="summary_format"
+                                                name="summary_format"
+                                                disabled={isLoading}
+                                                {...register('summary_format', { required: 'Please select a summary format' })}
+                                            >
+                                                <option value="">Select Format</option>
+                                                <option value="Point">Point</option>
+                                                <option value="Paragraph">Paragraph</option>
+                                            </select>
+                                            {errors.summary_format && <div className="invalid-feedback">{errors.summary_format.message}</div>}
+                                        </div>
+                                        <div className="mb-3">
+                                            <small className="text-muted">
+                                                <strong className='text-danger'>Note:</strong>
+                                                <ul>
+                                                    <li> Please ensure that the text input are concise and under 1000 words.</li>
+                                                </ul>
                                             </small>
                                         </div>
-                                    </div>
-
-                                    <div className="mb-3">
-                                        <label htmlFor="summary_format" className="form-label-sm">Your Text Format <span style={{ color: 'red' }}>*</span></label>
-                                        <select
-                                            className={`form-select form-select-sm mb-3 ${errors.summary_format ? 'is-invalid' : ''}`}
-                                            id="summary_format"
-                                            name="summary_format"
-                                            disabled={isLoading}
-                                            {...register('summary_format', { required: 'Please select a summary format' })}
-                                        >
-                                            <option value="">Select Format</option>
-                                            <option value="Point">Point</option>
-                                            <option value="Paragraph">Paragraph</option>
-                                        </select>
-                                        {errors.summary_format && <div className="invalid-feedback">{errors.summary_format.message}</div>}
-                                    </div>
-
-                                    <div className="d-flex justify-content-between mt-3">
-                                        <button
-                                            type="button"
-                                            className="btn btn-sm"
-                                            style={cancelStyle}
-                                            onClick={() => {
-                                                reset({ text: '', summary_format: '' });
-                                                setWordCount(0);
-                                            }}
-                                            disabled={isLoading}
-                                        >
-                                            <FaEraser /> Reset
-                                        </button>
-                                        <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
-                                            Generate <FaArrowRight />
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
+                                        <div className="d-flex justify-content-between mt-3">
+                                            <button
+                                                type="button"
+                                                className="btn btn-sm"
+                                                style={cancelStyle}
+                                                onClick={() => {
+                                                    reset({ text: '', summary_format: '' });
+                                                    setWordCount(0);
+                                                }}
+                                                disabled={isLoading}
+                                            >
+                                                <FaEraser /> Reset
+                                            </button>
+                                            <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
+                                                Generate <FaArrowRight />
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
                             </>
                         ) : (
                             <div className="mt-3" id="main-btn">
