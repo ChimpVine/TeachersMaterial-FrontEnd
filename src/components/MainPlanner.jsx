@@ -174,31 +174,26 @@ export default function MainPlanner() {
         },
         {
             id: 12,
-            category: 'Summarizer',
+            category: 'Planner',
             icon: (
                 <div className="position-relative">
-                    <FaYoutubeSquare size={50} style={{ color: "#dc3545" }} />
-                    <span className="badge rounded-pill bg-danger small-badge position-absolute top-0 end-0">Coming Soon</span>
+                    <FaRegSmileBeam  size={50} style={{ color: "#0d6efd" }}/>
+                    <span className="badge rounded-pill bg-success position-absolute top-0 end-0">Popular</span>
                 </div>
             ),
-            title: 'YouTube Summarizer',
-            description: 'Effortlessly create clear and concise video summaries with our YouTube Summarizer.',
-            link: '/Comingsoon',
-            btnColor: 'danger'
+            title: 'SEL Generator',
+            description: 'Masterfully curate holistic and engaging SEL content for deep, meaningful learning.',
+            link: '/SelGenerator',
+            btnColor: 'primary'
         },
         {
             id: 13,
-            category: 'Assessment',
-            icon: (
-                <div className="position-relative">
-                    <FaBookReader size={50}  style={{ color: "#198754" }}/>
-                    <span className="badge rounded-pill bg-danger small-badge position-absolute top-0 end-0">Coming Soon</span>
-                </div>
-            ),
-            title: 'Comprehension',
-            description: 'Easily design personalized and detailed assessments with our intuitive Comprehension.',
-            link: '/Comingsoon',
-            btnColor: 'success'
+            category: 'Gamification',
+            icon: <FaThLarge size={50} style={{ color: "#6c757d" }} />,
+            title: 'Make the Word',
+            description: 'Quickly create fun and interactive challenges with our Make the Word Generator.',
+            link: '/Maketheword',
+            btnColor: 'secondary'
         },
         {
             id: 14,
@@ -230,12 +225,17 @@ export default function MainPlanner() {
         },
         {
             id: 16,
-            category: 'Gamification',
-            icon: <FaThLarge size={50} style={{ color: "#6c757d" }} />,
-            title: 'Make the Word',
-            description: 'Quickly create fun and interactive challenges with our Make the Word Generator.',
-            link: '/Maketheword',
-            btnColor: 'secondary'
+            category: 'Assessment',
+            icon: (
+                <div className="position-relative">
+                    <FaBookReader size={50}  style={{ color: "#198754" }}/>
+                    <span className="badge rounded-pill bg-danger small-badge position-absolute top-0 end-0">Coming Soon</span>
+                </div>
+            ),
+            title: 'Comprehension',
+            description: 'Easily design personalized and detailed assessments with our intuitive Comprehension.',
+            link: '/Comingsoon',
+            btnColor: 'success'
         },
         {
             id: 17,
@@ -267,17 +267,17 @@ export default function MainPlanner() {
         },
         {
             id: 19,
-            category: 'Planner',
+            category: 'Summarizer',
             icon: (
                 <div className="position-relative">
-                    <FaRegSmileBeam  size={50} style={{ color: "#0d6efd" }}/>
-                    <span className="badge rounded-pill bg-success position-absolute top-0 end-0">Popular</span>
+                    <FaYoutubeSquare size={50} style={{ color: "#dc3545" }} />
+                    <span className="badge rounded-pill bg-danger small-badge position-absolute top-0 end-0">Coming Soon</span>
                 </div>
             ),
-            title: 'SEL Generator',
-            description: 'Masterfully curate holistic and engaging SEL content for deep, meaningful learning.',
-            link: '/SelGenerator',
-            btnColor: 'primary'
+            title: 'YouTube Summarizer',
+            description: 'Effortlessly create clear and concise video summaries with our YouTube Summarizer.',
+            link: '/Comingsoon',
+            btnColor: 'danger'
         },
         {
             id: 20,

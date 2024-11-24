@@ -65,30 +65,46 @@ export default function Footer() {
                             </ul>
                         </div>
                         <div className="col-md-3 pt-3">
-                            <h5>Affiliate</h5>
+                            <h5>Content</h5>
                             <ul className="list-unstyled">
                                 <li>
                                     <NavLink
                                         className="content"
-                                        to="https://site.chimpvine.com/become-an-affiliate/"
+                                        to="https://site.chimpvine.com/category/games/"
                                         target='_blank'>
-                                        Become an affiliate
+                                        Games
                                     </NavLink>
                                 </li>
                                 <li>
                                     <NavLink
                                         className="content"
-                                        to="https://site.chimpvine.com/affiliate-terms-conditions/"
+                                        to="https://site.chimpvine.com/category/interactive-content/"
                                         target='_blank'>
-                                        Affiliate Terms and Condition
+                                        Interactive Content
                                     </NavLink>
                                 </li>
                                 <li>
                                     <NavLink
                                         className="content"
-                                        to="https://site.chimpvine.com/affiliate-faqs/"
+                                        to="https://site.chimpvine.com/subject/mathematics/"
                                         target='_blank'>
-                                        Affiliate FAQ
+                                        Mathematics
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink
+                                        className="content"
+                                        to="https://site.chimpvine.com/subject/english/"
+                                        target='_blank'>
+                                        English
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink
+                                        className="content"
+                                        to="https://site.chimpvine.com/article/"
+                                        target='_blank'>
+                                        Articles
                                     </NavLink>
                                 </li>
                             </ul>

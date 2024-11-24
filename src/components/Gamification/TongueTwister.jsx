@@ -85,20 +85,19 @@ export default function TongueTwister({ BASE_URL }) {
             toast.success('Tongue Twister generated successfully!');
         } catch (error) {
             if (
-                error.response &&
-                error.response.status === 401 &&
-                error.response.data.error === "Unauthorized - Invalid token"
+                error.response.status === 401  
             ) {
                 console.error('Error: Invalid token.');
-                toast.error('This email has been already used on another device.');
+                toast.warning('This email has been already used on another device.');
     
                 Cookies.remove('authToken');
                 Cookies.remove('site_url');
-                Cookies.remove('display_name');
+                Cookies.remove('Display_name');
                 Cookies.remove('user_email');
     
                 setTimeout(() => {
                     navigate('/Login'); 
+                    window.location.reload();
                 }, 2000); 
             } else {
                 console.error('Error:', error);

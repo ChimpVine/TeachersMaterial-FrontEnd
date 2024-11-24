@@ -100,20 +100,19 @@ export default function SocialStory({ BASE_URL }) {
             toast.success('Social story generated successfully!');
         } catch (error) {
             if (
-                error.response &&
-                error.response.status === 401 &&
-                error.response.data.error === "Unauthorized - Invalid token"
+                error.response.status === 401 
             ) {
                 console.error('Error: Invalid token.');
-                toast.error('This email has been already used on another device.');
+                toast.warning('This email has been already used on another device.');
 
                 Cookies.remove('authToken');
                 Cookies.remove('site_url');
-                Cookies.remove('display_name');
+                Cookies.remove('Display_name');
                 Cookies.remove('user_email');
 
                 setTimeout(() => {
                     navigate('/Login');
+                    window.location.reload();
                 }, 2000);
             } else {
                 console.error('Error:', error);
@@ -248,7 +247,7 @@ export default function SocialStory({ BASE_URL }) {
                                                 value={formData.scenario}
                                                 onChange={handleChange}
                                                 disabled={isLoading}
-                                                placeholder="Eg. Playing in the park"
+                                                placeholder="For eg. Playing in the park"
                                             />
 
                                             <label htmlFor="behavior_challenge" className="form-label">
@@ -262,7 +261,7 @@ export default function SocialStory({ BASE_URL }) {
                                                 value={formData.behavior_challenge}
                                                 onChange={handleChange}
                                                 disabled={isLoading}
-                                                placeholder="Eg. Finding it hard to wait for a turn"
+                                                placeholder="For eg. Finding it hard to wait for a turn"
                                             />
 
                                             <label htmlFor="ideal_behavior" className="form-label">
@@ -276,7 +275,7 @@ export default function SocialStory({ BASE_URL }) {
                                                 value={formData.ideal_behavior}
                                                 onChange={handleChange}
                                                 disabled={isLoading}
-                                                placeholder="Eg. Waiting patiently and taking turns"
+                                                placeholder="For eg. Waiting patiently and taking turns"
                                             />
                                         </div>
 
@@ -311,13 +310,6 @@ export default function SocialStory({ BASE_URL }) {
                                     <button className="btn btn-sm mt-2 mb-3 me-2 no-print" style={btnStyle} onClick={() => setApiResponse(null)}>
                                         <FaArrowLeft /> Generate Another Social Story
                                     </button>
-                                    {/* <button
-                                        type="button"
-                                        className="btn btn-sm btn-warning mt-2 mb-3 me-2 no-print"
-                                        onClick={handleEditButtonClick}
-                                    >
-                                        <FaEdit /> Edit Social Story
-                                    </button> */}
                                     <button className="btn btn-sm mt-2 mb-3 no-print" style={pdfStyle} onClick={handlePrint}>
                                         <FaRegFilePdf /> View PDF
                                     </button>

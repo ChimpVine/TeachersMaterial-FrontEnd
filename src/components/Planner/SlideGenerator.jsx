@@ -133,20 +133,19 @@ export default function SlideGenerator({ BASE_URL }) {
             toast.success('Slide generated successfully!');
         } catch (error) {
             if (
-                error.response &&
-                error.response.status === 401 &&
-                error.response.data.error === "Unauthorized - Invalid token"
+                error.response.status === 401
             ) {
                 console.error('Error: Invalid token.');
-                toast.error('This email has been already used on another device.');
+                toast.warning('This email has been already used on another device.');
 
                 Cookies.remove('authToken');
                 Cookies.remove('site_url');
-                Cookies.remove('display_name');
+                Cookies.remove('Display_name');
                 Cookies.remove('user_email');
 
                 setTimeout(() => {
                     navigate('/Login');
+                    window.location.reload();
                 }, 2000);
             } else {
                 console.error('Error:', error);
@@ -333,7 +332,7 @@ export default function SlideGenerator({ BASE_URL }) {
                                                 name="title"
                                                 value={formData.title}
                                                 onChange={handleChange}
-                                                placeholder="For example: About Nepal."
+                                                placeholder="For eg. The Wildlife of the United States"
                                             />
 
                                             <label htmlFor="objective" className="form-label">
@@ -349,7 +348,7 @@ export default function SlideGenerator({ BASE_URL }) {
                                                 value={formData.objective}
                                                 onChange={handleChange}
                                                 rows={4}
-                                                placeholder="For example: To enhance the dignity of the nation by safeguarding sovereignty, territorial integrity, independence, and promoting economic wellbeing and prosperity of Nepal."
+                                                placeholder="For eg. Discover the diverse wildlife found in different regions of America. Learn about animals like the American bison, bald eagle, and grizzly bear. Explore the importance of preserving habitats and biodiversity."
                                             />
 
                                             <label htmlFor="slide_number" className="form-label">

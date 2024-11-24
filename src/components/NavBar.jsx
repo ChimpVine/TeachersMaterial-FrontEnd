@@ -55,14 +55,23 @@ export default function NavBar() {
                                     Home
                                 </NavLink>
                             </li>
-                            <li className="nav-item mt-2 p-2">
+                            <li className="nav-item mt-1 me-5 p-2">
                                 <NavLink
-                                    className={({ isActive }) =>
-                                        isActive ? "nav-link-tools me-5 active-link" : "nav-link-tools me-5"
-                                    }
+                                    className="btn btn-sm"
+                                    style={btnStyle}
                                     to="/MainPlanner"
                                 >
                                     AI Tools
+                                </NavLink>
+                            </li>
+                            <li className="nav-item mt-2 p-2">
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        isActive ? "nav-link-elearning me-5 text-light active-link" : "nav-link-elearning me-5 text-light"
+                                    }
+                                    to="https://site.chimpvine.com/test161803/"
+                                >
+                                    eLearning for kids
                                 </NavLink>
                             </li>
                             <li className="nav-item dropdown mt-2">
@@ -94,16 +103,6 @@ export default function NavBar() {
                                     to="/RequestForm"
                                 >
                                     Contact Us
-                                </NavLink>
-                            </li>
-                            <li className="nav-item mt-2 p-2">
-                                <NavLink
-                                    className={({ isActive }) =>
-                                        isActive ? "nav-link-elearning me-5 text-light active-link" : "nav-link-elearning me-5 text-light"
-                                    }
-                                    to="https://site.chimpvine.com/test161803/"
-                                >
-                                    eLearning 
                                 </NavLink>
                             </li>
                             {user ? (
