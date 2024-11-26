@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import NavBar from '../NavBar';
 import { FaArrowRight, FaEraser, FaArrowLeft, FaCloudDownloadAlt } from "react-icons/fa";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
 import Spinner from '../../spinner/Spinner';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
@@ -93,7 +92,6 @@ export default function TextSummarizer({ BASE_URL }) {
     return (
         <>
             <NavBar id="main-nav" />
-            <ToastContainer position="top-right" autoClose={1500} />
             <div className="container-fluid">
                 <div className="row justify-content-center mt-5 mb-4">
 

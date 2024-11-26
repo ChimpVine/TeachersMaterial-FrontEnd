@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import logo from "../assests/img/ChimpVine_Logo.png";
 import { NavLink } from 'react-router-dom';
 import { UserContext } from '../context/UserContext.jsx';
+import { toast } from 'react-toastify';
 
 export default function NavBar() {
     const { user, logout } = useContext(UserContext);
@@ -17,6 +18,12 @@ export default function NavBar() {
     const btnStyle = {
         backgroundColor: '#FF683B',
         color: 'white',
+    };
+
+    const handleAIToolsClick = () => {
+        if (!user) {
+            toast.warning("Login to access AI Tools");
+        }
     };
 
     return (
@@ -55,7 +62,7 @@ export default function NavBar() {
                                     Home
                                 </NavLink>
                             </li>
-                            <li className="nav-item mt-1 me-5 p-2">
+                            {/* <li className="nav-item mt-1 me-5 p-2">
                                 <NavLink
                                     className="btn btn-sm"
                                     style={btnStyle}
@@ -63,6 +70,25 @@ export default function NavBar() {
                                 >
                                     AI Tools
                                 </NavLink>
+                            </li> */}
+                            <li className="nav-item mt-1 me-5 p-2">
+                                {user ? (
+                                    <NavLink
+                                        className="btn btn-sm"
+                                        style={btnStyle}
+                                        to="/MainPlanner"
+                                    >
+                                        AI Tools
+                                    </NavLink>
+                                ) : (
+                                    <button
+                                        className="btn btn-sm"
+                                        style={btnStyle}
+                                        onClick={handleAIToolsClick}
+                                    >
+                                        AI Tools
+                                    </button>
+                                )}
                             </li>
                             <li className="nav-item mt-2 p-2">
                                 <NavLink
@@ -100,7 +126,7 @@ export default function NavBar() {
                                     className={({ isActive }) =>
                                         isActive ? "nav-link-navigate me-5 text-light active-link" : "nav-link-navigate me-5 text-light"
                                     }
-                                    to="/RequestForm"
+                                    to="/ContactUs"
                                 >
                                     Contact Us
                                 </NavLink>

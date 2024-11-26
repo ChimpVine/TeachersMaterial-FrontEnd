@@ -117,14 +117,14 @@ const Login = () => {
                         <h3 className="text-center mb-5" style={textStyle}>Login</h3>
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div className="form-group mb-4">
-                                <label>Username or Email</label>
+                                <label>Email</label>
                                 <input
                                     type="text"
                                     className={`form-control form-control-sm ${errors.username ? 'is-invalid' : ''}`}
-                                    placeholder="Enter your username or email"
+                                    placeholder="Enter your email"
                                     autoComplete="username"
                                     disabled={loading}
-                                    {...register('username', { required: 'Username or email is required' })}
+                                    {...register('username', { required: 'Email is required' })}
                                 />
                                 {errors.username && <div className="invalid-feedback">{errors.username.message}</div>}
                             </div>

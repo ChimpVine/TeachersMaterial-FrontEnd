@@ -3,8 +3,7 @@ import axios from 'axios';
 import NavBar from '../NavBar';
 import { FaArrowRight, FaEraser, FaArrowLeft, FaCloudDownloadAlt } from "react-icons/fa";
 import { useForm } from 'react-hook-form';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import Spinner from '../../spinner/Spinner';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
 import Cookies from 'js-cookie';
@@ -17,15 +16,12 @@ const subjects = [
   { value: "mathematics", label: "Mathematics" },
   { value: "science", label: "Science" },
   { value: "social_studies", label: "Social Studies" },
-  { value: "reading", label: "Reading" },
-  { value: "writing", label: "Writing" },
   { value: "art", label: "Art" },
   { value: "music", label: "Music" },
   { value: "physical_education", label: "Physical Education" },
   { value: "health", label: "Health" },
   { value: "technology", label: "Technology" },
-  { value: "library", label: "Library" },
-  { value: "foreign_language", label: "Foreign Language" }
+  { value: "language", label: "Language" }
 ];
 
 const grades = [
@@ -118,10 +114,8 @@ export default function GroupWork({ BASE_URL }) {
   return (
     <>
       <NavBar id="main-nav" />
-      <ToastContainer position="top-right" autoClose={1500} />
       <div className="container-fluid">
         <div className="row justify-content-center mt-5 mb-4">
-
           {isLoading ? (
             <div className="col-md-5 text-center">
               <Spinner />
@@ -205,7 +199,7 @@ export default function GroupWork({ BASE_URL }) {
                         {...register('group_size', { required: 'Group size is required' })}
                       >
                         <option value="">Choose group size</option>
-                        {[1, 2, 3, 4, 5].map((size) => (
+                        {[2, 3, 4, 5].map((size) => (
                           <option key={size} value={size}>
                             {size}
                           </option>

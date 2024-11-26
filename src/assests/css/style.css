@@ -75,6 +75,7 @@ a:hover {
 
 .unique-typewrite>.wrap {
     border-right: 0.08em solid #8F47D7;
+    color: #8F47D7;
 }
 
 .unique-button {
@@ -184,10 +185,10 @@ a:hover {
 
 .nav-link-home,
 .nav-link-contact,
-.nav-link-elearning,
-.nav-link-tools{
+.nav-link-elearning{
     color: white;
 }
+
 
 .nav-link-splitter ,.nav-link-navigate{
     color: black;
@@ -217,7 +218,6 @@ a:hover {
     border-bottom: 3px solid #FF683B; /* Blue border for active page */
     color: #ffffff; /* Change text color to blue */
 }
-
 
 
 #sel_topic,

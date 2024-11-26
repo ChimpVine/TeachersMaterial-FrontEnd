@@ -145,7 +145,7 @@ export default function Aboutus() {
                 <div className="mb-3" style={{ fontSize: '1.25rem', color: '#555' }}>
                     Let’s chat about your goals and get started !
                 </div>
-                <NavLink to="/RequestForm">
+                <NavLink to="/ContactUs">
                     <button className='btn btn-outline-dark btn-lg mt-3 me-2'>Contact Us</button>
                 </NavLink>
             </div>

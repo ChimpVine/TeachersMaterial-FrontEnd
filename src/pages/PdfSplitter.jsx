@@ -36,31 +36,78 @@ const PdfSplitter = () => {
         }
     };
 
-    const handleRemovePdf = () => {
-        setFileNames([]);
-        setPdfBlobUrl(null);
-        document.getElementById('fileUpload').value = '';
+    // const handleRemovePdf = () => {
+    //     setFileNames([]);
+    //     setPdfBlobUrl(null);
+    //     document.getElementById('fileUpload').value = '';
+    // };
+
+    // CSS styles as constants
+    const styles = {
+        headerContainer: {
+            marginBottom: '30px',
+        },
+        buttonContainer: {
+            display: 'flex',
+            justifyContent: 'center',
+        },
+        uploadLabel: {
+            backgroundColor: '#ff683b',
+            color: 'white',
+            borderRadius: '5px',
+            cursor: 'pointer',
+            display: 'inline-block',
+            fontSize: '16px',
+            transition: 'all 0.3s ease-in-out',
+        },
+        fileDetailsContainer: {
+            display: 'flex',
+            justifyContent: 'center',
+        },
+        fileCard: {
+            maxWidth: '500px',
+            backgroundColor: '#ffffff',
+            border: '1px solid #f0f0f0',
+        },
+        fileCardHeader: {
+            fontWeight: 'bold',
+        },
+        actionButton: {
+            fontSize: '16px',
+            transition: 'all 0.3s ease-in-out',
+        },
+        successButtonHover: {
+            backgroundColor: '#218838',
+        },
+        dangerButtonHover: {
+            backgroundColor: '#c82333',
+        },
     };
 
     const btnStyle = {
         backgroundColor: '#FF683B',
         color: 'white',
-        borderRadius: "5px",
-        cursor: "pointer"
+        borderRadius: '5px',
+        cursor: 'pointer',
     };
 
     return (
         <>
             <NavBar />
             <div className="container mt-5 text-center">
-                <div className="header-container mb-5">
+              
+                <div style={styles.headerContainer}>
                     <h1 className="display-4 fw-bold">Split Your PDFs with Ease</h1>
                     <p className="lead text-muted">Quickly split PDF files for seamless management and sharing.</p>
                 </div>
 
-                {/* Buttons */}
-                <div className="button-container mb-4">
-                    <label htmlFor="fileUpload" className="px-4 py-2 me-2" style={btnStyle}>
+               
+                <div style={styles.buttonContainer}>
+                    <label
+                        htmlFor="fileUpload"
+                        className="px-4 py-2 me-2"
+                        style={{ ...btnStyle, ...styles.uploadLabel }}
+                    >
                         Upload PDF
                         <input
                             type="file"
@@ -75,7 +122,7 @@ const PdfSplitter = () => {
                     </Button>
                 </div>
 
-                {/* Modal for steps */}
+                
                 <Modal show={showModal} onHide={() => setShowModal(false)} centered>
                     <Modal.Header closeButton>
                         <Modal.Title>Steps to Split PDF</Modal.Title>
@@ -97,11 +144,13 @@ const PdfSplitter = () => {
                     </Modal.Footer>
                 </Modal>
 
-                {/* File Details */}
+               
                 {fileNames.length > 0 && (
-                    <div className="file-details-container mt-5">
-                        <div className="file-card p-4 shadow-sm rounded">
-                            <h5 className="text-success mb-3">Uploaded File</h5>
+                    <div style={styles.fileDetailsContainer} className="mt-5">
+                        <div style={styles.fileCard} className="file-card p-4 shadow-sm rounded">
+                            <h5 style={styles.fileCardHeader} className="text-success mb-3">
+                                Uploaded File
+                            </h5>
                             <ul className="list-unstyled">
                                 {fileNames.map((name, index) => (
                                     <li key={index} className="text-muted">
@@ -109,78 +158,27 @@ const PdfSplitter = () => {
                                     </li>
                                 ))}
                             </ul>
-                            <div className="action-buttons mt-4">
+                            <div className="action-buttons mt-4 ps-5 pe-5">
                                 <button
                                     className="btn btn-success me-3 px-4 py-2"
+                                    style={styles.actionButton}
                                     onClick={handlePrintPdf}
                                 >
                                     Split PDF
                                 </button>
-                                <button
+                                {/* Uncomment if needed */}
+                                {/* <button
                                     className="btn btn-danger px-4 py-2"
+                                    style={styles.actionButton}
                                     onClick={handleRemovePdf}
                                 >
                                     Remove PDF
-                                </button>
+                                </button> */}
                             </div>
                         </div>
                     </div>
                 )}
             </div>
-
-            {/* Inline Styles */}
-            <style jsx>{`
-        .header-container {
-          margin-bottom: 30px;
-        }
-
-        .button-container {
-          display: flex;
-          justify-content: center;
-        }
-
-        .upload-label {
-          background-color: #f77f00;
-          color: white;
-          border-radius: 5px;
-          cursor: pointer;
-          display: inline-block;
-          font-size: 16px;
-          transition: all 0.3s ease-in-out;
-        }
-
-        .upload-label:hover {
-          background-color: #dc2f02;
-        }
-
-        .file-details-container {
-          display: flex;
-          justify-content: center;
-        }
-
-        .file-card {
-          max-width: 500px;
-          background-color: #ffffff;
-          border: 1px solid #f0f0f0;
-        }
-
-        .file-card h5 {
-          font-weight: bold;
-        }
-
-        .action-buttons .btn {
-          font-size: 16px;
-          transition: all 0.3s ease-in-out;
-        }
-
-        .action-buttons .btn-success:hover {
-          background-color: #218838;
-        }
-
-        .action-buttons .btn-danger:hover {
-          background-color: #c82333;
-        }
-      `}</style>
         </>
     );
 };

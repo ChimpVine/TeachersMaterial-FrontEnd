@@ -2,8 +2,7 @@ import React, { useState, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import Spinner from '../../spinner/Spinner.jsx';
 import jsPDF from 'jspdf';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import {
     FaArrowRight,
     FaCheckCircle,
@@ -346,10 +345,6 @@ const QuizUI = ({ BASE_URL }) => {
     return (
         <>
             <NavBar />
-            <ToastContainer
-                position="top-right"
-                autoClose={1500}
-            />
             <div className="container">
                 <div className="row justify-content-center mt-5 mb-4">
                     

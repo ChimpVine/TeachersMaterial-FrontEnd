@@ -1,6 +1,7 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 
-export default function HeroSection() {
+export default function HeroSection() { 
 
     return (
         <>
@@ -9,7 +10,7 @@ export default function HeroSection() {
                 {/* Title Section */}
                 <div className="text-center py-5">
                     <h2 className='fw-bold'>
-                        Our tools help you in achieving your goals faster and easier!
+                        Teachers, Our tools help you in achieving your goals faster and easier!
                     </h2>
                     <p className="lead">Here's how it works</p>
                 </div>
@@ -19,7 +20,7 @@ export default function HeroSection() {
                         <div className="col-md-5">
                             <h1 className="display-1 fw-bold" style={{ color: "#69A2D9" }}>01</h1>
                             <h4 className="fw-bold">Select any of our tools</h4>
-                            <p className='lead me-4' style={{ textAlign: "justify" }}>We provide AI tools for teachers as well as students. The teacher toolkit helps educators to generate lesson plans, assessments, rubric as well as fun activities. We also have AI tools for students which can help them with their homework, and provide assistance when required.
+                            <p className='lead me-4' style={{ textAlign: "justify" }}>We provide AI (Artificial Intelligence) for teachers as well as students. Our Teacher Toolkit helps educators generate lesson plans, assessments, rubric as well as fun activities among many other things. We also have AI Tools for students which can help them with their homework, and provide assistance when required.
                             </p>
                         </div>
                         <div className="col-md-7 border border-primary border-one rounded p-2">
@@ -89,7 +90,7 @@ export default function HeroSection() {
                                         aria-expanded="false"
                                         aria-controls="collapseOneLeft"
                                     >
-                                        What is an AI tool for teaching?
+                                        What is an AI Tool for teaching?
                                     </button>
                                 </h2>
                                 <div
@@ -99,7 +100,7 @@ export default function HeroSection() {
                                     data-bs-parent="#faqAccordionLeft"
                                 >
                                     <div className="accordion-body">
-                                        An AI tool for teaching is a software application that uses artificial intelligence to enhance the educational experience for both educators and students. These tools can personalize learning, automate assessments, and assist in content creation, making the teaching process more efficient and effective. Popular examples include adaptive learning platforms like DreamBox and AI-driven content generation tools like ChatGPT.
+                                        An AI Tool for teaching is a software application that uses artificial intelligence to enhance the educational experience for both educators and students. These tools can personalize learning, automate assessments, and assist in content creation, making the teaching process more efficient and effective. Popular examples include adaptive learning platforms like DreamBox and AI-driven content generation tools like ChatGPT.
                                     </div>
                                 </div>
                             </div>
@@ -125,7 +126,7 @@ export default function HeroSection() {
                                     data-bs-parent="#faqAccordionLeft"
                                 >
                                     <div className="accordion-body">
-                                        AI is being used in teaching to personalize learning experiences, automate grading, and enhance classroom management. It helps educators tailor lessons to individual student needs, provides real-time feedback, and streamlines administrative tasks.
+                                        AI is being used in teaching to personalize learning experiences, automate grading, and enhance classroom management. It helps educators tailor lessons to individual student needs, provides real-time feedback, and streamline administrative tasks.
                                     </div>
                                 </div>
                             </div>
@@ -141,7 +142,7 @@ export default function HeroSection() {
                                         aria-expanded="false"
                                         aria-controls="collapseThreeLeft"
                                     >
-                                        What are the main features of your AI toolkit?
+                                        What are the main features of your AI Toolkit?
                                     </button>
                                 </h2>
                                 <div
@@ -151,7 +152,7 @@ export default function HeroSection() {
                                     data-bs-parent="#faqAccordionLeft"
                                 >
                                     <div className="accordion-body">
-                                        Our AI toolkit includes lesson plan generator, rubric generator, quiz generator, worksheet generator, workbook generator, designed to enhance teaching efficiency and improve student outcomes.
+                                        Our AI Toolkit includes Lesson Plan Generator, Rubric Generator, Quiz Generator, Worksheet Generator, Workbook Generator, designed to enhance teaching efficiency and improve student outcomes.
                                     </div>
                                 </div>
                             </div>
@@ -221,7 +222,7 @@ export default function HeroSection() {
                                         aria-expanded="false"
                                         aria-controls="collapseOneRight"
                                     >
-                                        How can AI tools improve classroom productivity?
+                                        How can AI Tools improve classroom productivity?
                                     </button>
                                 </h2>
                                 <div
@@ -231,7 +232,7 @@ export default function HeroSection() {
                                     data-bs-parent="#faqAccordionRight"
                                 >
                                     <div className="accordion-body">
-                                        AI tools can automate administrative tasks, generate teaching materials, and provide real-time feedback, allowing educators to focus more on teaching and less on paperwork.
+                                        AI Tools can automate administrative tasks, generate teaching materials, and provide real-time feedback, allowing educators to focus more on teaching and less on paperwork.
                                     </div>
                                 </div>
                             </div>
@@ -247,7 +248,7 @@ export default function HeroSection() {
                                         aria-expanded="false"
                                         aria-controls="collapseTwoRight"
                                     >
-                                        What types of AI tools are available for teachers?
+                                        What types of AI Tools are available for teachers?
                                     </button>
                                 </h2>
                                 <div
@@ -257,7 +258,7 @@ export default function HeroSection() {
                                     data-bs-parent="#faqAccordionRight"
                                 >
                                     <div className="accordion-body">
-                                        Common types include quiz generators, lesson planners, vocabulary builders, and content summarizers, among others.
+                                        Common types include Quiz Generators, Lesson Planners, Vocabulary Builders, and Content Summarizers, among others.
                                     </div>
                                 </div>
                             </div>
@@ -308,7 +309,7 @@ export default function HeroSection() {
                                     data-bs-parent="#faqAccordionRight"
                                 >
                                     <div className="accordion-body">
-                                        Currently, we do have options to generate the output in Spanish and Thai. We are working on providing multilingual support to ensure accessibility for diverse educational environments.
+                                        Currently, we do have options to generate the output in English, Spanish and Thai. We are working on providing multilingual support to ensure accessibility for diverse educational environments.
                                     </div>
                                 </div>
                             </div>
@@ -333,7 +334,9 @@ export default function HeroSection() {
                                     data-bs-parent="#faqAccordionRight"
                                 >
                                     <div className="accordion-body">
-                                        Educators can provide feedback and feature suggestions through the ‘Contact Us’ button on our website.
+                                        Educators can provide feedback and feature suggestions through the <NavLink 
+                                        to='/ContactUs'>
+                                        ‘Contact Us’</NavLink> button on our website.
                                     </div>
                                 </div>
                             </div>

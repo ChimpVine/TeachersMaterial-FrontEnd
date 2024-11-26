@@ -1,9 +1,8 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import NavBar from '../NavBar';
-import { FaArrowRight, FaEraser, FaArrowLeft, FaRegFilePdf, FaEdit } from "react-icons/fa";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { FaArrowRight, FaEraser, FaArrowLeft, FaRegFilePdf } from "react-icons/fa";
+import { toast } from 'react-toastify';
 import Spinner from '../../spinner/Spinner';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
 import Cookies from 'js-cookie';
@@ -174,10 +173,8 @@ export default function SocialStory({ BASE_URL }) {
     return (
         <>
             <NavBar id="main-nav" />
-            <ToastContainer position="top-right" autoClose={1500} />
             <div className="container-fluid">
                 <div className="row justify-content-center mt-5 mb-4">
-
                     {isLoading ? (
                         <div className="col-md-5 text-center">
                             <Spinner />

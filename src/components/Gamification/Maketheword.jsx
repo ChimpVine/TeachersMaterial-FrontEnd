@@ -1,10 +1,9 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import NavBar from '../NavBar';
-import { FaArrowRight, FaEraser, FaArrowLeft, FaCloudDownloadAlt, FaFilePdf } from "react-icons/fa";
+import { FaArrowRight, FaEraser, FaArrowLeft, FaCloudDownloadAlt } from "react-icons/fa";
 import { useForm } from 'react-hook-form';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import Spinner from '../../spinner/Spinner';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
 import Cookies from 'js-cookie'; 
@@ -25,7 +24,7 @@ const breadcrumbItems = [
 
 const numberOfWords = [
     { value: "", label: "Choose Number of Words" },
-    ...Array.from({ length: 10 }, (_, i) => ({ value: i + 1, label: `${i + 1}` }))
+    ...Array.from({ length: 6 }, (_, i) => ({ value: i + 5, label: `${i + 5}` }))
 ];
 
 export default function Maketheword({ BASE_URL }) {
@@ -103,7 +102,6 @@ export default function Maketheword({ BASE_URL }) {
     return (
         <>
             <NavBar id="main-nav" />
-            <ToastContainer position="top-right" autoClose={1500} />
             <div className="container-fluid">
                 <div className="row justify-content-center mt-5 mb-4">
 

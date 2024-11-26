@@ -78,7 +78,7 @@ function ContactUs({ BASE_URL }) {
                       errors.full_name ? "is-invalid" : ""
                     }`}
                     id="full_name"
-                    placeholder="Eg. Alex"
+                    placeholder="e.g., Alex John Doe"
                     {...register("full_name", {
                       required: "Full name is required.",
                       pattern: {
@@ -108,7 +108,7 @@ function ContactUs({ BASE_URL }) {
                       errors.email ? "is-invalid" : ""
                     }`}
                     id="email"
-                    placeholder="Eg. example@mail.com"
+                    placeholder="e.g., johndoe@gmail.com"
                     {...register("email", {
                       required: "Email is required.",
                       pattern: {
@@ -122,17 +122,17 @@ function ContactUs({ BASE_URL }) {
                   )}
                 </div>
 
-                {/* Comment or Message */}
+                {/* Message */}
                 <div className="mb-2">
                   <label htmlFor="description" className="form-label">
-                    Comment or Message <span style={{ color: "red" }}>*</span>
+                    Message <span style={{ color: "red" }}>*</span>
                   </label>
                   <textarea
                     className={`form-control form-control-sm mb-2 ${
                       errors.description || wordCount > 50 ? "is-invalid" : ""
                     }`}
                     id="description"
-                    placeholder="Eg. Your Message Over Here"
+                    placeholder="e.g., Your Message Over Here"
                     {...register("description", {
                       required: "Comment or message is required.",
                       validate: (value) => {
@@ -165,19 +165,7 @@ function ContactUs({ BASE_URL }) {
                   </div>
                 </div>
 
-                <div className="d-flex justify-content-between mt-3">
-                  <button
-                    type="button"
-                    className="btn btn-sm"
-                    style={{ backgroundColor: "#dc3545", color: "white" }}
-                    onClick={() => {
-                      reset();
-                      setWordCount(0); // Reset word count
-                    }}
-                    disabled={isLoading}
-                  >
-                    <FaEraser /> Reset
-                  </button>
+                <div className="mt-2">
                   <button
                     type="submit"
                     className="btn btn-sm"

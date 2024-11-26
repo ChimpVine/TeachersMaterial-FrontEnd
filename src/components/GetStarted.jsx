@@ -11,7 +11,7 @@ const TypingEffect = () => {
     const [isDeleting, setIsDeleting] = useState(false);
     const [loopNum, setLoopNum] = useState(0);
     const [delta, setDelta] = useState(150);
-    const toRotate = ["Assessment", "Summarizer", "Gamification", "Planner", "Learning", "Special Needs"];
+    const toRotate = ["Worksheet Planner", "Text Summarizer", "Word Puzzle", "Slide Generator", "Vocabulary Builder", "Social Story"];
     const period = 2000;
 
     const tick = useCallback(() => {
@@ -43,9 +43,9 @@ const TypingEffect = () => {
 
     return (
         <h1>
-            <NavLink to="/" className="unique-typewrite" aria-label="Navigate to homepage">
+            <div className="unique-typewrite" aria-label="Navigate to homepage">
                 <span className="wrap">{text}</span>
-            </NavLink>
+            </div>
         </h1>
     );
 };
@@ -113,9 +113,9 @@ const GetStarted = () => {
                                         </button>
                                     </NavLink>
                                 ) : (
-                                    <NavLink to="/Login">
+                                    <NavLink to="https://site.chimpvine.com/test161803/register/subscription-free-for-2-months/">
                                         <button className="unique-button mt-5 mb-4" aria-label="Start Planning">
-                                            <span>Sign In Now</span>
+                                            <span>Sign Up Now</span>
                                         </button>
                                     </NavLink>
                                 )}

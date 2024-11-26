@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import NavBar from '../NavBar';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import { FaArrowRight, FaCloudDownloadAlt, FaFilePdf, FaEdit, FaArrowLeft, FaEraser } from "react-icons/fa";
 import Spinner from '../../spinner/Spinner';
 import MCQSingle from '../../pages/MCQSingle';
@@ -46,15 +45,12 @@ export default function WorkSheet({ BASE_URL }) {
         { value: "Mathematics", label: "Mathematics" },
         { value: "science", label: "Science" },
         { value: "social_studies", label: "Social Studies" },
-        { value: "reading", label: "Reading" },
-        { value: "writing", label: "Writing" },
         { value: "art", label: "Art" },
         { value: "music", label: "Music" },
         { value: "physical_education", label: "Physical Education" },
         { value: "health", label: "Health" },
         { value: "technology", label: "Technology" },
-        { value: "library", label: "Library" },
-        { value: "foreign_language", label: "Foreign Language" }
+        { value: "language", label: "Language" }
     ];
 
     const grades = [
@@ -175,8 +171,8 @@ export default function WorkSheet({ BASE_URL }) {
         }
 
         // Check the file size before generating the worksheet
-        if (formData.pdfFile && formData.pdfFile.size > 250 * 1024) {
-            toast.error('File size exceeds 250KB. Please upload a smaller file.');
+        if (formData.pdfFile && formData.pdfFile.size > 500 * 1024) {
+            toast.error('File size exceeds 500KB. Please upload a smaller file.');
             return;
         }
 
@@ -335,7 +331,6 @@ export default function WorkSheet({ BASE_URL }) {
     return (
         <>
             <NavBar />
-            <ToastContainer position="top-right" autoClose={1500} />
             <div className="container-fluid">
                 <div className="row justify-content-center mt-5 mb-4">
                     {loading ? (
@@ -466,7 +461,7 @@ export default function WorkSheet({ BASE_URL }) {
                                             <small className="text-muted">
                                                 <strong className='text-danger'>Note:</strong>
                                                 <ul>
-                                                    <li>For better results, Upload a <span style={{ color: 'red' }}>Workbook</span> PDF under 250KB.</li>
+                                                    <li>For better results, Upload a <span style={{ color: 'red' }}>Workbook</span> PDF under 500KB.</li>
                                                     <li>To shorten a large PDF,<NavLink to="/PdfSplitter" target='_blank'>
                                                         <span style={{ fontWeight: 'bold' }}> Click here</span>
                                                     </NavLink></li>

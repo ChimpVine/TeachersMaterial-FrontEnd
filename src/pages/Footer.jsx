@@ -141,7 +141,7 @@ export default function Footer() {
                                 <li>
                                     <NavLink
                                         className="content"
-                                        to="/RequestForm"
+                                        to="/ContactUs"
                                     >
                                         Contact Us
                                     </NavLink>

@@ -2,8 +2,7 @@ import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import NavBar from '../NavBar';
 import { FaArrowRight, FaEraser, FaArrowLeft, FaRegFilePdf } from "react-icons/fa";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import Spinner from '../../spinner/Spinner';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
 import Cookies from 'js-cookie';
@@ -16,15 +15,12 @@ const subjects = [
     { value: "mathematics", label: "Mathematics" },
     { value: "science", label: "Science" },
     { value: "social_studies", label: "Social Studies" },
-    { value: "reading", label: "Reading" },
-    { value: "writing", label: "Writing" },
     { value: "art", label: "Art" },
     { value: "music", label: "Music" },
     { value: "physical_education", label: "Physical Education" },
     { value: "health", label: "Health" },
     { value: "technology", label: "Technology" },
-    { value: "library", label: "Library" },
-    { value: "foreign_language", label: "Foreign Language" }
+    { value: "language", label: "Language" }
 ];
 
 // Grades list
@@ -177,7 +173,6 @@ export default function VocabularyPlan({ BASE_URL }) {
     return (
         <>
             <NavBar id="main-nav" />
-            <ToastContainer position="top-right" autoClose={1500} />
             <div className="container-fluid">
                 <div className="row justify-content-center mt-5 mb-4">
 

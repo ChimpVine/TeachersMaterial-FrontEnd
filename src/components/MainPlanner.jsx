@@ -154,7 +154,7 @@ export default function MainPlanner() {
             category: 'Specialneeds',
             icon: <FaBook size={50} style={{ color: "#198754" }} />,
             title: 'Social Story',
-            description: 'Easily design personalized and engaging assessments with our intuitive Social Story.',
+            description: 'Create engaging, personalized stories for “special” students with our intuitive tool.',
             link: '/SocialStory',
             btnColor: 'success'
         },

@@ -2,8 +2,7 @@ import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import pptxgen from "pptxgenjs";
 import { FaArrowRight, FaEraser, FaArrowLeft, FaEdit, FaTrashAlt, FaFilePowerpoint } from "react-icons/fa";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import NavBar from '../NavBar';
 import Spinner from '../../spinner/Spinner';
 import { Modal, Button, Form } from 'react-bootstrap';
@@ -284,7 +283,6 @@ export default function SlideGenerator({ BASE_URL }) {
     return (
         <>
             <NavBar id="main-nav" />
-            <ToastContainer position="top-right" autoClose={1500} />
             <div className="container-fluid">
                 <div className="row justify-content-center mt-5 mb-4">
 
