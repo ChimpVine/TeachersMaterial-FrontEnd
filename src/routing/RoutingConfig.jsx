@@ -30,25 +30,25 @@ export default function RoutingConfig() {
 
   const routeTitleMap = {
     '/': 'AI Tools for Teachers',
-    '/MainPlanner': 'List of AI Tools for Teachers',
-    '/Aboutus': 'About Us - AI Tools for Teachers',
-    '/Login': 'Login - AI Tools for Teachers',
-    '/LessonPlanner': 'Lesson Planner - AI Tools for Teachers',
-    '/Quiz-generator': 'Quiz Generator - AI Tools for Teachers',
-    '/Workbook': 'Workbook - AI Tools for Teachers',
-    '/Worksheet': 'Worksheet - AI Tools for Teachers',
-    '/Vocabulary': 'Vocabulary - AI Tools for Teachers',
-    '/TongueTwister': 'Tongue Twister - AI Tools for Teachers',
-    '/WordPuzzle': 'Word Puzzle - AI Tools for Teachers',
-    '/SocialStory': 'Social Story - AI Tools for Teachers',
-    '/SelGenerator': 'SEL Generator - AI Tools for Teachers',
-    '/SlideGenerator': 'Slide Generator - AI Tools for Teachers',
-    '/TextSummarizer': 'Text Summarizer - AI Tools for Teachers',
-    '/GroupWork': 'Group Work - AI Tools for Teachers',
-    '/Maketheword': 'Make the word - AI Tools for Teachers',
-    '/ContactUs': 'Contact Us - AI Tools for Teachers',
-    '/PdfSplitter': 'Pdf Splitter - AI Tools for Teachers',
-    '/Comingsoon': 'Comingsoon',
+    '/ai-tools-for-teachers': 'List of AI Tools for Teachers',
+    '/about-us': 'About Us - AI Tools for Teachers',
+    '/login': 'Login - AI Tools for Teachers',
+    '/lesson-planner': 'Lesson Planner - AI Tools for Teachers',
+    '/quiz-generator': 'Quiz Generator - AI Tools for Teachers',
+    '/workbook-planner': 'Workbook - AI Tools for Teachers',
+    '/worksheet-planner': 'Worksheet - AI Tools for Teachers',
+    '/vocabulary-planner': 'Vocabulary - AI Tools for Teachers',
+    '/tongue-twister': 'Tongue Twister - AI Tools for Teachers',
+    '/word-puzzle': 'Word Puzzle - AI Tools for Teachers',
+    '/social-story': 'Social Story - AI Tools for Teachers',
+    '/sel-generator': 'SEL Generator - AI Tools for Teachers',
+    '/slide-generator': 'Slide Generator - AI Tools for Teachers',
+    '/text-summarizer': 'Text Summarizer - AI Tools for Teachers',
+    '/group-work': 'Group Work - AI Tools for Teachers',
+    '/make-the-word': 'Make the word - AI Tools for Teachers',
+    '/contact-us': 'Contact Us - AI Tools for Teachers',
+    '/pdf-splitter': 'Pdf Splitter - AI Tools for Teachers',
+    '/comingsoon': 'Comingsoon - AI Tools for Teachers',
   };
 
   const pageTitle = routeTitleMap[location.pathname] || 'Error 404 - AI Tools for Teachers';
@@ -64,27 +64,27 @@ export default function RoutingConfig() {
       </Helmet>
       <Routes>
         <Route path="/" element={<GetStarted />} />
-        <Route path="/Login" element={<Login />} />
-        <Route path="/Aboutus" element={<Aboutus />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/about-us" element={<Aboutus />} />
         <Route element={<PrivateRoute />}>
-          <Route path="/MainPlanner" element={<MainPlanner />} />
-          <Route path="/LessonPlanner" element={<LessonPlanner BASE_URL={BASE_URL} />} />
-          <Route path="/Quiz-generator" element={<QuizUI BASE_URL={BASE_URL} />} />
-          <Route path="/Workbook" element={<WorkBook BASE_URL={BASE_URL} />} />
-          <Route path="/Worksheet" element={<WorkSheet BASE_URL={BASE_URL} />} />
-          <Route path="/Vocabulary" element={<Vocabulary BASE_URL={BASE_URL} />} />
-          <Route path="/TongueTwister" element={<TongueTwister BASE_URL={BASE_URL} />} />
-          <Route path="/WordPuzzle" element={<WordPuzzle BASE_URL={BASE_URL} />} />
-          <Route path="/SocialStory" element={<SocialStory BASE_URL={BASE_URL} />} />
-          <Route path="/SelGenerator" element={<SelGenerator BASE_URL={BASE_URL} />} />
-          <Route path="/SlideGenerator" element={<SlideGenerator BASE_URL={BASE_URL} />} />
-          <Route path="/TextSummarizer" element={<TextSummarizer BASE_URL={BASE_URL} />} />
-          <Route path="/GroupWork" element={<GroupWork BASE_URL={BASE_URL} />} />
-          <Route path="/Maketheword" element={<Maketheword BASE_URL={BASE_URL} />} />
+          <Route path="/ai-tools-for-teachers" element={<MainPlanner />} />
+          <Route path="/lesson-planner" element={<LessonPlanner BASE_URL={BASE_URL} />} />
+          <Route path="/quiz-generator" element={<QuizUI BASE_URL={BASE_URL} />} />
+          <Route path="/workbook-planner" element={<WorkBook BASE_URL={BASE_URL} />} />
+          <Route path="/worksheet-planner" element={<WorkSheet BASE_URL={BASE_URL} />} />
+          <Route path="/vocabulary-planner" element={<Vocabulary BASE_URL={BASE_URL} />} />
+          <Route path="/tongue-twister" element={<TongueTwister BASE_URL={BASE_URL} />} />
+          <Route path="/word-puzzle" element={<WordPuzzle BASE_URL={BASE_URL} />} />
+          <Route path="/social-story" element={<SocialStory BASE_URL={BASE_URL} />} />
+          <Route path="/sel-generator" element={<SelGenerator BASE_URL={BASE_URL} />} />
+          <Route path="/slide-generator" element={<SlideGenerator BASE_URL={BASE_URL} />} />
+          <Route path="/text-summarizer" element={<TextSummarizer BASE_URL={BASE_URL} />} />
+          <Route path="/group-work" element={<GroupWork BASE_URL={BASE_URL} />} />
+          <Route path="/make-the-word" element={<Maketheword BASE_URL={BASE_URL} />} />
           <Route path="/Comingsoon" element={<ComingSoon />} />
         </Route>
-        <Route path="/ContactUs" element={<RequestForm BASE_URL={BASE_URL} />} />
-        <Route path="/PdfSplitter" element={<PdfSplitter />} />
+        <Route path="/contact-us" element={<RequestForm BASE_URL={BASE_URL} />} />
+        <Route path="/pdf-splitter" element={<PdfSplitter />} />
         <Route path="*" element={<Error404Page />} />
       </Routes>
     </HelmetProvider>

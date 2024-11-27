@@ -16,7 +16,7 @@ const needs = [
 ];
 
 const breadcrumbItems = [
-    { label: 'Main Panel', href: '/MainPlanner', active: false },
+    { label: 'Main Panel', href: '/ai-tools-for-teachers', active: false },
     { label: 'Special needs', active: true },
     { label: 'Social Story', active: true }
 ];
@@ -101,7 +101,7 @@ export default function SocialStory({ BASE_URL }) {
             if (
                 error.response.status === 401 
             ) {
-                console.error('Error: Invalid token.');
+                // console.error('Error: Invalid token.');
                 toast.warning('This email has been already used on another device.');
 
                 Cookies.remove('authToken');
@@ -110,11 +110,11 @@ export default function SocialStory({ BASE_URL }) {
                 Cookies.remove('user_email');
 
                 setTimeout(() => {
-                    navigate('/Login');
+                    navigate('/login');
                     window.location.reload();
                 }, 2000);
             } else {
-                console.error('Error:', error);
+                // console.error('Error:', error);
                 toast.error('Failed to generate the social story. Please try again.');
             }
         } finally {

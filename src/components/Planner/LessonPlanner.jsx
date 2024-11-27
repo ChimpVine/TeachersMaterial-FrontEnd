@@ -76,7 +76,7 @@ export default function LessonPlan({ BASE_URL }) {
     }
 
     const breadcrumbItems = [
-        { label: 'Main Panel', href: '/MainPlanner', active: false },
+        { label: 'Main Panel', href: '/ai-tools-for-teachers', active: false },
         { label: 'Planner', active: true },
         { label: 'Lesson Planner', active: true }
     ];
@@ -158,7 +158,7 @@ export default function LessonPlan({ BASE_URL }) {
                 Cookies.remove('user_email');
     
                 setTimeout(() => {
-                    navigate('/Login');
+                    navigate('/login');
                     window.location.reload(); 
                 }, 2000); 
             } else {
@@ -278,7 +278,7 @@ export default function LessonPlan({ BASE_URL }) {
                                                     <strong className='text-danger'>Note:</strong>
                                                     <ul>
                                                         <li>Upload a single PDF file under 500KB.</li>
-                                                        <li>To shorten a large PDF,<NavLink to="/PdfSplitter" target='_blank'>
+                                                        <li>To shorten a large PDF,<NavLink to="/pdf-splitter" target='_blank'>
                                                             <span style={{ fontWeight: 'bold' }}> Click here</span>
                                                         </NavLink></li>
                                                     </ul>

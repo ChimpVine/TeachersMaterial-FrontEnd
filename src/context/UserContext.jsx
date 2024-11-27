@@ -2,31 +2,29 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
-import SmartlookClient from 'smartlook-client';
 
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-
-    const API_BASE_URL = 'https://site.chimpvine.com/test161803';
+    const API_BASE_URL = 'https://site.chimpvine.com';
     const [user, setUser] = useState(null);
 
     const login = useCallback((token) => {
         try {
             const decodedToken = jwtDecode(token);
-            const { user_email, url ,display_name} = decodedToken;
-            setUser(decodedToken); 
+            const { user_email, url, display_name } = decodedToken;
+
+            // Set user and store token details
+            setUser(decodedToken);
             Cookies.set('authToken', token, { path: '/', secure: true, sameSite: 'Strict' });
             Cookies.set('site_url', url, { path: '/', secure: true, sameSite: 'Strict' });
             Cookies.set('user_email', user_email, { path: '/', secure: true, sameSite: 'Strict' });
-            Cookies.set('Display_name', display_name, { path: '/', secure: true, sameSite: 'Strict' }); 
-              // Identify user in Smartlook
-              SmartlookClient?.identify(user_email, {
-                displayName: display_name || 'Anonymous',
-                email: user_email,
-            });
+            Cookies.set('Display_name', display_name, { path: '/', secure: true, sameSite: 'Strict' });
+
+            localStorage.setItem('authToken', token);
+            localStorage.setItem('authUser', JSON.stringify(decodedToken));
         } catch (error) {
-            console.error("Invalid token during login:", error);
+            console.error('Invalid token during login:', error);
         }
     }, []);
 
@@ -35,46 +33,47 @@ export const UserProvider = ({ children }) => {
         try {
             await axios.post(`${API_BASE_URL}/wp-json/custom/v1/logout`, { token });
         } catch (error) {
-            console.error("Error logging out of WordPress:", error);
+            console.error('Error logging out:', error);
         }
+
+        // Clear all user data
         Cookies.remove('authToken', { path: '/' });
         Cookies.remove('site_url', { path: '/' });
         Cookies.remove('user_email', { path: '/' });
-        Cookies.remove('Display_name', { path: '/'}); 
+        Cookies.remove('Display_name', { path: '/' });
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('authUser');
         setUser(null);
-         // Clear Smartlook user identification
-         SmartlookClient?.anonymize();
+
+        // Navigate to login or home page
+        window.location.href = '/Login'; // Ensure the user is redirected to login
     }, []);
 
-    const verifyToken = useCallback(() => {
-        const token = Cookies.get('authToken');
-      
+    const verifyToken = useCallback(async () => {
+        const token = Cookies.get('authToken') || localStorage.getItem('authToken');
         if (token) {
             try {
                 const decodedToken = jwtDecode(token);
                 if (decodedToken.exp * 1000 > Date.now()) {
-                    setUser(decodedToken); // Include Display_name
-                    return true; // Token is valid
-
-                    /* Verify Token API*/
-                } else {
-                    logout(); // Logout if token expired
-                    return false;
+                    setUser((prevUser) => prevUser || decodedToken); // Avoid redundant updates
+                    return true;
                 }
             } catch (error) {
-                console.error("Invalid token during verification:", error);
-                logout(); // Logout if token is invalid
-                return false;
+                console.error('Token verification failed:', error);
             }
         }
-        return false; // No token found
-    }, [logout]);
+
+        // Handle cleanup for invalid tokens
+        Cookies.remove('authToken', { path: '/' });
+        localStorage.removeItem('authToken');
+        setUser(null);
+        return false;
+    }, []);
 
     useEffect(() => {
+        // Rehydrate user on mount
         verifyToken();
     }, [verifyToken]);
-
-    
 
     return (
         <UserContext.Provider value={{ user, login, logout, verifyToken }}>
@@ -86,3 +85,4 @@ export const UserProvider = ({ children }) => {
 export const useUser = () => useContext(UserContext);
 
 export default UserProvider;
+

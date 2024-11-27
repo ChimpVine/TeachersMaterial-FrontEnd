@@ -26,6 +26,8 @@ export default function NavBar() {
         }
     };
 
+    const API_BASE_URL = 'https://site.chimpvine.com';
+
     return (
         <div>
             <nav className="navbar navbar-expand-lg bg-body-tertiary no-print">
@@ -62,21 +64,12 @@ export default function NavBar() {
                                     Home
                                 </NavLink>
                             </li>
-                            {/* <li className="nav-item mt-1 me-5 p-2">
-                                <NavLink
-                                    className="btn btn-sm"
-                                    style={btnStyle}
-                                    to="/MainPlanner"
-                                >
-                                    AI Tools
-                                </NavLink>
-                            </li> */}
                             <li className="nav-item mt-1 me-5 p-2">
                                 {user ? (
                                     <NavLink
                                         className="btn btn-sm"
                                         style={btnStyle}
-                                        to="/MainPlanner"
+                                        to="/ai-tools-for-teachers"
                                     >
                                         AI Tools
                                     </NavLink>
@@ -95,8 +88,7 @@ export default function NavBar() {
                                     className={({ isActive }) =>
                                         isActive ? "nav-link-elearning me-5 text-light active-link" : "nav-link-elearning me-5 text-light"
                                     }
-                                    to="https://site.chimpvine.com/test161803/"
-                                >
+                                    to={`${API_BASE_URL}`}>
                                     eLearning for kids
                                 </NavLink>
                             </li>
@@ -114,7 +106,7 @@ export default function NavBar() {
                                     <li>
                                         <NavLink
                                             className="nav-link-splitter p-2"
-                                            to="/PdfSplitter"
+                                            to="/pdf-splitter"
                                         >
                                             PDF Splitter
                                         </NavLink>
@@ -126,7 +118,7 @@ export default function NavBar() {
                                     className={({ isActive }) =>
                                         isActive ? "nav-link-navigate me-5 text-light active-link" : "nav-link-navigate me-5 text-light"
                                     }
-                                    to="/ContactUs"
+                                    to="/contact-us"
                                 >
                                     Contact Us
                                 </NavLink>
@@ -144,12 +136,12 @@ export default function NavBar() {
                                 </li>
                             ) : (
                                 <>
-                                    <NavLink to="/Login">
+                                    <NavLink to="/login">
                                         <button className="btn btn-outline-light btn-sm mt-2 ms-2 me-2">
                                             Login
                                         </button>
                                     </NavLink>
-                                    <NavLink to="https://site.chimpvine.com/test161803/register/subscription-free-for-2-months/">
+                                    <NavLink to={`${API_BASE_URL}/register/subscription-free-for-2-months/`}>
                                         <button
                                             className="btn btn-sm mt-2 ms-2"
                                             style={btnStyle}

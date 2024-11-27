@@ -1,45 +1,83 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { FaArrowRight, FaEraser } from "react-icons/fa";
+import axios from "axios";
+import NavBar from "../components/NavBar";
+import { FaArrowRight } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import NavBar from "../components/NavBar";
 import Spinner from "../spinner/Spinner";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 function ContactUs({ BASE_URL }) {
+  const btnStyle = {
+    backgroundColor: '#FF683B',
+    color: 'white',
+  };
+
   const {
     register,
     handleSubmit,
     reset,
+    watch,
+    setValue,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      full_name: "",
+      email: "",
+      description: "",
+    },
+  });
 
   const [isLoading, setIsLoading] = useState(false);
   const [wordCount, setWordCount] = useState(0); // State to track word count
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
   const countWords = (text) => {
-    return text.trim().split(/\s+/).filter(Boolean).length;
+    return text.trim().split(/\s+/).filter(Boolean).length; // Count non-empty words
+  };
+
+  const description = watch("description") || ""; // Watch the description field to dynamically update word count
+
+  // Update word count whenever the description changes
+  const handleDescriptionChange = (e) => {
+    const value = e.target.value;
+    setWordCount(countWords(value));
   };
 
   const onSubmit = async (data) => {
     const { full_name, email, description } = data;
 
+    if (!executeRecaptcha) {
+      toast.error("Failed to load reCAPTCHA.");
+      return;
+    }
+
+    // Ensure word count does not exceed 50 words
     if (wordCount > 50) {
-      toast.warn("Please reduce the word count to 50 or fewer before submitting.");
+      toast.warn("Your message must not exceed 50 words.");
       return;
     }
 
     try {
       setIsLoading(true);
 
+      // Execute reCAPTCHA
+      const token = await executeRecaptcha("submit");
+
       // Prepare data for API
       const dataToSend = {
         full_name,
         email,
         description,
+        recaptchaToken: token,
       };
 
-      console.log("Sending data:", dataToSend);
+      await axios.post(`${BASE_URL}/google_sheet`, dataToSend, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       toast.success("Form submitted successfully!");
       reset(); // Reset the form after successful submission
@@ -74,21 +112,21 @@ function ContactUs({ BASE_URL }) {
                   </label>
                   <input
                     type="text"
-                    className={`form-control form-control-sm mb-2 ${
-                      errors.full_name ? "is-invalid" : ""
-                    }`}
                     id="full_name"
+                    className={`form-control form-control-sm ${errors.full_name ? "is-invalid" : ""
+                      }`}
                     placeholder="e.g., Alex John Doe"
+                    disabled={isLoading}
                     {...register("full_name", {
-                      required: "Full name is required.",
+                      required: "Full Name is required.",
                       pattern: {
                         value: /^[a-zA-Z.\s]+$/,
                         message:
-                          "Full name must contain only letters, spaces, or periods.",
+                          "Full Name must contain only letters, spaces, or periods.",
                       },
                       maxLength: {
                         value: 50,
-                        message: "Full name must be 50 characters or fewer.",
+                        message: "Full Name must be 50 characters or fewer.",
                       },
                     })}
                   />
@@ -104,11 +142,11 @@ function ContactUs({ BASE_URL }) {
                   </label>
                   <input
                     type="email"
-                    className={`form-control form-control-sm mb-2 ${
-                      errors.email ? "is-invalid" : ""
-                    }`}
                     id="email"
-                    placeholder="e.g., johndoe@gmail.com"
+                    className={`form-control form-control-sm ${errors.email ? "is-invalid" : ""
+                      }`}
+                    placeholder="e.g., example@mail.com"
+                    disabled={isLoading}
                     {...register("email", {
                       required: "Email is required.",
                       pattern: {
@@ -122,57 +160,47 @@ function ContactUs({ BASE_URL }) {
                   )}
                 </div>
 
-                {/* Message */}
+                {/* Description */}
                 <div className="mb-2">
                   <label htmlFor="description" className="form-label">
                     Message <span style={{ color: "red" }}>*</span>
                   </label>
                   <textarea
-                    className={`form-control form-control-sm mb-2 ${
-                      errors.description || wordCount > 50 ? "is-invalid" : ""
-                    }`}
                     id="description"
+                    className={`form-control form-control-sm ${errors.description || wordCount > 50 ? "is-invalid" : ""
+                      }`}
                     placeholder="e.g., Your Message Over Here"
+                    disabled={isLoading}
                     {...register("description", {
-                      required: "Comment or message is required.",
-                      validate: (value) => {
-                        const words = countWords(value);
-                        setWordCount(words); // Update word count dynamically
-                        return true; // Validation handled separately
-                      },
+                      required: "Description is required.",
                     })}
                     onChange={(e) => {
-                      const words = countWords(e.target.value);
-                      setWordCount(words);
+                      handleDescriptionChange(e);
+                      setValue("description", e.target.value);
                     }}
                   ></textarea>
+                  <small
+                    className={`d-flex justify-content-end ${wordCount > 50 ? "text-danger" : "text-muted"
+                      }`}
+                  >
+                    Word count: {wordCount}/50
+                  </small>
                   {errors.description && (
                     <div className="invalid-feedback">{errors.description.message}</div>
                   )}
                   {wordCount > 50 && (
                     <div className="invalid-feedback">
-                      Your comment must not exceed 50 words.
+                      Your message must not exceed 50 words.
                     </div>
                   )}
-                  <div className="d-flex justify-content-end mt-1">
-                    <small
-                      className={`${
-                        wordCount > 50 ? "text-danger" : "text-muted"
-                      }`}
-                    >
-                      Word count: {wordCount}/50
-                    </small>
-                  </div>
                 </div>
 
-                <div className="mt-2">
+                {/* Submit Button */}
+                <div className="mt-3">
                   <button
                     type="submit"
                     className="btn btn-sm"
-                    style={{
-                      backgroundColor: "#FF683B",
-                      color: "white",
-                    }}
+                    style={btnStyle}
                     disabled={isLoading}
                   >
                     Submit <FaArrowRight />

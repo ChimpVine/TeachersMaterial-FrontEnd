@@ -59,7 +59,7 @@ export default function WorkBook({ BASE_URL }) {
     }
 
     const breadcrumbItems = [
-        { label: 'Main Panel', href: '/MainPlanner', active: false },
+        { label: 'Main Panel', href: '/ai-tools-for-teachers', active: false },
         { label: 'Assessment', active: true },
         { label: 'Workbook', active: true }
     ];
@@ -143,7 +143,7 @@ export default function WorkBook({ BASE_URL }) {
             if (
                 error.response.status === 401 
             ) {
-                console.error('Error: Invalid token.');
+                // console.error('Error: Invalid token.');
                 toast.warning('This email has been already used on another device.');
     
                 Cookies.remove('authToken');
@@ -156,7 +156,7 @@ export default function WorkBook({ BASE_URL }) {
                     window.location.reload();
                 }, 2000); 
             } else {
-                console.error('Error:', error);
+                // console.error('Error:', error);
                 toast.error('Failed to generate the workbook. Please try again.');
             }
         } finally {
@@ -253,7 +253,7 @@ export default function WorkBook({ BASE_URL }) {
                                                     <strong className='text-danger'>Note:</strong>
                                                     <ul>
                                                         <li>For better results, Upload a <span style={{ color: 'red' }}>Lesson Planner</span> PDF under 500KB.</li>
-                                                        <li>To shorten a large PDF,<NavLink to="/PdfSplitter" target='_blank'>
+                                                        <li>To shorten a large PDF,<NavLink to="/pdf-splitter" target='_blank'>
                                                             <span style={{ fontWeight: 'bold' }}> Click here</span>
                                                         </NavLink></li>
                                                     </ul>

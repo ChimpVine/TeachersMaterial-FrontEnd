@@ -19,14 +19,14 @@ export default function HeroSection() {
                     <div className="row">
                         <div className="col-md-5">
                             <h1 className="display-1 fw-bold" style={{ color: "#69A2D9" }}>01</h1>
-                            <h4 className="fw-bold">Select any of our tools</h4>
-                            <p className='lead me-4' style={{ textAlign: "justify" }}>We provide AI (Artificial Intelligence) for teachers as well as students. Our Teacher Toolkit helps educators generate lesson plans, assessments, rubric as well as fun activities among many other things. We also have AI Tools for students which can help them with their homework, and provide assistance when required.
+                            <h4>Select any of our tools</h4>
+                            <p className='text-muted me-4' style={{ textAlign: "justify" }}>We provide AI (Artificial Intelligence) for teachers as well as students. Our Teacher Toolkit helps educators generate lesson plans, assessments, rubric as well as fun activities among many other things. We also have AI Tools for students which can help them with their homework, and provide assistance when required.
                             </p>
                         </div>
                         <div className="col-md-7 border border-primary border-one rounded p-2">
                             <div className="ratio ratio-16x9">
                                 <iframe
-                                    src="https://www.youtube.com/embed/aVMdy0GQNfA"
+                                    src="https://www.youtube.com/embed/_Npp65RP7Vw"
                                     title="YouTube video"
                                     allowFullScreen
                                 />
@@ -40,7 +40,7 @@ export default function HeroSection() {
                         <div className="col-md-7 border border-success rounded p-2">
                             <div className="ratio ratio-16x9">
                                 <iframe
-                                    src="https://www.youtube.com/embed/sUWQgXyL4Zk"
+                                    src="https://www.youtube.com/embed/m8JilxERDw4"
                                     title="YouTube video"
                                     allowFullScreen
                                 />
@@ -48,8 +48,8 @@ export default function HeroSection() {
                         </div>
                         <div className="col-md-5" style={{ textAlign: "right" }}>
                             <h1 className="display-1 fw-bold" style={{ color: "#B2FBA5" }}>02</h1>
-                            <h4 className="fw-bold">Choose your preferences</h4>
-                            <p className='lead ms-4' style={{ textAlign: "justify" }}>We understand that without the right prompt, using AI can actually take up more time. So, we save you from the hassle, all you need to do is choose from the variety of the options we provide! Simple and Easy!
+                            <h4>Choose your preferences and generate</h4>
+                            <p className='text-muted ms-4' style={{ textAlign: "justify" }}>We understand that without the right prompt, using AI can actually take up more time. So, we save you from the hassle, all you need to do is choose from the variety of the options we provide! Simple and Easy!
                             </p>
                         </div>
                     </div>
@@ -59,13 +59,14 @@ export default function HeroSection() {
                     <div className="row align-items-center">
                         <div className="col-md-5">
                             <h1 className="display-1 fw-bold" style={{ color: "#FED28F" }}>03</h1>
-                            <h4 className="fw-bold">Click Generate</h4>
-                            <p className='lead me-4' style={{ textAlign: "justify" }}>Now, with just a click, you will get the best results through our AI-driven tools. Not just that! We also let you take charge and equip you with the feature of editing the results as per your liking.</p>
+                            <h4>Make changes as per your liking</h4>
+                            <p className='text-muted me-4' style={{ textAlign: "justify" }}>Once you get your results, modify it as you like. You can simply add and remove questions, and toggle with the options in just a few clicks. After finalizing, you can simply download the files and use it for your class!
+                            </p>
                         </div>
                         <div className="col-md-7 border border-warning rounded p-2">
                             <div className="ratio ratio-16x9">
                                 <iframe
-                                    src="https://www.youtube.com/embed/zNYOnw1QYAE"
+                                    src="https://www.youtube.com/embed/Uwm9WJK-UMU"
                                     title="YouTube video"
                                     allowFullScreen
                                 />
@@ -335,7 +336,7 @@ export default function HeroSection() {
                                 >
                                     <div className="accordion-body">
                                         Educators can provide feedback and feature suggestions through the <NavLink 
-                                        to='/ContactUs'>
+                                        to='/contact-us'>
                                         ‘Contact Us’</NavLink> button on our website.
                                     </div>
                                 </div>

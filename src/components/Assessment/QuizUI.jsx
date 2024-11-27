@@ -48,7 +48,7 @@ const QuizUI = ({ BASE_URL }) => {
     }
 
     const breadcrumbItems = [
-        { label: 'Main Panel', href: '/MainPlanner', active: false },
+        { label: 'Main Panel', href: '/ai-tools-for-teachers', active: false },
         { label: 'Assessment', active: true },
         { label: 'Quiz Generator', active: true }
     ];
@@ -170,7 +170,7 @@ const QuizUI = ({ BASE_URL }) => {
             if (
                 error.response.status === 401 
             ) {
-                console.error('Error: Invalid token.');
+                // console.error('Error: Invalid token.');
                 toast.warning('This email has been already used on another device.');
     
                 Cookies.remove('authToken');
@@ -179,11 +179,11 @@ const QuizUI = ({ BASE_URL }) => {
                 Cookies.remove('user_email');
     
                 setTimeout(() => {
-                    navigate('/Login');
+                    navigate('/login');
                     window.location.reload();
                 }, 2000); 
             } else {
-                console.error('Error:', error);
+                // console.error('Error:', error);
                 toast.error('Failed to fetch quiz questions. Please try again later.');
             }
         } finally {
@@ -316,7 +316,7 @@ const QuizUI = ({ BASE_URL }) => {
 
     const handleRegenerateQuestion = (index) => {
         if (additionalQuizQuestions.length <= index) {
-            console.error(`No additional question found at index: ${index}`);
+            // console.error(`No additional question found at index: ${index}`);
             toast.error('Error regenerating question');
             return;
         }
@@ -337,7 +337,7 @@ const QuizUI = ({ BASE_URL }) => {
             setRegenerationAttempts(prevAttempts => prevAttempts - 1); // Decrease regeneration attempts
             toast.success('Question regenerated successfully');
         } else {
-            console.error('No additional question found at index:', index);
+            // console.error('No additional question found at index:', index);
             toast.error('Error regenerating question');
         }
     };

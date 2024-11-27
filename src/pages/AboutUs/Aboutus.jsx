@@ -84,7 +84,7 @@ export default function Aboutus() {
                             At ChimpVine AI, we believe that teaching should be inspiring, not overwhelming. We harness the power of AI to create intuitive tools that simplify lesson planning, assessment, and classroom engagement. Our mission is to empower
                             educators and enrich student experiences by providing a seamless, innovative teaching toolkit designed for today's classrooms. Unlock your potential with ChimpVine AI where teaching meets technology.
                         </p>
-                        <NavLink to="/MainPlanner">
+                        <NavLink to="/ai-tools-for-teachers">
                             <button className='btn btn-md mt-3 me-2' style={btnStyle}>Go to AI Tools</button>
                         </NavLink>
                     </div>
@@ -145,7 +145,7 @@ export default function Aboutus() {
                 <div className="mb-3" style={{ fontSize: '1.25rem', color: '#555' }}>
                     Let’s chat about your goals and get started !
                 </div>
-                <NavLink to="/ContactUs">
+                <NavLink to="/contact-us">
                     <button className='btn btn-outline-dark btn-lg mt-3 me-2'>Contact Us</button>
                 </NavLink>
             </div>

@@ -54,7 +54,7 @@ export default function MainPlanner() {
             icon: <FaBookOpen  size={50} style={{ color: "#198754" }} />,
             title: 'Lesson Planner',
             description: 'Plan and organize your lessons effectively with our easy-to-use Lesson Planner.',
-            link: '/LessonPlanner',
+            link: '/lesson-planner',
             btnColor: 'success'
         },
         {
@@ -63,7 +63,7 @@ export default function MainPlanner() {
             icon: <FaReadme size={50} />,
             title: 'Workbook Planner',
             description: 'Design comprehensive workbooks for your students with our Workbook Planner.',
-            link: '/Workbook',
+            link: '/workbook-planner',
             btnColor: 'dark'
         },
         {
@@ -77,7 +77,7 @@ export default function MainPlanner() {
             ),
             title: 'Worksheet Planner',
             description: 'Easily create and customize worksheets for your students with our Worksheet Planner.',
-            link: '/Worksheet',
+            link: '/worksheet-planner',
             btnColor: 'danger'
         },
         {
@@ -86,7 +86,7 @@ export default function MainPlanner() {
             icon: <FaBook size={50} style={{ color: "#6c757d" }} />,
             title: 'Vocabulary Builder',
             description: 'Easily craft personalized and dynamic vocabulary lists with our intuitive Vocabulary Builder.',
-            link: '/Vocabulary',
+            link: '/vocabulary-planner',
             btnColor: 'secondary'
         },
         {
@@ -100,7 +100,7 @@ export default function MainPlanner() {
             ),
             title: 'Tongue Twister',
             description: 'Easily craft personalized and challenging tongue twisters with our intuitive Tongue Twister.',
-            link: '/TongueTwister',
+            link: '/tongue-twister',
             btnColor: 'primary'
         },
         {
@@ -114,7 +114,7 @@ export default function MainPlanner() {
             ),
             title: 'Word Puzzle',
             description: 'Easily create engaging and interactive word puzzles with our intuitive Word Puzzle.',
-            link: '/WordPuzzle',
+            link: '/word-puzzle',
             btnColor: 'dark'
         },
         {
@@ -128,7 +128,7 @@ export default function MainPlanner() {
             ),
             title: 'Slide Generator',
             description: 'Create stunning, engaging slides that captivate and deliver your message clearly.',
-            link: '/SlideGenerator',
+            link: '/slide-generator',
             btnColor: 'danger'
         },
         {
@@ -137,7 +137,7 @@ export default function MainPlanner() {
             icon: <FaUsers size={50} style={{ color: "#6c757d" }} />,
             title: 'Group Work',
             description: 'Effortlessly collaborate and manage tasks with ease using our Group Work Organizer.',
-            link: '/GroupWork',
+            link: '/group-work',
             btnColor: 'secondary'
         },
         {
@@ -146,7 +146,7 @@ export default function MainPlanner() {
             icon: <FaQuestionCircle size={50} style={{ color: "#0d6efd" }} />,
             title: 'Quiz Generator',
             description: 'Effortlessly create customized and interactive quizzes with our easy-to-use Quiz Generator.',
-            link: '/Quiz-generator',
+            link: '/quiz-generator',
             btnColor: 'primary'
         },
         {
@@ -155,7 +155,7 @@ export default function MainPlanner() {
             icon: <FaBook size={50} style={{ color: "#198754" }} />,
             title: 'Social Story',
             description: 'Create engaging, personalized stories for “special” students with our intuitive tool.',
-            link: '/SocialStory',
+            link: '/social-story',
             btnColor: 'success'
         },
         {
@@ -169,7 +169,7 @@ export default function MainPlanner() {
             ),
             title: 'Text Summarizer',
             description: 'Effortlessly produce clear and concise text summaries with our Text Summarizer.',
-            link: '/TextSummarizer',
+            link: '/text-summarizer',
             btnColor: 'dark'
         },
         {
@@ -183,7 +183,7 @@ export default function MainPlanner() {
             ),
             title: 'SEL Generator',
             description: 'Masterfully curate holistic and engaging SEL content for deep, meaningful learning.',
-            link: '/SelGenerator',
+            link: '/sel-generator',
             btnColor: 'primary'
         },
         {
@@ -192,7 +192,7 @@ export default function MainPlanner() {
             icon: <FaThLarge size={50} style={{ color: "#6c757d" }} />,
             title: 'Make the Word',
             description: 'Quickly create fun and interactive challenges with our Make the Word Generator.',
-            link: '/Maketheword',
+            link: '/make-the-word',
             btnColor: 'secondary'
         },
         {
@@ -206,7 +206,7 @@ export default function MainPlanner() {
             ),
             title: 'YouTube Q&A',
             description: 'Effortlessly craft dynamic and custom assessments with our YouTube Q&A Generator.',
-            link: '/Comingsoon',
+            link: '/comingsoon',
             btnColor: 'danger'
         },
         {
@@ -220,7 +220,7 @@ export default function MainPlanner() {
             ),
             title: 'PDF Summarizer',
             description: 'Effortlessly create clear and concise document summaries with our PDF Summarizer.',
-            link: '/Comingsoon',
+            link: '/comingsoon',
             btnColor: 'secondary'
         },
         {
@@ -234,7 +234,7 @@ export default function MainPlanner() {
             ),
             title: 'Comprehension',
             description: 'Easily design personalized and detailed assessments with our intuitive Comprehension.',
-            link: '/Comingsoon',
+            link: '/comingsoon',
             btnColor: 'success'
         },
         {
@@ -248,7 +248,7 @@ export default function MainPlanner() {
             ),
             title: 'Fun Math',
             description: 'Create fun, engaging math activities that captivate and simplify complex concepts.',
-            link: '/Comingsoon',
+            link: '/comingsoon',
             btnColor: 'secondary'
         },
         {
@@ -262,7 +262,7 @@ export default function MainPlanner() {
             ),
             title: 'Vedic Math',
             description: 'Effortlessly create engaging and powerful Vedic Math summaries with precision.',
-            link: '/Comingsoon',
+            link: '/comingsoon',
             btnColor: 'dark'
         },
         {
@@ -276,7 +276,7 @@ export default function MainPlanner() {
             ),
             title: 'YouTube Summarizer',
             description: 'Effortlessly create clear and concise video summaries with our YouTube Summarizer.',
-            link: '/Comingsoon',
+            link: '/comingsoon',
             btnColor: 'danger'
         },
         {
@@ -290,7 +290,7 @@ export default function MainPlanner() {
             ),
             title: 'Rubric Generator',
             description: 'Easily design personalized and detailed rubrics with our intuitive Rubric Generator.',
-            link: '/Comingsoon',
+            link: '/comingsoon',
             btnColor: 'danger'
         },
         {
@@ -304,7 +304,7 @@ export default function MainPlanner() {
             ),
             title: 'SAT Maths',
             description: 'Master math concepts with clear, engaging lessons to boost your SAT score.',
-            link: '/Comingsoon',
+            link: '/comingsoon',
             btnColor: 'dark'
         },
         {
@@ -318,7 +318,7 @@ export default function MainPlanner() {
             ),
             title: 'Cross Word Puzzle',
             description: 'Create engaging crossword puzzles that challenge and sharpen your mind.',
-            link: '/Comingsoon',
+            link: '/comingsoon',
             btnColor: 'success'
         },
         {
@@ -332,7 +332,7 @@ export default function MainPlanner() {
             ),
             title: 'SAT English',
             description: 'Create clear, engaging SAT English lessons that captivate and boost performance.',
-            link: '/Comingsoon',
+            link: '/comingsoon',
             btnColor: 'primary'
         },
         {
@@ -346,7 +346,7 @@ export default function MainPlanner() {
             ),
             title: 'Bingo Card',
             description: 'Effortlessly design fun and interactive custom games with our Bingo Card Generator.',
-            link: '/Comingsoon',
+            link: '/comingsoon',
             btnColor: 'danger'
         },
         {
@@ -360,7 +360,7 @@ export default function MainPlanner() {
             ),
             title: 'Mystery Case',
             description: 'Create intriguing mystery cases that captivate and challenge your investigative skills.',
-            link: '/Comingsoon',
+            link: '/comingsoon',
             btnColor: 'dark'
         },
     ];

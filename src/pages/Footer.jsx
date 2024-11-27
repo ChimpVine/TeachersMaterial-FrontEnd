@@ -35,7 +35,7 @@ export default function Footer() {
                                 </NavLink>
                                 <NavLink
                                     className="social-content"
-                                    to="https://www.linkedin.com/company/chimpvine/"
+                                    to="https://www.linkedin.com/company/chimpvineglobal"
                                     target='_blank'>
                                     <FaLinkedin className="me-3" size={25} />
                                 </NavLink>
@@ -115,7 +115,7 @@ export default function Footer() {
                                 <li>
                                     <NavLink
                                         className="content"
-                                        to="/Aboutus"
+                                        to="/about-us"
                                         target='_blank'>
                                         About Us
                                     </NavLink>
@@ -141,7 +141,7 @@ export default function Footer() {
                                 <li>
                                     <NavLink
                                         className="content"
-                                        to="/ContactUs"
+                                        to="/contact-us"
                                     >
                                         Contact Us
                                     </NavLink>

@@ -15,7 +15,7 @@ export default function Error404Page() {
       <div className="d-flex align-items-center justify-content-center mt-5">
         <div className="text-center">
           <h1 className="display-1 fw-bold">Coming Soon</h1>
-          <NavLink to="/MainPlanner">
+          <NavLink to="/ai-tools-for-teachers">
             <button className='btn btn-lg mt-4 mb-5' style={btnStyle}>Go to AI Tools</button>
           </NavLink>
           <p className="lead">

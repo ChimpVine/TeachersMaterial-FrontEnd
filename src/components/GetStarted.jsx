@@ -4,6 +4,7 @@ import { NavLink, useSearchParams } from 'react-router-dom';
 import Footer from '../pages/Footer.jsx';
 import HeroSection from '../pages/HeroSection.jsx';
 import { UserContext } from '../context/UserContext';
+import { toast } from 'react-toastify';
 
 
 const TypingEffect = () => {
@@ -60,10 +61,10 @@ const GetStarted = () => {
         const token = searchParams.get('token');
         if (token && typeof login === 'function') {
             login(token);
-            console.log("Token found and processed:", token);
+            // console.log("Token found and processed:", token);
             window.history.replaceState(null, '', window.location.origin + window.location.pathname);
         } else if (!login) {
-            console.warn("Login function not available in UserContext.");
+            toast.warning("Login function not available in UserContext.");
         }
     }, [searchParams, login]);
 
@@ -83,6 +84,8 @@ const GetStarted = () => {
         color: '#dc3545',
         fontWeight: 700
     }
+
+    const API_BASE_URL = 'https://site.chimpvine.com';
 
     return (
         <>
@@ -107,13 +110,13 @@ const GetStarted = () => {
                                 </div>
                                 <TypingEffect />
                                 {user ? (
-                                    <NavLink to="/MainPlanner">
+                                    <NavLink to="/ai-tools-for-teachers">
                                         <button className="unique-button mt-5 mb-4" aria-label="Go to AI Tools">
                                             <span>Go to AI Tools</span>
                                         </button>
                                     </NavLink>
                                 ) : (
-                                    <NavLink to="https://site.chimpvine.com/test161803/register/subscription-free-for-2-months/">
+                                    <NavLink to={`${API_BASE_URL}/register/subscription-free-for-2-months/`}>
                                         <button className="unique-button mt-5 mb-4" aria-label="Start Planning">
                                             <span>Sign Up Now</span>
                                         </button>

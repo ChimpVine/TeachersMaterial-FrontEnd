@@ -31,7 +31,7 @@ export default function TextSummarizer({ BASE_URL }) {
     const handlePrint = () => window.print();
 
     const breadcrumbItems = [
-        { label: 'Main Panel', href: '/MainPlanner', active: false },
+        { label: 'Main Panel', href: '/ai-tools-for-teachers', active: false },
         { label: 'Summarizer', active: true },
         { label: 'Text Summarizer', active: true }
     ];
@@ -73,7 +73,7 @@ export default function TextSummarizer({ BASE_URL }) {
                 Cookies.remove('user_email');
 
                 setTimeout(() => {
-                    navigate('/Login');
+                    navigate('/login');
                     window.location.reload();
                 }, 2000);
             } else {

@@ -62,14 +62,18 @@ const Login = () => {
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
 
-    const API_BASE_URL = 'https://site.chimpvine.com/test161803';
+    const API_BASE_URL = 'https://site.chimpvine.com';
 
     useEffect(() => {
-        if (verifyToken()) {
-            navigate('/MainPlanner');
-        } else {
-            setLoading(false);
-        }
+        const checkToken = async () => {
+            const isValid = await verifyToken();
+            if (isValid) {
+                navigate('/ai-tools-for-teachers');
+            } else {
+                setLoading(false);
+            }
+        };
+        checkToken();
     }, [navigate, verifyToken]);
 
     const onSubmit = async (data) => {
@@ -84,7 +88,7 @@ const Login = () => {
             if (response.data.status === 'success') {
                 login(response.data.token);
                 // console.log(response.data.token);
-                navigate('/MainPlanner');
+                navigate('/ai-tools-for-teachers');
             } else {
                 setErrorMessage(response.data.message);
             }
@@ -159,7 +163,7 @@ const Login = () => {
                             </div>
 
                             <div className='mb-3'>
-                                <NavLink to="https://site.chimpvine.com/test161803/login/?action=forgot_password">
+                                <NavLink to={`${API_BASE_URL}/login/?action=forgot_password`}>
                                     <label style={pointerStyle}>Forgot Password?</label>
                                 </NavLink>
                             </div>
@@ -175,7 +179,7 @@ const Login = () => {
                         </form>
                         <div className='mt-3'>
                             <span>Dont have an account? </span>
-                            <NavLink to="https://site.chimpvine.com/test161803/register/subscription-free-for-2-months/">
+                            <NavLink to={`${API_BASE_URL}/register/subscription-free-for-2-months/`}>
                                 <label className='fw-bold' style={pointerStyle}>Sign Up Now</label>
                             </NavLink>
                         </div>
