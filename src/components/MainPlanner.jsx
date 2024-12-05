@@ -304,7 +304,7 @@ export default function MainPlanner() {
             ),
             title: 'SAT Maths',
             description: 'Master math concepts with clear, engaging lessons to boost your SAT score.',
-            link: '/comingsoon',
+            link: '/sat-maths',
             btnColor: 'dark'
         },
         {

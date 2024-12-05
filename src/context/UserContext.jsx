@@ -46,7 +46,7 @@ export const UserProvider = ({ children }) => {
         setUser(null);
 
         // Navigate to login or home page
-        window.location.href = '/Login'; // Ensure the user is redirected to login
+        window.location.href = '/login'; // Ensure the user is redirected to login
     }, []);
 
     const verifyToken = useCallback(async () => {

@@ -5,7 +5,7 @@ import { FaArrowRight, FaEraser, FaArrowLeft, FaRegFilePdf } from "react-icons/f
 import { toast } from 'react-toastify';
 import Spinner from '../../spinner/Spinner';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
-import Cookies from 'js-cookie'; 
+import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 
 export default function TongueTwister({ BASE_URL }) {
@@ -84,25 +84,28 @@ export default function TongueTwister({ BASE_URL }) {
             toast.success('Tongue Twister generated successfully!');
         } catch (error) {
             if (
-                error.response.status === 401  
+                error.response.status === 401
             ) {
                 // console.error('Error: Invalid token.');
                 toast.warning('This email has been already used on another device.');
-    
+
                 Cookies.remove('authToken');
                 Cookies.remove('site_url');
                 Cookies.remove('Display_name');
                 Cookies.remove('user_email');
-    
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('authUser');
+
                 setTimeout(() => {
-                    navigate('/login'); 
+                    navigate('/login');
                     window.location.reload();
-                }, 2000); 
+                }, 2000);
+
             } else {
                 console.error('Error:', error);
                 toast.error('Failed to generate the Tongue Twister. Please try again.');
             }
-        }finally {
+        } finally {
             setIsLoading(false);
         }
     };
@@ -117,7 +120,7 @@ export default function TongueTwister({ BASE_URL }) {
             <NavBar id="main-nav" />
             <div className="container-fluid">
                 <div className="row justify-content-center mt-5">
-                    
+
                     {isLoading ? (
                         <div className="col-md-5 text-center">
                             <Spinner />
@@ -125,63 +128,63 @@ export default function TongueTwister({ BASE_URL }) {
                     ) : (
                         !apiResponse ? (
                             <>
-                            <NavBreadcrumb items={breadcrumbItems} />
-                            <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded no-print">
-                                <form onSubmit={handleSubmit}>
-                                    <h4 className="text-center mb-3">Tongue Twister Generator</h4>
-                                    <div className="mb-2">
-                                        <label htmlFor="topic" className="form-label">
-                                            Topic <span style={{ color: 'red' }}>*</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className="form-control form-control-sm mb-2"
-                                            id="topic"
-                                            name="topic"
-                                            value={formData.topic}
-                                            onChange={handleChange}
-                                            disabled={isLoading}
-                                            placeholder="Enter Tongue Twister Topic For eg. Animals, Foods"
-                                        />
+                                <NavBreadcrumb items={breadcrumbItems} />
+                                <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded no-print">
+                                    <form onSubmit={handleSubmit}>
+                                        <h4 className="text-center mb-3">Tongue Twister Generator</h4>
+                                        <div className="mb-2">
+                                            <label htmlFor="topic" className="form-label">
+                                                Topic <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control form-control-sm mb-2"
+                                                id="topic"
+                                                name="topic"
+                                                value={formData.topic}
+                                                onChange={handleChange}
+                                                disabled={isLoading}
+                                                placeholder="Enter Tongue Twister Topic For eg. Animals, Foods"
+                                            />
 
-                                        <label htmlFor="number_of_twisters" className="form-label">
-                                            Number of Twisters <span style={{ color: 'red' }}>*</span>
-                                        </label>
-                                        <select
-                                            className="form-select form-select-sm mb-2"
-                                            id="number_of_twisters"
-                                            name="number_of_twisters"
-                                            value={formData.number_of_twisters}
-                                            onChange={handleChange}
-                                            disabled={isLoading}
-                                        >
-                                            {numberofTwisters.map((option) => (
-                                                <option key={option.value} value={option.value}>
-                                                    {option.label}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
+                                            <label htmlFor="number_of_twisters" className="form-label">
+                                                Number of Twisters <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <select
+                                                className="form-select form-select-sm mb-2"
+                                                id="number_of_twisters"
+                                                name="number_of_twisters"
+                                                value={formData.number_of_twisters}
+                                                onChange={handleChange}
+                                                disabled={isLoading}
+                                            >
+                                                {numberofTwisters.map((option) => (
+                                                    <option key={option.value} value={option.value}>
+                                                        {option.label}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
 
-                                    <div className="d-flex justify-content-between mt-3">
-                                        <button
-                                            type="button"
-                                            className="btn btn-sm"
-                                            style={cancelStyle}
-                                            onClick={() => setFormData({
-                                                topic: '',
-                                                number_of_twisters: ''
-                                            })}
-                                            disabled={isLoading}
-                                        >
-                                            <FaEraser /> Reset
-                                        </button>
-                                        <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
-                                            Generate <FaArrowRight />
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
+                                        <div className="d-flex justify-content-between mt-3">
+                                            <button
+                                                type="button"
+                                                className="btn btn-sm"
+                                                style={cancelStyle}
+                                                onClick={() => setFormData({
+                                                    topic: '',
+                                                    number_of_twisters: ''
+                                                })}
+                                                disabled={isLoading}
+                                            >
+                                                <FaEraser /> Reset
+                                            </button>
+                                            <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
+                                                Generate <FaArrowRight />
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
                             </>
                         ) : (
                             <div className="mt-3" ref={contentRef} id="main-btn">

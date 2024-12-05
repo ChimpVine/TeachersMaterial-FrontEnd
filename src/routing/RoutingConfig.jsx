@@ -24,6 +24,7 @@ import Maketheword from '../components/Gamification/Maketheword.jsx';
 import PrivateRoute from '../components/PrivateRoute';
 import Login from '../pages/Login/Login.jsx';
 import Aboutus from '../pages/AboutUs/Aboutus.jsx';
+import SatMaths from '../components/Assessment/SatMaths.jsx'
 
 export default function RoutingConfig() {
   const location = useLocation();
@@ -46,6 +47,7 @@ export default function RoutingConfig() {
     '/text-summarizer': 'Text Summarizer - AI Tools for Teachers',
     '/group-work': 'Group Work - AI Tools for Teachers',
     '/make-the-word': 'Make the word - AI Tools for Teachers',
+    '/sat-maths': 'SAT Math - AI Tools for Teachers',
     '/contact-us': 'Contact Us - AI Tools for Teachers',
     '/pdf-splitter': 'Pdf Splitter - AI Tools for Teachers',
     '/comingsoon': 'Comingsoon - AI Tools for Teachers',
@@ -85,6 +87,7 @@ export default function RoutingConfig() {
         </Route>
         <Route path="/contact-us" element={<RequestForm BASE_URL={BASE_URL} />} />
         <Route path="/pdf-splitter" element={<PdfSplitter />} />
+        <Route path="/sat-maths" element={<SatMaths />} />
         <Route path="*" element={<Error404Page />} />
       </Routes>
     </HelmetProvider>
