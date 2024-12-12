@@ -177,6 +177,8 @@ const QuizUI = ({ BASE_URL }) => {
                 Cookies.remove('site_url');
                 Cookies.remove('Display_name');
                 Cookies.remove('user_email');
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('authUser');
     
                 setTimeout(() => {
                     navigate('/login');

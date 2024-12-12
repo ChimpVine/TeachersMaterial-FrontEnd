@@ -151,6 +151,8 @@ export default function VocabularyPlan({ BASE_URL }) {
                 Cookies.remove('site_url');
                 Cookies.remove('Display_name');
                 Cookies.remove('user_email');
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('authUser');
 
                 setTimeout(() => {
                     navigate('/login');
@@ -242,20 +244,6 @@ export default function VocabularyPlan({ BASE_URL }) {
                                                 ))}
                                             </select>
 
-                                            <label htmlFor="topic" className="form-label">
-                                                Topic <span style={{ color: 'red' }}>*</span>
-                                            </label>
-                                            <input
-                                                type="text"
-                                                className="form-control form-control-sm mb-2"
-                                                id="topic"
-                                                name="topic"
-                                                value={formData.topic}
-                                                onChange={handleChange}
-                                                disabled={isLoading}
-                                                placeholder="Enter Vocabulary Topic For eg.Force , Algebra or Ancient Egypt"
-                                            />
-
                                             <label htmlFor="numberOfWords" className="form-label">
                                                 Number of Words <span style={{ color: 'red' }}>*</span>
                                             </label>
@@ -273,6 +261,20 @@ export default function VocabularyPlan({ BASE_URL }) {
                                                     </option>
                                                 ))}
                                             </select>
+
+                                            <label htmlFor="topic" className="form-label">
+                                                Topic <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control form-control-sm mb-2"
+                                                id="topic"
+                                                name="topic"
+                                                value={formData.topic}
+                                                onChange={handleChange}
+                                                disabled={isLoading}
+                                                placeholder="Enter Vocabulary Topic For eg.Force , Algebra or Ancient Egypt"
+                                            />
                                         </div>
 
                                         <div className="d-flex justify-content-between mt-3">

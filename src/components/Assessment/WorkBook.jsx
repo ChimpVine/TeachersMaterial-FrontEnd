@@ -150,6 +150,8 @@ export default function WorkBook({ BASE_URL }) {
                 Cookies.remove('site_url');
                 Cookies.remove('Display_name');
                 Cookies.remove('user_email');
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('authUser');
     
                 setTimeout(() => {
                     navigate('/Login');
@@ -220,6 +222,20 @@ export default function WorkBook({ BASE_URL }) {
                                                 ))}
                                             </select>
 
+                                            <label htmlFor="pdf_file" className="form-label">
+                                                File Upload <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <input
+                                                type="file"
+                                                className="form-control form-control-sm mb-2"
+                                                id="pdf_file"
+                                                name="pdf_file"
+                                                accept="application/pdf"
+                                                ref={fileInputRef}
+                                                onChange={handleChange}
+                                                disabled={isLoading}
+                                            />
+
                                             <label htmlFor="textarea" className="form-label">
                                                 Your Topic <span style={{ color: 'red' }}>*</span>
                                             </label>
@@ -235,19 +251,6 @@ export default function WorkBook({ BASE_URL }) {
                                                 disabled={isLoading}
                                             />
 
-                                            <label htmlFor="pdf_file" className="form-label">
-                                                File Upload <span style={{ color: 'red' }}>*</span>
-                                            </label>
-                                            <input
-                                                type="file"
-                                                className="form-control form-control-sm mb-2"
-                                                id="pdf_file"
-                                                name="pdf_file"
-                                                accept="application/pdf"
-                                                ref={fileInputRef}
-                                                onChange={handleChange}
-                                                disabled={isLoading}
-                                            />
                                             <div className="mb-3">
                                                 <small className="text-muted">
                                                     <strong className='text-danger'>Note:</strong>
