@@ -185,12 +185,14 @@ a:hover {
 
 .nav-link-home,
 .nav-link-contact,
-.nav-link-elearning{
+.nav-link-elearning {
     color: white;
 }
 
 
-.nav-link-splitter ,.nav-link-navigate{
+.nav-link-splitter,
+.nav-link-navigate,
+.nav-link-tools {
     color: black;
 }
 
@@ -198,7 +200,7 @@ a:hover {
 .nav-link-tools:hover,
 .nav-link-contact:hover,
 .nav-link-splitter:hover,
-.nav-link-navigate:hover{
+.nav-link-navigate:hover {
     color: #FF683B;
 }
 
@@ -206,7 +208,8 @@ a:hover {
 .nav-link-navigate,
 .nav-link-splitter,
 .nav-link-tools {
-    padding-bottom: 4px; /* Add space for the bottom border */
+    padding-bottom: 4px;
+    /* Add space for the bottom border */
     transition: color 0.3s ease, border-bottom 0.3s ease;
 }
 
@@ -214,9 +217,11 @@ a:hover {
 .nav-link-home.active-link,
 .nav-link-navigate.active-link,
 .nav-link-splitter.active-link,
-.nav-link-tools.active-link{
-    border-bottom: 3px solid #FF683B; /* Blue border for active page */
-    color: #ffffff; /* Change text color to blue */
+.nav-link-tools.active-link {
+    border-bottom: 3px solid #FF683B;
+    /* Blue border for active page */
+    color: #ffffff;
+    /* Change text color to blue */
 }
 
 
@@ -230,7 +235,7 @@ a:hover {
     resize: none;
 }
 
-.resizeStyle{
+.resizeStyle {
     resize: none;
 }
 
@@ -276,24 +281,112 @@ a:hover {
     padding: 0.2em 0.4em;
 }
 
- /* Center text for small devices */
+/* Center text for small devices */
 @media (max-width: 768px) {
     .footer .row {
         text-align: center;
     }
+
     .footer ul {
         padding: 0;
         list-style: none;
     }
+
     .footer ul li {
         margin-bottom: 10px;
     }
-    .footer .social-media{
+
+    .footer .social-media {
         justify-content: center;
     }
 }
 
+/* Math-Cal Css Styles*/
+.tampered {
+    background-image: linear-gradient(179deg,
+            #ffa620 0%,
+            #fba11a 50%,
+            transparent 54%,
+            transparent 100%);
+    font-weight: 700;
+    margin-bottom: 3.5rem;
+    background-size: 100% 15%;
+    background-repeat: repeat-x;
+    background-position: left 0% bottom 10%;
+    padding-bottom: 5px;
+}
 
+math-field {
+    position: relative;
+    margin-right: 4.5em;
+}
 
+math-field::part(virtual-keyboard-toggle) {
+    position: absolute;
+    color: #ff683b;
+    right: -3.5em;
+}
 
+math-field::part(menu-toggle) {
+    position: absolute;
+    color: #ff683b;
+    right: -6em;
+}
 
+@media (pointer: coarse) {
+    math-field::part(virtual-keyboard-toggle),
+    math-field::part(menu-toggle) {
+        min-width: 25px !important;
+        min-height: 25px !important;
+        margin-right: 0.75em;
+    }
+}
+
+.ML__base,
+.ML__is-inline {
+    display: inline !important;
+}
+
+.ML__latex {
+    display: inline !important;
+    word-wrap: break-word !important;
+    white-space: pre-wrap !important;
+    word-spacing: initial !important;
+}
+
+/* File Upload Styling */
+.btn-pdf-modal {
+    cursor: pointer;
+  }
+  
+  .hover-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    opacity: 0 !important;
+    transition: all 0.2s;
+    background-color: red;
+    z-index: 999;
+  }
+  
+  .btn-pdf-modal:hover .hover-overlay {
+    opacity: 0.5 !important;
+  }
+  
+  .btn-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  @media only screen and (max-width: 600px) {
+    .hover-overlay {
+      opacity: 0.5 !important;
+    }
+  }
+  

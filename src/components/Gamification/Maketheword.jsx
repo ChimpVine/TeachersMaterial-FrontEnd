@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import NavBar from '../NavBar';
-import { FaArrowRight, FaEraser, FaArrowLeft, FaCloudDownloadAlt } from "react-icons/fa";
+import { FaArrowRight, FaEraser, FaArrowLeft, FaCloudDownloadAlt, FaFilePdf } from "react-icons/fa";
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import Spinner from '../../spinner/Spinner';
@@ -32,6 +32,7 @@ export default function Maketheword({ BASE_URL }) {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [isLoading, setIsLoading] = useState(false);
     const [apiResponse, setApiResponse] = useState(null);
+    const [showAnswers, setShowAnswers] = useState(false); // State to toggle answers visibility
     const contentRef = useRef();
 
     const btnStyle = { backgroundColor: '#FF683B', color: 'white' };
@@ -39,8 +40,6 @@ export default function Maketheword({ BASE_URL }) {
     const pdfStyle = { backgroundColor: '#198754', color: 'white' };
 
     const onSubmit = async (data) => {
-
-        // Retrieve cookies for headers
         const authToken = Cookies.get('authToken');
         const siteUrl = Cookies.get('site_url');
 
@@ -54,7 +53,7 @@ export default function Maketheword({ BASE_URL }) {
                 {
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${authToken}`, // Explicitly set Authorization header
+                        'Authorization': `Bearer ${authToken}`,
                         'X-Site-Url': siteUrl
                     }
                 }
@@ -63,19 +62,14 @@ export default function Maketheword({ BASE_URL }) {
             toast.success('Words generated successfully!');
             reset();
         } catch (error) { 
-            if (
-                error.response.status === 401 
-            ) {
-                // console.error('Error: Invalid token.');
+            if (error.response.status === 401) {
                 toast.warning('This email has been already used on another device.');
-    
                 Cookies.remove('authToken');
                 Cookies.remove('site_url');
                 Cookies.remove('Display_name');
                 Cookies.remove('user_email');
                 localStorage.removeItem('authToken');
                 localStorage.removeItem('authUser');
-
                 setTimeout(() => {
                     navigate('/login'); 
                     window.location.reload();
@@ -84,8 +78,7 @@ export default function Maketheword({ BASE_URL }) {
                 const errorMessage = error.response?.data?.error || 'Failed to generate words. Please try again.';
                 toast.error(errorMessage);
             }
-        }
-         finally {
+        } finally {
             setIsLoading(false);
         }
     };
@@ -101,12 +94,13 @@ export default function Maketheword({ BASE_URL }) {
         });
     };
 
+    const toggleAnswers = () => setShowAnswers(!showAnswers);
+
     return (
         <>
             <NavBar id="main-nav" />
             <div className="container-fluid">
                 <div className="row justify-content-center mt-5 mb-4">
-
                     {isLoading ? (
                         <div className="col-md-5 text-center">
                             <Spinner />
@@ -185,7 +179,7 @@ export default function Maketheword({ BASE_URL }) {
                             </>
                         ) : (
                             <div id="main-btn">
-                                {renderWordGame(apiResponse)}
+                                {renderWordGame(apiResponse, showAnswers)}
                                 <div className="text-center">
                                     <button className="btn btn-sm mt-2 mb-3 me-2 no-print" style={btnStyle} onClick={() => setApiResponse(null)}>
                                         <FaArrowLeft /> Generate Another Word Game
@@ -194,19 +188,17 @@ export default function Maketheword({ BASE_URL }) {
                                         type="button"
                                         className="btn btn-sm mt-2 mb-3 me-2 no-print"
                                         style={pdfStyle}
-                                        onClick={() => generatePdf(false)}
+                                        onClick={() => generatePdf(showAnswers)}
                                     >
-                                        <FaCloudDownloadAlt /> View Questions
+                                        <FaCloudDownloadAlt /> Download PDF
                                     </button>
-
-                                    {/* <button
+                                    <button
                                         type="button"
-                                        className="btn btn-sm mt-2 mb-3 me-2 no-print"
-                                        style={pdfStyle}
-                                        onClick={() => generatePdf(true)}
+                                        className="btn btn-sm btn-warning mt-2 mb-3 me-2 no-print"
+                                        onClick={toggleAnswers}
                                     >
-                                        <FaFilePdf /> Download Answers
-                                    </button> */}
+                                        <FaFilePdf /> {showAnswers ? 'Hide Answers' : 'Show Answers'}
+                                    </button>
                                 </div>
                             </div>
                         )
@@ -216,7 +208,8 @@ export default function Maketheword({ BASE_URL }) {
         </>
     );
 }
-const renderWordGame = (apiResponse) => {
+
+const renderWordGame = (apiResponse, showAnswers) => {
     const nameStyle = {
         display: "inline-block",
         width: "200px",
@@ -262,8 +255,8 @@ const renderWordGame = (apiResponse) => {
                     {apiResponse.words.map((wordObj, index) => (
                         <div key={index} className="col-md-6 mb-4">
                             <div className="p-3 border rounded">
-                                <strong>Word:</strong>
-                                <p><strong>Hint:</strong> {wordObj.hint}</p>
+                                <strong>Word: {showAnswers ? wordObj.word : ''}</strong>
+                                <p className={showAnswers ? 'answer' : ''}><strong>Hint:</strong> {wordObj.hint}</p>
                             </div>
                         </div>
                     ))}
@@ -272,4 +265,3 @@ const renderWordGame = (apiResponse) => {
         </div>
     );
 };
-

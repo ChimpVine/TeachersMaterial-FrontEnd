@@ -1,10 +1,16 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import logo from "../assests/img/ChimpVine_Logo.png";
 import { NavLink } from 'react-router-dom';
 import { FaFacebook, FaLinkedin, FaInstagramSquare } from "react-icons/fa";
 import background from "../assests/img/footer_img.png";
-
+import Cookies from 'js-cookie';
 export default function Footer() {
+    const [API_BASE_URL, setApiBaseUrl] = useState("");
+    
+        useEffect(() => {
+            const baseUrl = Cookies.get("apiBaseUrl") || "https://site.chimpvine.com";
+            setApiBaseUrl(baseUrl);
+        }, []);
 
     const footerStyle = {
         backgroundImage: `url(${background})`,
@@ -15,6 +21,7 @@ export default function Footer() {
         display: 'flex',
         alignItems: 'center', 
     };
+
     return (
         <>
             <footer className="footer mt-5 bg-body-tertiary text-white"
@@ -51,13 +58,13 @@ export default function Footer() {
                             <h5>Our Products</h5>
                             <ul className="list-unstyled">
                                 <li>
-                                    <NavLink className="content" to="https://site.chimpvine.com/"
+                                    <NavLink className="content" to={`${API_BASE_URL}`}
                                         target='_blank'>
                                         Educational Games
                                     </NavLink>
                                 </li>
                                 <li>
-                                    <NavLink className="content" to="https://chatbot.chimpvine.com/math-cal"
+                                    <NavLink className="content" to="/math-homework-help"
                                         target='_blank'>
                                         Math Homework Help
                                     </NavLink>
@@ -70,7 +77,7 @@ export default function Footer() {
                                 <li>
                                     <NavLink
                                         className="content"
-                                        to="https://site.chimpvine.com/category/games/"
+                                        to={`${API_BASE_URL}/category/games/`}
                                         target='_blank'>
                                         Games
                                     </NavLink>
@@ -78,7 +85,7 @@ export default function Footer() {
                                 <li>
                                     <NavLink
                                         className="content"
-                                        to="https://site.chimpvine.com/category/interactive-content/"
+                                        to={`${API_BASE_URL}/category/interactive-content/`}
                                         target='_blank'>
                                         Interactive Content
                                     </NavLink>
@@ -86,7 +93,7 @@ export default function Footer() {
                                 <li>
                                     <NavLink
                                         className="content"
-                                        to="https://site.chimpvine.com/subject/mathematics/"
+                                        to={`${API_BASE_URL}/subject/mathematics/`}
                                         target='_blank'>
                                         Mathematics
                                     </NavLink>
@@ -94,7 +101,7 @@ export default function Footer() {
                                 <li>
                                     <NavLink
                                         className="content"
-                                        to="https://site.chimpvine.com/subject/english/"
+                                        to={`${API_BASE_URL}/subject/english/`}
                                         target='_blank'>
                                         English
                                     </NavLink>
@@ -102,7 +109,7 @@ export default function Footer() {
                                 <li>
                                     <NavLink
                                         className="content"
-                                        to="https://site.chimpvine.com/article/"
+                                        to={`${API_BASE_URL}/article/`}
                                         target='_blank'>
                                         Articles
                                     </NavLink>
@@ -124,7 +131,7 @@ export default function Footer() {
                                 <li>
                                     <NavLink
                                         className="content"
-                                        to="https://site.chimpvine.com/policy/"
+                                        to={`${API_BASE_URL}/policy/`}
                                         target='_blank'>
                                         Privacy Policy
                                     </NavLink>
@@ -133,7 +140,7 @@ export default function Footer() {
                                 <li>
                                     <NavLink
                                         className="content"
-                                        to="https://site.chimpvine.com/faqs/"
+                                        to={`${API_BASE_URL}/faqs/`}
                                         target='_blank'>
                                         FAQ's
                                     </NavLink>

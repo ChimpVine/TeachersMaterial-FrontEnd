@@ -23,7 +23,7 @@ const questionTypes = [
   { id: "Calculator Open Response", label: "Calculator Open Response" },
 ];
 
-export default function SatMath() {
+export default function SatMath({ BASE_URL }) {
   const navigate = useNavigate();
   const {
     register,
@@ -51,11 +51,11 @@ export default function SatMath() {
   }, [selectedTypes, setValue]);
 
   const onSubmit = async (data) => {
+    const authToken = Cookies.get('authToken');
+    const siteUrl = Cookies.get('site_url');
+
     setIsLoading(true);
     setApiResponse(null);
-
-    const authToken = Cookies.get("authToken");
-    const siteUrl = Cookies.get("site_url");
 
     const payload = {
       topic: data.topic,
@@ -67,22 +67,31 @@ export default function SatMath() {
     };
 
     try {
-      const response = await axios.post("http://127.0.0.1:5000/SAT_maths", payload, {
+      const response = await axios.post(`${BASE_URL}/SAT_maths`, payload, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`,
-          "X-Site-Url": siteUrl,
+          'Authorization': `Bearer ${authToken}`,
+          'X-Site-Url': siteUrl
         },
       });
       setApiResponse(response.data.exam);
       toast.success("SAT Maths generated successfully!");
       reset();
     } catch (error) {
-      const errorMsg = error.response?.data?.error || "An error occurred. Please try again.";
-      toast.error(errorMsg);
-      if (error.response?.status === 401) {
-        Cookies.remove("authToken");
-        navigate("/login");
+      if (error.response.status === 401) {
+        toast.warning('This email has been already used on another device.');
+        Cookies.remove('authToken');
+        Cookies.remove('site_url');
+        Cookies.remove('Display_name');
+        Cookies.remove('user_email');
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('authUser');
+        setTimeout(() => {
+          navigate('/login');
+          window.location.reload();
+        }, 2000);
+      } else {
+         toast.error('Failed to generate, Please try again.');
       }
     } finally {
       setIsLoading(false);
@@ -92,12 +101,12 @@ export default function SatMath() {
   const generatePdf = () => window.print();
 
   const handleDownloadQuestions = () => {
-    setShowAnswers(true);
+    setShowAnswers(false);
     generatePdf();
   };
 
   const handleDownloadAnswers = () => {
-    setShowAnswers(false);
+    setShowAnswers(true);
     generatePdf();
   };
 

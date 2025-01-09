@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { Helmet, HelmetProvider } from 'react-helmet-async'; 
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import Error404Page from '../pages/Error404Page';
 import LessonPlanner from '../components/Planner/LessonPlanner.jsx';
 import QuizUI from '../components/Assessment/QuizUI.jsx';
@@ -16,7 +16,7 @@ import SocialStory from '../components/SpecialNeeds/SocialStory.jsx';
 import SelGenerator from '../components/Learning/SelGenerator.jsx';
 import SlideGenerator from '../components/Planner/SlideGenerator.jsx';
 import RequestForm from '../routing/RecaptchaConfig.jsx';
-import PdfSplitter from '../pages/PdfSplitter.jsx';
+import PdfSplitter from '../pages/PdfSplitter/PdfSplitter-main.jsx';
 import TextSummarizer from '../components/Summarizer/TextSummarizer.jsx';
 import GroupWork from '../components/Assessment/GroupWork.jsx';
 import ReactGA from 'react-ga4';
@@ -25,6 +25,7 @@ import PrivateRoute from '../components/PrivateRoute';
 import Login from '../pages/Login/Login.jsx';
 import Aboutus from '../pages/AboutUs/Aboutus.jsx';
 import SatMaths from '../components/Assessment/SatMaths.jsx'
+import MathCal from '../components/MathHomework/MathCal.jsx';
 
 export default function RoutingConfig() {
   const location = useLocation();
@@ -50,15 +51,16 @@ export default function RoutingConfig() {
     '/sat-maths': 'SAT Math - AI Tools for Teachers',
     '/contact-us': 'Contact Us - AI Tools for Teachers',
     '/pdf-splitter': 'Pdf Splitter - AI Tools for Teachers',
+    '/math-homework-help': 'Math Homework Help',
     '/comingsoon': 'Comingsoon - AI Tools for Teachers',
   };
 
   const pageTitle = routeTitleMap[location.pathname] || 'Error 404 - AI Tools for Teachers';
 
   const BASE_URL = 'https://teachertools-api.chimpvine.com';
-
-  ReactGA.initialize('G-TBNNYXX21K');
   
+  ReactGA.initialize('G-TBNNYXX21K');
+
   return (
     <HelmetProvider>
       <Helmet>
@@ -83,11 +85,13 @@ export default function RoutingConfig() {
           <Route path="/text-summarizer" element={<TextSummarizer BASE_URL={BASE_URL} />} />
           <Route path="/group-work" element={<GroupWork BASE_URL={BASE_URL} />} />
           <Route path="/make-the-word" element={<Maketheword BASE_URL={BASE_URL} />} />
-          <Route path="/Comingsoon" element={<ComingSoon />} />
+          <Route path="/sat-maths" element={<SatMaths BASE_URL={BASE_URL} />} />
+          <Route path="/math-homework-help" element={<MathCal />} />
+          <Route path="/comingsoon" element={<ComingSoon />} />
         </Route>
         <Route path="/contact-us" element={<RequestForm BASE_URL={BASE_URL} />} />
+       
         <Route path="/pdf-splitter" element={<PdfSplitter />} />
-        <Route path="/sat-maths" element={<SatMaths />} />
         <Route path="*" element={<Error404Page />} />
       </Routes>
     </HelmetProvider>

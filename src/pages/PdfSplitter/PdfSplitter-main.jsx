@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import NavBar from '../components/NavBar';
+import NavBar from '../../components/NavBar';
 import { Modal, Button } from 'react-bootstrap';
 
 const PdfSplitter = () => {
@@ -35,14 +35,7 @@ const PdfSplitter = () => {
             };
         }
     };
-
-    // const handleRemovePdf = () => {
-    //     setFileNames([]);
-    //     setPdfBlobUrl(null);
-    //     document.getElementById('fileUpload').value = '';
-    // };
-
-    // CSS styles as constants
+    
     const styles = {
         headerContainer: {
             marginBottom: '30px',

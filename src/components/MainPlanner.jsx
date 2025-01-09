@@ -197,17 +197,17 @@ export default function MainPlanner() {
         },
         {
             id: 14,
-            category: 'Summarizer',
+            category: 'Assessment',
             icon: (
                 <div className="position-relative">
-                    <FaYoutubeSquare size={50} style={{ color: "#dc3545" }} />
-                    <span className="badge rounded-pill bg-danger small-badge position-absolute top-0 end-0">Coming Soon</span>
+                   <TbMathSymbols size={50} />
+                   <span className="badge rounded-pill bg-success position-absolute top-0 end-0">Popular</span>
                 </div>
             ),
-            title: 'YouTube Q&A',
-            description: 'Effortlessly craft dynamic and custom assessments with our YouTube Q&A Generator.',
-            link: '/comingsoon',
-            btnColor: 'danger'
+            title: 'SAT Maths',
+            description: 'Master math concepts with clear, engaging lessons to boost your SAT score.',
+            link: '/sat-maths',
+            btnColor: 'dark'
         },
         {
             id: 15,
@@ -274,8 +274,8 @@ export default function MainPlanner() {
                     <span className="badge rounded-pill bg-danger small-badge position-absolute top-0 end-0">Coming Soon</span>
                 </div>
             ),
-            title: 'YouTube Summarizer',
-            description: 'Effortlessly create clear and concise video summaries with our YouTube Summarizer.',
+            title: 'YouTube Q&A',
+            description: 'Effortlessly craft dynamic and custom assessments with our YouTube Q&A Generator.',
             link: '/comingsoon',
             btnColor: 'danger'
         },
@@ -295,17 +295,17 @@ export default function MainPlanner() {
         },
         {
             id: 21,
-            category: 'Assessment',
+            category: 'Summarizer',
             icon: (
                 <div className="position-relative">
-                   <TbMathSymbols size={50} />
+                    <FaYoutubeSquare size={50} style={{ color: "#dc3545" }} />
                     <span className="badge rounded-pill bg-danger small-badge position-absolute top-0 end-0">Coming Soon</span>
                 </div>
             ),
-            title: 'SAT Maths',
-            description: 'Master math concepts with clear, engaging lessons to boost your SAT score.',
-            link: '/sat-maths',
-            btnColor: 'dark'
+            title: 'YouTube Summarizer',
+            description: 'Effortlessly create clear and concise video summaries with our YouTube Summarizer.',
+            link: '/comingsoon',
+            btnColor: 'danger'
         },
         {
             id: 22,

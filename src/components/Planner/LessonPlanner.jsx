@@ -164,7 +164,7 @@ export default function LessonPlan({ BASE_URL }) {
                     window.location.reload(); 
                 }, 2000); 
             } else {
-                console.error('Error:', error);
+                // console.error('Error:', error);
                 toast.error('Failed to generate the lesson plan. Please try again.');
             }
         } finally {

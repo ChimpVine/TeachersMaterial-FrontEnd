@@ -7,6 +7,7 @@ import logo from "../../assests/img/ChimpVine-UI.png";
 import NavBar from '../../components/NavBar';
 import { UserContext } from '../../context/UserContext';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import Cookies from 'js-cookie';
 
 
 const containerStyle = {
@@ -61,8 +62,12 @@ const Login = () => {
     const { login, verifyToken } = useContext(UserContext);
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
+    const [API_BASE_URL, setApiBaseUrl] = useState("");
 
-    const API_BASE_URL = 'https://site.chimpvine.com';
+    useEffect(() => {
+        const baseUrl = Cookies.get("apiBaseUrl") || "https://site.chimpvine.com";
+        setApiBaseUrl(baseUrl);
+    }, []);
 
     useEffect(() => {
         const checkToken = async () => {
@@ -147,8 +152,8 @@ const Login = () => {
                                         className="input-group-text"
                                         style={{
                                             cursor: 'pointer',
-                                            backgroundColor: 'white', 
-                                            border: errors.password ? '1px solid red' : '', 
+                                            backgroundColor: 'white',
+                                            border: errors.password ? '1px solid red' : '',
                                         }}
                                         onClick={() => setShowPassword(!showPassword)}
                                     >

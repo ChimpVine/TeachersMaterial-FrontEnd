@@ -5,7 +5,7 @@ import Footer from '../pages/Footer.jsx';
 import HeroSection from '../pages/HeroSection.jsx';
 import { UserContext } from '../context/UserContext';
 import { toast } from 'react-toastify';
-
+import Cookies from 'js-cookie';
 
 const TypingEffect = () => {
     const [text, setText] = useState('');
@@ -53,7 +53,6 @@ const TypingEffect = () => {
 
 
 const GetStarted = () => {
-
     const { login, user } = useContext(UserContext);
     const [searchParams] = useSearchParams();
 
@@ -61,7 +60,6 @@ const GetStarted = () => {
         const token = searchParams.get('token');
         if (token && typeof login === 'function') {
             login(token);
-            // console.log("Token found and processed:", token);
             window.history.replaceState(null, '', window.location.origin + window.location.pathname);
         } else if (!login) {
             toast.warning("Login function not available in UserContext.");
@@ -85,39 +83,35 @@ const GetStarted = () => {
         fontWeight: 700
     }
 
-    const API_BASE_URL = 'https://site.chimpvine.com';
+    const [API_BASE_URL, setApiBaseUrl] = useState("");
 
+    useEffect(() => {
+        const baseUrl = Cookies.get("apiBaseUrl") || "https://site.chimpvine.com";
+        setApiBaseUrl(baseUrl);
+    }, []);
+
+    
     return (
         <>
             <NavBar />
             <div className="unique-get-started-container mb-5">
-                <div className="container center-text mt-5">
+                <div className="container-fluid center-text">
                     <section className="py-4">
                         <div className="d-flex justify-content-center align-items-center flex-column text-center w-100">
-                            <h2 className="display-4 fw-bold mb-4">
-                                <span style={textStyle}>AI Tools</span> For Teachers
+                            <h2 className="display-4 fw-bold mb-5 mt-5">
+                                <span style={textStyle} className='mb-5'>AI Tools</span> For Teachers
                             </h2>
                             <div>
-                                <h6 className="display-6 fw-bold mb-4">
-                                    <span className="me-2" style={{ fontSize: "2rem" }}>2 months</span>
-                                    <span className="display-5" style={fontStyle}>FREE</span>
-                                    <span className="ms-2" style={{ fontSize: "1.2rem" }}>if you sign up today !</span>
-                                </h6>
-                                <div className='mb-4'>
-                                    <span className="ms-2" style={{ fontSize: "1.4rem" }}> 
-                                        (No Credit Card Required)
-                                    </span>
-                                </div>
                                 <TypingEffect />
                                 {user ? (
                                     <NavLink to="/ai-tools-for-teachers">
-                                        <button className="unique-button mt-5 mb-4" aria-label="Go to AI Tools">
+                                        <button className="unique-button mt-5 mb-5" aria-label="Go to AI Tools">
                                             <span>Go to AI Tools</span>
                                         </button>
                                     </NavLink>
                                 ) : (
-                                    <NavLink to={`${API_BASE_URL}/register/subscription-free-for-2-months/`}>
-                                        <button className="unique-button mt-5 mb-4" aria-label="Start Planning">
+                                    <NavLink to={`${API_BASE_URL}/register/chimpvine-membership/`}>
+                                        <button className="unique-button mt-5 mb-5" aria-label="Start Planning">
                                             <span>Sign Up Now</span>
                                         </button>
                                     </NavLink>
