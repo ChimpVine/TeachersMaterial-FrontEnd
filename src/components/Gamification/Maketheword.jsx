@@ -112,7 +112,6 @@ export default function Maketheword({ BASE_URL }) {
                                 <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded no-print">
                                     <form onSubmit={handleSubmit(onSubmit)}>
                                         <h4 className="text-center mb-3">Make the Word Generator</h4>
-
                                         {/* Theme */}
                                         <div className="mb-2">
                                             <label htmlFor="theme" className="form-label">

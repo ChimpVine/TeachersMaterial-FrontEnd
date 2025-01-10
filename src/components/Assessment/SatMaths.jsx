@@ -36,6 +36,7 @@ export default function SatMath({ BASE_URL }) {
   const [isLoading, setIsLoading] = useState(false);
   const [apiResponse, setApiResponse] = useState(null);
   const [showAnswers, setShowAnswers] = useState(true);
+  const [isAnswerVisible, setIsAnswerVisible] = useState(true); 
   const selectedTypes = watch("questionTypes") || [];
   const btnStyle = { backgroundColor: "#FF683B", color: "white" };
   const cancelStyle = { backgroundColor: "#dc3545", color: "white" };
@@ -91,7 +92,7 @@ export default function SatMath({ BASE_URL }) {
           window.location.reload();
         }, 2000);
       } else {
-         toast.error('Failed to generate, Please try again.');
+        toast.error('Failed to generate, Please try again.');
       }
     } finally {
       setIsLoading(false);
@@ -105,9 +106,9 @@ export default function SatMath({ BASE_URL }) {
     generatePdf();
   };
 
-  const handleDownloadAnswers = () => {
-    setShowAnswers(true);
-    generatePdf();
+  const handleToggleAnswers = () => {
+    setIsAnswerVisible(!isAnswerVisible); 
+    setShowAnswers(!showAnswers); 
   };
 
   const breadcrumbItems = [
@@ -255,27 +256,26 @@ export default function SatMath({ BASE_URL }) {
                   ))}
                 </div>
               ))}
-              <div className="text-center mt-3">
+              <div className="text-center mt-4">
                 <button
-                  className="btn btn-sm me-2 no-print"
+                  className="btn btn-sm me-2 mt-2 no-print"
                   style={btnStyle}
                   onClick={() => setApiResponse(null)}
                 >
                   <FaArrowLeft /> Generate Another SAT Maths
                 </button>
                 <button
-                  className="btn btn-sm me-2 no-print"
+                  className="btn btn-sm me-2 mt-2 no-print"
                   style={pdfStyle}
                   onClick={handleDownloadQuestions}
                 >
                   <FaCloudDownloadAlt /> Download Questions
                 </button>
                 <button
-                  className="btn btn-sm no-print"
-                  style={pdfStyle}
-                  onClick={handleDownloadAnswers}
+                  className="btn btn-warning btn-sm mt-2 no-print"
+                  onClick={handleToggleAnswers}
                 >
-                  <FaCloudDownloadAlt /> Download Answer
+                  <FaCloudDownloadAlt /> {isAnswerVisible ? "Hide Answer" : "Show Answer"}
                 </button>
               </div>
             </div>
