@@ -90,7 +90,6 @@ export default function RoutingConfig() {
           <Route path="/comingsoon" element={<ComingSoon />} />
         </Route>
         <Route path="/contact-us" element={<RequestForm BASE_URL={BASE_URL} />} />
-       
         <Route path="/pdf-splitter" element={<PdfSplitter />} />
         <Route path="*" element={<Error404Page />} />
       </Routes>

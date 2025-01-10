@@ -35,8 +35,7 @@ export default function SatMath({ BASE_URL }) {
   } = useForm();
   const [isLoading, setIsLoading] = useState(false);
   const [apiResponse, setApiResponse] = useState(null);
-  const [showAnswers, setShowAnswers] = useState(true);
-  const [isAnswerVisible, setIsAnswerVisible] = useState(true); 
+  const [showAnswers, setShowAnswers] = useState(false);
   const selectedTypes = watch("questionTypes") || [];
   const btnStyle = { backgroundColor: "#FF683B", color: "white" };
   const cancelStyle = { backgroundColor: "#dc3545", color: "white" };
@@ -106,10 +105,7 @@ export default function SatMath({ BASE_URL }) {
     generatePdf();
   };
 
-  const handleToggleAnswers = () => {
-    setIsAnswerVisible(!isAnswerVisible); 
-    setShowAnswers(!showAnswers); 
-  };
+  const toggleAnswers = () => setShowAnswers(!showAnswers);
 
   const breadcrumbItems = [
     { label: "Main Panel", href: "/ai-tools-for-teachers", active: false },
@@ -249,7 +245,7 @@ export default function SatMath({ BASE_URL }) {
                       )}
                       {showAnswers && (
                         <p className="mt-4">
-                          <strong>Answer:</strong> {question.correct_answer}
+                          <strong>Answer:{showAnswers ? question.correct_answer : ''}</strong> 
                         </p>
                       )}
                     </div>
@@ -273,9 +269,9 @@ export default function SatMath({ BASE_URL }) {
                 </button>
                 <button
                   className="btn btn-warning btn-sm mt-2 no-print"
-                  onClick={handleToggleAnswers}
+                  onClick={toggleAnswers}
                 >
-                  <FaCloudDownloadAlt /> {isAnswerVisible ? "Hide Answer" : "Show Answer"}
+                  <FaCloudDownloadAlt /> {showAnswers ? 'Hide Answers' : 'Show Answers'}
                 </button>
               </div>
             </div>
