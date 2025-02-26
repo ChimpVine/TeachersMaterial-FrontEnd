@@ -15,7 +15,6 @@ import WordPuzzle from '../components/Gamification/WordPuzzle.jsx';
 import SocialStory from '../components/SpecialNeeds/SocialStory.jsx';
 import SelGenerator from '../components/Learning/SelGenerator.jsx';
 import SlideGenerator from '../components/Planner/SlideGenerator.jsx';
-import RequestForm from '../routing/RecaptchaConfig.jsx';
 import PdfSplitter from '../pages/PdfSplitter/PdfSplitter-main.jsx';
 import TextSummarizer from '../components/Summarizer/TextSummarizer.jsx';
 import GroupWork from '../components/Assessment/GroupWork.jsx';
@@ -48,9 +47,7 @@ export default function RoutingConfig() {
     '/group-work': 'Group Work - AI Tools for Teachers',
     '/make-the-word': 'Make the word - AI Tools for Teachers',
     '/sat-maths': 'SAT Math - AI Tools for Teachers',
-    '/contact-us': 'Contact Us - AI Tools for Teachers',
     '/pdf-splitter': 'Pdf Splitter - AI Tools for Teachers',
-    '/math-homework-help': 'Math Homework Help',
     '/comingsoon': 'Comingsoon - AI Tools for Teachers',
   };
 
@@ -89,7 +86,6 @@ export default function RoutingConfig() {
           <Route path="/sat-maths" element={<SatMaths BASE_URL={BASE_URL} />} />
           <Route path="/comingsoon" element={<ComingSoon />} />
         </Route>
-        <Route path="/contact-us" element={<RequestForm BASE_URL={BASE_URL} />} />
         <Route path="/pdf-splitter" element={<PdfSplitter />} />
         <Route path="*" element={<Error404Page />} />
       </Routes>
