@@ -6,7 +6,7 @@ import { Container, Row, Col, Card } from 'react-bootstrap';
 import { FaChalkboardTeacher, FaUserGraduate, FaBookOpen } from "react-icons/fa";
 import { NavLink } from 'react-router-dom';
 
-export default function Aboutus() {
+export default function Aboutus({API_BASE_URL}) {
 
     const textStyle = {
         color: '#8F47D7'
@@ -145,7 +145,7 @@ export default function Aboutus() {
                 <div className="mb-3" style={{ fontSize: '1.25rem', color: '#555' }}>
                     Let’s chat about your goals and get started !
                 </div>
-                <NavLink to="/contact-us">
+                <NavLink to={`${API_BASE_URL}/contact-us/`} target='_blank'>
                     <button className='btn btn-outline-dark btn-lg mt-3 me-2'>Contact Us</button>
                 </NavLink>
             </div>

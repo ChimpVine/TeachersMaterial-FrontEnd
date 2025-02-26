@@ -3,14 +3,8 @@ import logo from "../assests/img/ChimpVine_Logo.png";
 import { NavLink } from 'react-router-dom';
 import { FaFacebook, FaLinkedin, FaInstagramSquare } from "react-icons/fa";
 import background from "../assests/img/footer_img.png";
-import Cookies from 'js-cookie';
 export default function Footer() {
-    const [API_BASE_URL, setApiBaseUrl] = useState("");
-    
-        useEffect(() => {
-            const baseUrl = Cookies.get("apiBaseUrl") || "https://site.chimpvine.com";
-            setApiBaseUrl(baseUrl);
-        }, []);
+    const API_BASE_URL = "https://site.chimpvine.com";
 
     const footerStyle = {
         backgroundImage: `url(${background})`,
@@ -61,12 +55,6 @@ export default function Footer() {
                                     <NavLink className="content" to={`${API_BASE_URL}`}
                                         target='_blank'>
                                         Educational Games
-                                    </NavLink>
-                                </li>
-                                <li>
-                                    <NavLink className="content" to="/math-homework-help"
-                                        target='_blank'>
-                                        Math Homework Help
                                     </NavLink>
                                 </li>
                             </ul>
@@ -148,7 +136,8 @@ export default function Footer() {
                                 <li>
                                     <NavLink
                                         className="content"
-                                        to="/contact-us"
+                                        to={`${API_BASE_URL}/contact-us/`}
+                                        target='_blank'
                                     >
                                         Contact Us
                                     </NavLink>
@@ -159,7 +148,7 @@ export default function Footer() {
                     <hr />
                     <div className="row">
                         <div className="col-12 text-center">
-                            <p className='fw-bold'> Copyright &copy; 2024 | Product of ChimpVine</p>
+                            <p className='fw-bold'> Copyright &copy; 2025 | Product of ChimpVine</p>
                         </div>
                     </div>
                 </div>

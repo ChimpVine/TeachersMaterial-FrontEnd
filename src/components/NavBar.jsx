@@ -1,44 +1,14 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import logo from "../assests/img/ChimpVine_Logo.png";
 import { NavLink } from 'react-router-dom';
 import { UserContext } from '../context/UserContext.jsx';
 import { toast } from 'react-toastify';
-import Cookies from 'js-cookie';
 
 export default function NavBar() {
     const { user, logout } = useContext(UserContext);
     const userName = user?.display_name;
     const [loading, setLoading] = useState(false);
-    const [API_BASE_URL, setApiBaseUrl] = useState("https://site.chimpvine.com");
-
-    useEffect(() => {
-        const fetchLocationAndSetCookies = async () => {
-            try {
-                const response = await fetch(`https://ipinfo.io/json?token=e09026757acf9f`);
-                const data = await response.json();
-
-                Cookies.set("userLocation", data.country); // Save country in cookies for 7 days
-
-                if (data.country === "PH") {
-                    setApiBaseUrl("https://ph.chimpvine.com");
-                    Cookies.set("apiBaseUrl", "https://ph.chimpvine.com");
-                } else {
-                    setApiBaseUrl("https://site.chimpvine.com");
-                    Cookies.set("apiBaseUrl", "https://site.chimpvine.com");
-                }
-            } catch (error) {
-                console.error("Error fetching location:", error);
-            }
-        };
-
-
-        // else if (data.country === "NP") {
-        //     setApiBaseUrl("https://np.chimpvine.com");
-        //     Cookies.set("apiBaseUrl", "https://np.chimpvine.com");   
-        // }
-
-        fetchLocationAndSetCookies();
-    }, []);
+    const API_BASE_URL = "https://site.chimpvine.com";
 
     const handleLogout = async () => {
         setLoading(true);
@@ -148,8 +118,7 @@ export default function NavBar() {
                                     className={({ isActive }) =>
                                         isActive ? "nav-link-navigate me-5 text-light active-link" : "nav-link-navigate me-5 text-light"
                                     }
-                                    to="/contact-us"
-                                >
+                                    to={`${API_BASE_URL}/contact-us/`} target='_blank'>
                                     Contact Us
                                 </NavLink>
                             </li>

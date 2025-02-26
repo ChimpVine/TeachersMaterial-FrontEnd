@@ -5,7 +5,6 @@ import Footer from '../pages/Footer.jsx';
 import HeroSection from '../pages/HeroSection.jsx';
 import { UserContext } from '../context/UserContext';
 import { toast } from 'react-toastify';
-import Cookies from 'js-cookie';
 
 const TypingEffect = () => {
     const [text, setText] = useState('');
@@ -52,7 +51,7 @@ const TypingEffect = () => {
 };
 
 
-const GetStarted = () => {
+const GetStarted = ({API_BASE_URL}) => {
     const { login, user } = useContext(UserContext);
     const [searchParams] = useSearchParams();
 
@@ -78,19 +77,6 @@ const GetStarted = () => {
         paddingBottom: '7px'
     };
 
-    const fontStyle = {
-        color: '#dc3545',
-        fontWeight: 700
-    }
-
-    const [API_BASE_URL, setApiBaseUrl] = useState("");
-
-    useEffect(() => {
-        const baseUrl = Cookies.get("apiBaseUrl") || "https://site.chimpvine.com";
-        setApiBaseUrl(baseUrl);
-    }, []);
-
-    
     return (
         <>
             <NavBar />

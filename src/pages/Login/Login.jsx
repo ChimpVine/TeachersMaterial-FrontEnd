@@ -7,7 +7,7 @@ import logo from "../../assests/img/ChimpVine-UI.png";
 import NavBar from '../../components/NavBar';
 import { UserContext } from '../../context/UserContext';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
 
 
 const containerStyle = {
@@ -55,20 +55,14 @@ const pointerStyle = {
     cursor: 'pointer'
 };
 
-const Login = () => {
+const Login = ({API_BASE_URL}) => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [errorMessage, setErrorMessage] = useState('');
     const [loading, setLoading] = useState(true);
     const { login, verifyToken } = useContext(UserContext);
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
-    const [API_BASE_URL, setApiBaseUrl] = useState("");
-
-    useEffect(() => {
-        const baseUrl = Cookies.get("apiBaseUrl") || "https://site.chimpvine.com";
-        setApiBaseUrl(baseUrl);
-    }, []);
-
+   
     useEffect(() => {
         const checkToken = async () => {
             const isValid = await verifyToken();
@@ -92,7 +86,6 @@ const Login = () => {
             });
             if (response.data.status === 'success') {
                 login(response.data.token);
-                // console.log(response.data.token);
                 navigate('/ai-tools-for-teachers');
             } else {
                 setErrorMessage(response.data.message);
@@ -184,7 +177,7 @@ const Login = () => {
                         </form>
                         <div className='mt-3'>
                             <span>Dont have an account? </span>
-                            <NavLink to={`${API_BASE_URL}/register/subscription-free-for-2-months/`}>
+                            <NavLink to={`${API_BASE_URL}/register/chimpvine-membership/`}>
                                 <label className='fw-bold' style={pointerStyle}>Sign Up Now</label>
                             </NavLink>
                         </div>

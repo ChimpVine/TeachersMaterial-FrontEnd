@@ -496,8 +496,7 @@ export default function WorkSheet({ BASE_URL }) {
                         </>
                     ) : (
                         <div className="container-fluid ps-4 pe-4">
-                            <div id="headerContent" className='mb-4 mt-3'>
-                                <h2 className='text-center'>Your High School Name</h2>
+                            <div id="headerContent" className='section'>
                                 <div className="d-flex justify-content-between mt-5 mb-4">
                                     <h5>Name: <span style={{ display: "inline-block", width: "150px", height: "1px", backgroundColor: "black", borderBottom: "1px solid black" }}></span></h5>
                                     <h5>Date: <span style={{ display: "inline-block", width: "150px", height: "1px", backgroundColor: "black", borderBottom: "1px solid black" }}></span></h5>

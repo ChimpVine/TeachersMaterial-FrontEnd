@@ -3,20 +3,19 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 
 const PrivateRoute = () => {
-    const { verifyToken } = useContext(UserContext); // Only use stable verifyToken
+    const { verifyToken } = useContext(UserContext); 
     const [isAuthenticated, setIsAuthenticated] = useState(null);
 
     useEffect(() => {
         const checkAuthentication = async () => {
-            const isValid = await verifyToken(); // Await the token verification
-            setIsAuthenticated(isValid); // Set authentication status
+            const isValid = await verifyToken();
+            setIsAuthenticated(isValid); 
         };
 
         checkAuthentication();
-    }, [verifyToken]); // Stable dependency
+    }, [verifyToken]); 
 
     if (isAuthenticated === null) {
-        // Display a loading indicator while verifying authentication
         return <div>Loading...</div>;
     }
 

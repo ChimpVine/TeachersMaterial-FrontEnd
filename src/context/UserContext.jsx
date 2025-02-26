@@ -6,12 +6,7 @@ import axios from 'axios';
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-    const [API_BASE_URL, setApiBaseUrl] = useState("");
-
-    useEffect(() => {
-        const baseUrl = Cookies.get("apiBaseUrl") || "https://site.chimpvine.com";  
-        setApiBaseUrl(baseUrl);
-    }, []);
+    const API_BASE_URL = "https://site.chimpvine.com";
 
     const [user, setUser] = useState(null);
 

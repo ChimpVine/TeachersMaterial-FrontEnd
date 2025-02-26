@@ -25,7 +25,6 @@ import PrivateRoute from '../components/PrivateRoute';
 import Login from '../pages/Login/Login.jsx';
 import Aboutus from '../pages/AboutUs/Aboutus.jsx';
 import SatMaths from '../components/Assessment/SatMaths.jsx'
-import MathCal from '../components/MathHomework/MathCal.jsx';
 
 export default function RoutingConfig() {
   const location = useLocation();
@@ -57,6 +56,8 @@ export default function RoutingConfig() {
 
   const pageTitle = routeTitleMap[location.pathname] || 'Error 404 - AI Tools for Teachers';
 
+  const API_BASE_URL = "https://site.chimpvine.com";
+
   const BASE_URL = 'https://teachertools-api.chimpvine.com';
   
   ReactGA.initialize('G-TBNNYXX21K');
@@ -67,9 +68,9 @@ export default function RoutingConfig() {
         <title>{pageTitle}</title>
       </Helmet>
       <Routes>
-        <Route path="/" element={<GetStarted />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/about-us" element={<Aboutus />} />
+        <Route path="/" element={<GetStarted API_BASE_URL={API_BASE_URL}/>} />
+        <Route path="/login" element={<Login API_BASE_URL={API_BASE_URL}/>}  />
+        <Route path="/about-us" element={<Aboutus API_BASE_URL={API_BASE_URL}/>} />
         <Route element={<PrivateRoute />}>
           <Route path="/ai-tools-for-teachers" element={<MainPlanner />} />
           <Route path="/lesson-planner" element={<LessonPlanner BASE_URL={BASE_URL} />} />
@@ -86,7 +87,6 @@ export default function RoutingConfig() {
           <Route path="/group-work" element={<GroupWork BASE_URL={BASE_URL} />} />
           <Route path="/make-the-word" element={<Maketheword BASE_URL={BASE_URL} />} />
           <Route path="/sat-maths" element={<SatMaths BASE_URL={BASE_URL} />} />
-          <Route path="/math-homework-help" element={<MathCal />} />
           <Route path="/comingsoon" element={<ComingSoon />} />
         </Route>
         <Route path="/contact-us" element={<RequestForm BASE_URL={BASE_URL} />} />
