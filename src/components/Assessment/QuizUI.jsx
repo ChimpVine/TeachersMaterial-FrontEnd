@@ -13,7 +13,7 @@ import {
 } from "react-icons/fa";
 import NavBar from '../NavBar.jsx';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb.jsx'
-import Cookies from 'js-cookie'; 
+import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -76,14 +76,14 @@ const QuizUI = ({ BASE_URL }) => {
     const [showModal, setShowModal] = useState(false);
 
 
-    const handleShowModal = () => {
-        setShowModal(true);
-    };
+    // const handleShowModal = () => {
+    //     setShowModal(true);
+    // };
 
 
-    const handleCloseModal = () => {
-        setShowModal(false);
-    };
+    // const handleCloseModal = () => {
+    //     setShowModal(false);
+    // };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -94,13 +94,29 @@ const QuizUI = ({ BASE_URL }) => {
     };
 
     const validateInput = () => {
-        if (!inputData.subject.trim()) {
-            toast.warning('Please enter a subject.');
+
+        const trimmedTopic = inputData.topic.trim();
+
+        if (!trimmedTopic) {
+            toast.warning('Please enter a topic.');
+            return false;
+        }
+        if (trimmedTopic.length > 50) {
+            toast.warning('Topic should not exceed 50 characters.');
+            return false;
+        }
+        if (!/^[a-zA-Z.,'"-]+$/.test(trimmedTopic)) {
+            toast.warning('Topic can only include letters and basic punctuation (.,\'"-). No spaces, numbers, or symbols are allowed.');
+            return false;
+        }
+        if (!/[a-zA-Z]/.test(trimmedTopic)) {
+            toast.warning('Topic must contain at least one letter.');
             return false;
         }
 
-        if (!inputData.topic.trim()) {
-            toast.warning('Please enter a topic.');
+
+        if (!inputData.subject.trim()) {
+            toast.warning('Please enter a subject.');
             return false;
         }
 
@@ -116,11 +132,12 @@ const QuizUI = ({ BASE_URL }) => {
 
         if (parseInt(inputData.numberOfQuestions) !== 10) {
             toast.warning('Number of questions should be exactly 10.');
-            return;
+            return false;
         }
 
         return true;
     };
+
 
     const handleGenerateQuiz = async () => {
         if (!validateInput()) {
@@ -140,8 +157,8 @@ const QuizUI = ({ BASE_URL }) => {
             const response = await fetch(apiUrl, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${authToken}`, 
-                    'X-Site-Url': siteUrl 
+                    'Authorization': `Bearer ${authToken}`,
+                    'X-Site-Url': siteUrl
                 }
             });
 
@@ -167,26 +184,29 @@ const QuizUI = ({ BASE_URL }) => {
                 toast.error('Some error encountered. Please try again later.');
             }
         } catch (error) {
-            if (
-                error.response.status === 401 
-            ) {
-                // console.error('Error: Invalid token.');
-                toast.warning('This email has been already used on another device.');
-    
-                Cookies.remove('authToken');
-                Cookies.remove('site_url');
-                Cookies.remove('Display_name');
-                Cookies.remove('user_email');
-                localStorage.removeItem('authToken');
-                localStorage.removeItem('authUser');
-    
-                setTimeout(() => {
-                    navigate('/login');
-                    window.location.reload();
-                }, 2000); 
+            setApiResponse(null);
+            if (error.response) {
+                const backendError = error.response.data?.error || error.response.data?.message || 'Failed to generate Quiz Generator.';
+                toast.error(backendError);
+                if (error.response.status === 401) {
+                    toast.warning('This email has been used on another device. Redirecting to login...');
+
+                    Cookies.remove('authToken');
+                    Cookies.remove('site_url');
+                    Cookies.remove('Display_name');
+                    Cookies.remove('user_email');
+                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('authUser');
+
+                    setTimeout(() => {
+                        navigate('/login');
+                        window.location.reload();
+                    }, 2000);
+                }
+            } else if (error.request) {
+                toast.error('No response from server. Please check your network connection.');
             } else {
-                // console.error('Error:', error);
-                toast.error('Failed to fetch quiz questions. Please try again later.');
+                toast.error(error.message || 'An unexpected error occurred. Please try again.');
             }
         } finally {
             setLoading(false);
@@ -349,7 +369,6 @@ const QuizUI = ({ BASE_URL }) => {
             <NavBar />
             <div className="container">
                 <div className="row justify-content-center mt-5 mb-4">
-                    
                     <div className="col-md-6 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded">
                         {loading ? (
                             <div className="text-center">
@@ -357,113 +376,113 @@ const QuizUI = ({ BASE_URL }) => {
                             </div>
                         ) : userQuizQuestions.length === 0 ? (
                             <>
-                            <NavBreadcrumb items={breadcrumbItems} />
-                            <form>
-                                <h4 className="text-center mb-4">Quiz Generator</h4>
-                                <div className="mb-3">
-                                    <label htmlFor="subject" className="form-label">
-                                        Subject <span style={mystyle}>*</span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="form-control form-control-sm mb-3"
-                                        id="subject"
-                                        name="subject"
-                                        value={inputData.subject}
-                                        onChange={handleInputChange}
-                                        disabled={loading}
-                                        placeholder="Enter your subject for eg. Science , Mathematics or History"
-                                    />
+                                <NavBreadcrumb items={breadcrumbItems} />
+                                <form>
+                                    <h4 className="text-center mb-4">Quiz Generator</h4>
+                                    <div className="mb-3">
+                                        <label htmlFor="subject" className="form-label">
+                                            Subject <span style={mystyle}>*</span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="form-control form-control-sm mb-3"
+                                            id="subject"
+                                            name="subject"
+                                            value={inputData.subject}
+                                            onChange={handleInputChange}
+                                            disabled={loading}
+                                            placeholder="Enter subject (e.g. Science , Mathematics or History)"
+                                        />
 
-                                    <label htmlFor="topic" className="form-label">
-                                        Topic <span style={mystyle}>*</span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="form-control form-control-sm mb-3"
-                                        id="topic"
-                                        name="topic"
-                                        value={inputData.topic}
-                                        onChange={handleInputChange}
-                                        disabled={loading}
-                                        placeholder="Enter your topic for eg. Force , Algebra or Ancient Egypt"
-                                    />
+                                        <label htmlFor="topic" className="form-label">
+                                            Topic <span style={mystyle}>*</span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="form-control form-control-sm mb-3"
+                                            id="topic"
+                                            name="topic"
+                                            value={inputData.topic}
+                                            onChange={handleInputChange}
+                                            disabled={loading}
+                                            placeholder="Enter topic (e.g. Force, Algebra, or Ancient Egypt)"
+                                        />
 
-                                    <label htmlFor="difficulty" className="form-label">
-                                        Difficulty <span style={mystyle}>*</span>
-                                    </label>
-                                    <select
-                                        className="form-select form-select-sm mb-3"
-                                        id="difficulty"
-                                        name="difficulty"
-                                        type="text"
-                                        value={inputData.difficulty}
-                                        onChange={handleInputChange}
-                                    >
-                                        <option value="">Choose the Difficulty Level</option>
-                                        <option value="easy">Easy</option>
-                                        <option value="medium">Medium</option>
-                                        <option value="hard">Hard</option>
-                                    </select>
+                                        <label htmlFor="difficulty" className="form-label">
+                                            Difficulty <span style={mystyle}>*</span>
+                                        </label>
+                                        <select
+                                            className="form-select form-select-sm mb-3"
+                                            id="difficulty"
+                                            name="difficulty"
+                                            type="text"
+                                            value={inputData.difficulty}
+                                            onChange={handleInputChange}
+                                        >
+                                            <option value="">Choose the Difficulty Level</option>
+                                            <option value="easy">Easy</option>
+                                            <option value="medium">Medium</option>
+                                            <option value="hard">Hard</option>
+                                        </select>
 
-                                    <label htmlFor="language" className="form-label">
-                                        Language <span style={mystyle}>*</span>
-                                    </label>
-                                    <select
-                                        className="form-select form-select-sm mb-3"
-                                        id="language"
-                                        name="language"
-                                        value={inputData.language}
-                                        onChange={handleInputChange}
-                                        disabled={loading}
-                                    >
-                                        <option defaultValue>Select a Language</option>
-                                        <option value="english">English</option>
-                                        <option value="spanish">Spanish</option>
-                                        <option value="thai">Thai</option>
-                                    </select>
+                                        <label htmlFor="language" className="form-label">
+                                            Language <span style={mystyle}>*</span>
+                                        </label>
+                                        <select
+                                            className="form-select form-select-sm mb-3"
+                                            id="language"
+                                            name="language"
+                                            value={inputData.language}
+                                            onChange={handleInputChange}
+                                            disabled={loading}
+                                        >
+                                            <option defaultValue>Select a Language</option>
+                                            <option value="english">English</option>
+                                            <option value="spanish">Spanish</option>
+                                            <option value="thai">Thai</option>
+                                        </select>
 
-                                    <label htmlFor="numberOfQuestions" className="form-label">
-                                        Number of Questions <span style={mystyle}>*</span>
-                                    </label>
-                                    <input
-                                        type="number"
-                                        className="form-control form-control-sm mb-3"
-                                        id="numberOfQuestions"
-                                        name="numberOfQuestions"
-                                        value={inputData.numberOfQuestions}
-                                        onChange={handleInputChange}
-                                        disabled={true}
-                                    />
-                                </div>
-                                <div className="d-flex justify-content-between mb-3 mt-4">
-                                    <button
-                                        type="reset"
-                                        className="btn btn-sm"
-                                        style={cancelStyle}
-                                        onClick={handleReset}
-                                        disabled={loading}
-                                    >
-                                        <FaEraser />  Reset
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn btn-sm"
-                                        style={btnStyle}
-                                        onClick={handleGenerateQuiz}
-                                        disabled={loading}
-                                    >
-                                        Generate <FaArrowRight />
-                                    </button>
-                                </div>
-                            </form>
+                                        <label htmlFor="numberOfQuestions" className="form-label">
+                                            Number of Questions <span style={mystyle}>*</span>
+                                        </label>
+                                        <input
+                                            type="number"
+                                            className="form-control form-control-sm mb-3"
+                                            id="numberOfQuestions"
+                                            name="numberOfQuestions"
+                                            value={inputData.numberOfQuestions}
+                                            onChange={handleInputChange}
+                                            disabled={true}
+                                        />
+                                    </div>
+                                    <div className="d-flex justify-content-between mb-3 mt-4">
+                                        <button
+                                            type="reset"
+                                            className="btn btn-sm"
+                                            style={cancelStyle}
+                                            onClick={handleReset}
+                                            disabled={loading}
+                                        >
+                                            <FaEraser />  Reset
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className="btn btn-sm"
+                                            style={btnStyle}
+                                            onClick={handleGenerateQuiz}
+                                            disabled={loading}
+                                        >
+                                            Generate <FaArrowRight />
+                                        </button>
+                                    </div>
+                                </form>
                             </>
                         ) : (
                             <div>
                                 {currentQuestions.length > 0 && (
                                     <>
                                         <div>
-                                            <div className="d-flex justify-content-center mb-2 fw-bold" style={{ color: "red" }}>To regenerate any Q/A: You have only {regenerationAttempts} attempt !</div>
+                                            <div className="d-flex justify-content-center mb-2 fw-bold" style={{ color: "red" }}>To regenerate any Question and Answer: You only have {regenerationAttempts} attempt!</div>
                                             {currentQuestions.map((question, index) => (
                                                 <div key={index} className="card mb-3">
                                                     <div className="card-header">
@@ -584,7 +603,7 @@ const QuizUI = ({ BASE_URL }) => {
                                         style={cancelStyle}
                                         onClick={handleCancel}
                                     >
-                                        Cancel
+                                        Reset
                                     </button>
                                 </div>
                             </div>

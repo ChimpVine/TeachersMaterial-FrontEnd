@@ -61,25 +61,29 @@ export default function TextSummarizer({ BASE_URL }) {
             reset();
             toast.success('Summary generated successfully!');
         } catch (error) {
-            if (
-                error.response.status === 401 
-            ) {
-                console.error('Error: Invalid token.');
-                toast.warning('This email has been already used on another device.');
+            setApiResponse(null);
+            if (error.response) {
+                const backendError = error.response.data?.error || error.response.data?.message || 'Failed to generate text summarizer.';
+                toast.error(backendError);
+                if (error.response.status === 401) {
+                    toast.warning('This email has been used on another device. Redirecting to login...');
 
-                Cookies.remove('authToken');
-                Cookies.remove('site_url');
-                Cookies.remove('Display_name');
-                Cookies.remove('user_email');
-                localStorage.removeItem('authToken');
-                localStorage.removeItem('authUser');
+                    Cookies.remove('authToken');
+                    Cookies.remove('site_url');
+                    Cookies.remove('Display_name');
+                    Cookies.remove('user_email');
+                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('authUser');
 
-                setTimeout(() => {
-                    navigate('/login');
-                    window.location.reload();
-                }, 2000);
+                    setTimeout(() => {
+                        navigate('/login');
+                        window.location.reload();
+                    }, 2000);
+                }
+            } else if (error.request) {
+                toast.error('No response from server. Please check your network connection.');
             } else {
-                toast.warning(`${error.response.data.error}`);
+                toast.error(error.message || 'An unexpected error occurred. Please try again.');
             }
         } finally {
             setIsLoading(false);
@@ -109,21 +113,24 @@ export default function TextSummarizer({ BASE_URL }) {
                                     <form onSubmit={handleSubmit(onSubmit)}>
                                         <h4 className="text-center mb-3">Text Summarizer</h4>
                                         <div className="mb-3">
-                                            <label htmlFor="text" className="form-label-sm">Your Text Input<span style={{ color: 'red' }}>*</span></label>
+                                            <label htmlFor="text" className="form-label-sm">Text Input<span style={{ color: 'red' }}>*</span></label>
                                             <textarea
                                                 className={`form-control form-control-sm resizeStyle ${errors.text ? 'is-invalid' : ''}`}
                                                 id="text"
                                                 name="text"
                                                 rows="10"
-                                                placeholder="Enter the text you want to summarize For Eg.On a misty morning, the purple sky reflected a thousand shimmering stars, though the sun was only moments away from rising. The forest below buzzed with life, and the distant call of a bird echoed across the valley. Amidst the tall trees, an old stone path led to a forgotten garden, overgrown with ivy and wildflowers. The scent of rain lingered in the air, mixing with the earthy fragrance of the moss-covered stones. A single leaf fluttered down, landing softly on the surface of a quiet, hidden pond."
+                                                placeholder="Enter the text you want to summarize (e.g. On a misty morning, the purple sky reflected a thousand shimmering stars, though the sun was only moments away from rising. The forest below buzzed with life, and the distant call of a bird echoed across the valley. Amidst the tall trees, an old stone path led to a forgotten garden, overgrown with ivy and wildflowers. The scent of rain lingered in the air, mixing with the earthy fragrance of the moss-covered stones. A single leaf fluttered down, landing softly on the surface of a quiet, hidden pond.)"
                                                 disabled={isLoading}
                                                 {...register('text', {
                                                     required: 'Text is required',
+                                                    pattern: {
+                                                      value: /^(?!\s)(?![0-9])[a-zA-Z0-9.,'"-\s]*$/,
+                                                      message: 'Only letters, numbers, spaces, and basic punctuation (.,\'"-) are allowed. Cannot start with space or number.'
+                                                    },
                                                     validate: validateWordCount
-                                                })}
-                                            ></textarea>
+                                                  })}
+                                            />
                                             {errors.text && <div className="invalid-feedback">{errors.text.message}</div>}
-
                                             {/* Word count aligned to the right side */}
                                             <div className="d-flex justify-content-end mt-1">
                                                 <small className={`${wordCount > 1000 ? 'text-danger' : 'text-muted'}`}>
@@ -133,7 +140,7 @@ export default function TextSummarizer({ BASE_URL }) {
                                         </div>
 
                                         <div className="mb-3">
-                                            <label htmlFor="summary_format" className="form-label-sm">Your Text Format <span style={{ color: 'red' }}>*</span></label>
+                                            <label htmlFor="summary_format" className="form-label-sm">Text Format <span style={{ color: 'red' }}>*</span></label>
                                             <select
                                                 className={`form-select form-select-sm mb-3 ${errors.summary_format ? 'is-invalid' : ''}`}
                                                 id="summary_format"
@@ -187,7 +194,7 @@ export default function TextSummarizer({ BASE_URL }) {
                                     style={pdfStyle}
                                     onClick={handlePrint}
                                 >
-                                    <FaCloudDownloadAlt /> View Summary
+                                    <FaCloudDownloadAlt /> Download Summary
                                 </button>
                             </div>
                         )
@@ -200,7 +207,7 @@ export default function TextSummarizer({ BASE_URL }) {
 
 const renderTextSummarizer = (apiResponse) => {
     try {
-        const { text_title, summary } = apiResponse; // Access fields directly from apiResponse
+        const { text_title, summary } = apiResponse;
         return (
             <div>
                 <h4>Title: {text_title}</h4>

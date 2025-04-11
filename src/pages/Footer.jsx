@@ -148,7 +148,15 @@ export default function Footer() {
                     <hr />
                     <div className="row">
                         <div className="col-12 text-center">
-                            <p className='fw-bold'> Copyright &copy; 2025 | Product of ChimpVine</p>
+                            <p className='fw-bold copyright'> Copyright &copy; 2025 | Product of  
+                                <NavLink
+                                    to="https://site.chimpvine.com/"
+                                    target='_blank'
+                                    className='ms-2 cv_trademark'
+                                >
+                                    ChimpVine
+                                </NavLink>
+                            </p>
                         </div>
                     </div>
                 </div>

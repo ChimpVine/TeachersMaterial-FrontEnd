@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import NavBar from '../NavBar';
-import { FaArrowRight, FaEraser, FaArrowLeft, FaRegFilePdf } from "react-icons/fa";
+import { FaArrowRight, FaEraser, FaArrowLeft, FaCloudDownloadAlt } from "react-icons/fa";
 import { toast } from 'react-toastify';
 import Spinner from '../../spinner/Spinner';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 // Special needs options
 const needs = [
-    { value: "", label: "Choose your needs" },
+    { value: "", label: "Choose Special Need" },
     { value: "ASD", label: "ASD (Autism spectrum disorder)" },
     { value: "ADHD", label: "ADHD (Attention deficit hyperactivity disorder)" }
 ];
@@ -53,11 +53,42 @@ export default function SocialStory({ BASE_URL }) {
     // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         const { child_name, child_age, scenario, behavior_challenge, ideal_behavior } = formData;
+
+        const isValidChildAge = /^[1-9]$|^1[0-5]$/.test(child_age.trim()) && child_age.trim() !== '';
+
+        const isValidName = formData.child_name.trim().length <= 50 &&
+            /^[a-zA-Z0-9.,'"-\s]+$/.test(formData.child_name.trim()) &&
+            /[a-zA-Z]/.test(formData.child_name.trim());
+
+        const isValidScenario = formData.scenario.trim().length <= 50 &&
+            /^[a-zA-Z0-9.,'"-\s]+$/.test(formData.scenario.trim()) &&
+            /[a-zA-Z]/.test(formData.scenario.trim());
+
+        const isValidBehavior = formData.behavior_challenge.trim().length <= 50 &&
+            /^[a-zA-Z0-9.,'"-\s]+$/.test( formData.behavior_challenge.trim()) &&
+            /[a-zA-Z]/.test( formData.behavior_challenge.trim());
+
+        const isValidIdeal = formData.ideal_behavior.trim().length <= 50 &&
+            /^[a-zA-Z0-9.,'"-\s]+$/.test(formData.ideal_behavior.trim()) &&
+            /[a-zA-Z]/.test(formData.ideal_behavior.trim());
+
 
         // Check if all required fields are filled
         if (!child_name || !child_age || !scenario || !behavior_challenge || !ideal_behavior) {
-            toast.error('Please fill in all required fields.');
+            toast.warning('Please fill in all required fields.');
+            return;
+        }
+
+        if (!isValidName || !isValidScenario || !isValidBehavior || !isValidIdeal) {
+            toast.warning('Field must not include special characters or be numbers alone, and must be 50 characters or fewer.');
+            return;
+        }
+
+
+        if (!isValidChildAge) {
+            toast.warning("Age must be a number between 1 and 15 with no spaces.");
             return;
         }
 
@@ -98,26 +129,29 @@ export default function SocialStory({ BASE_URL }) {
             });
             toast.success('Social story generated successfully!');
         } catch (error) {
-            if (
-                error.response.status === 401 
-            ) {
-                // console.error('Error: Invalid token.');
-                toast.warning('This email has been already used on another device.');
+            setApiResponse(null);
+            if (error.response) {
+                const backendError = error.response.data?.error || error.response.data?.message || 'Failed to generate Social Story.';
+                toast.warning(backendError);
+                if (error.response.status === 401) {
+                    toast.warning('This email has been used on another device. Redirecting to login...');
 
-                Cookies.remove('authToken');
-                Cookies.remove('site_url');
-                Cookies.remove('Display_name');
-                Cookies.remove('user_email');
-                localStorage.removeItem('authToken');
-                localStorage.removeItem('authUser');
+                    Cookies.remove('authToken');
+                    Cookies.remove('site_url');
+                    Cookies.remove('Display_name');
+                    Cookies.remove('user_email');
+                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('authUser');
 
-                setTimeout(() => {
-                    navigate('/login');
-                    window.location.reload();
-                }, 2000);
+                    setTimeout(() => {
+                        navigate('/login');
+                        window.location.reload();
+                    }, 2000);
+                }
+            } else if (error.request) {
+                toast.warning('No response from server. Please check your network connection.');
             } else {
-                // console.error('Error:', error);
-                toast.error('Failed to generate the social story. Please try again.');
+                toast.warning(error.message || 'An unexpected error occurred. Please try again.');
             }
         } finally {
             setIsLoading(false);
@@ -133,7 +167,7 @@ export default function SocialStory({ BASE_URL }) {
 
         const nameStyle = {
             display: "inline-block",
-            width: "200px",
+            width: "130px",
             height: "1px",
             backgroundColor: "black",
             borderBottom: "1px solid black",
@@ -141,14 +175,14 @@ export default function SocialStory({ BASE_URL }) {
 
         const dateStyle = {
             display: "inline-block",
-            width: "100px",
+            width: "130px",
             height: "1px",
             backgroundColor: "black",
             borderBottom: "1px solid black",
         };
 
         return (
-            <div className="container-fluid mt-3 mb-3 ps-5 pe-5 print-content">
+            <div className="container-fluid mt-3 mb-3 ps-3 pe-2 print-content">
                 <div className="section">
                     <div className="d-flex justify-content-between mt-5 mb-5">
                         <h5>Name : <span style={nameStyle}></span></h5>
@@ -197,21 +231,21 @@ export default function SocialStory({ BASE_URL }) {
                                                 value={formData.child_name}
                                                 onChange={handleChange}
                                                 disabled={isLoading}
-                                                placeholder="Eg. Alex"
+                                                placeholder="e.g. Alex"
                                             />
 
                                             <label htmlFor="child_age" className="form-label">
                                                 Child's Age <span style={{ color: 'red' }}>*</span>
                                             </label>
                                             <input
-                                                type="text"
+                                                type="number"
                                                 className="form-control form-control-sm mb-2"
                                                 id="child_age"
                                                 name="child_age"
                                                 value={formData.child_age}
                                                 onChange={handleChange}
                                                 disabled={isLoading}
-                                                placeholder="Eg. 7"
+                                                placeholder="e.g. 7"
                                             />
 
                                             <label htmlFor="needs" className="form-label">
@@ -243,7 +277,7 @@ export default function SocialStory({ BASE_URL }) {
                                                 value={formData.scenario}
                                                 onChange={handleChange}
                                                 disabled={isLoading}
-                                                placeholder="For eg. Playing in the park"
+                                                placeholder="e.g. Playing in the park"
                                             />
 
                                             <label htmlFor="behavior_challenge" className="form-label">
@@ -257,7 +291,7 @@ export default function SocialStory({ BASE_URL }) {
                                                 value={formData.behavior_challenge}
                                                 onChange={handleChange}
                                                 disabled={isLoading}
-                                                placeholder="For eg. Finding it hard to wait for a turn"
+                                                placeholder="e.g. Finding it hard to wait for a turn"
                                             />
 
                                             <label htmlFor="ideal_behavior" className="form-label">
@@ -271,7 +305,7 @@ export default function SocialStory({ BASE_URL }) {
                                                 value={formData.ideal_behavior}
                                                 onChange={handleChange}
                                                 disabled={isLoading}
-                                                placeholder="For eg. Waiting patiently and taking turns"
+                                                placeholder="e.g. Waiting patiently and taking turns"
                                             />
                                         </div>
 
@@ -307,7 +341,7 @@ export default function SocialStory({ BASE_URL }) {
                                         <FaArrowLeft /> Generate Another Social Story
                                     </button>
                                     <button className="btn btn-sm mt-2 mb-3 no-print" style={pdfStyle} onClick={handlePrint}>
-                                        <FaRegFilePdf /> View PDF
+                                        <FaCloudDownloadAlt /> Download PDF
                                     </button>
                                 </div>
                             </div>

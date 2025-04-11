@@ -77,28 +77,31 @@ export default function GroupWork({ BASE_URL }) {
       toast.success('Group work created successfully!');
       reset();
     } catch (error) {
-      if (
-        error.response.status === 401 
-      ) {
-        // console.error('Error: Invalid token.');
-        toast.warning('This email has been already used on another device.');
+      setApiResponse(null);
+      if (error.response) {
+        const backendError = error.response.data?.error || error.response.data?.message || 'Failed to generate group work.';
+        toast.warning(backendError);
+        if (error.response.status === 401) {
+          toast.warning('This email has been used on another device. Redirecting to login...');
+          Cookies.remove('authToken');
+          Cookies.remove('site_url');
+          Cookies.remove('Display_name');
+          Cookies.remove('user_email');
+          localStorage.removeItem('authToken');
+          localStorage.removeItem('authUser');
 
-        Cookies.remove('authToken');
-        Cookies.remove('site_url');
-        Cookies.remove('Display_name');
-        Cookies.remove('user_email');
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('authUser');
-
-        setTimeout(() => {
-          navigate('/login');
-          window.location.reload();
-        }, 2000);
+          setTimeout(() => {
+            navigate('/login');
+            window.location.reload();
+          }, 2000);
+        }
+      } else if (error.request) {
+        toast.warning('No response from server. Please check your network connection.');
       } else {
-        const errorMessage = error.response?.data?.error || 'Failed to create group work. Please try again.';
-        toast.error(errorMessage);
+        toast.warning(error.message || 'An unexpected error occurred. Please try again.');
       }
-    } finally {
+    }
+    finally {
       setIsLoading(false);
     }
   };
@@ -173,10 +176,18 @@ export default function GroupWork({ BASE_URL }) {
                         type="text"
                         className={`form-control form-control-sm mb-2 ${errors.topic ? 'is-invalid' : ''}`}
                         id="topic"
-                        placeholder="Enter your topic for eg. Force , Algebra or Ancient Egypt"
-                        {...register('topic', { required: 'Topic is required' })}
+                        placeholder="Enter topic (e.g. Force, Algebra, or Ancient Egypt)"
+                        {...register('topic', {
+                          required: 'Topic is required',
+                          pattern: {
+                            value: /^(?! )[a-zA-Z0-9 ]{1,50}$/,
+                            message:
+                              'The topic must be 1-50 characters long, cannot start with a space, and must not contain special characters.'
+                          }
+                        })}
                       />
                       {errors.topic && <div className="invalid-feedback">{errors.topic.message}</div>}
+
 
                       {/* Learning Objective */}
                       <label htmlFor="learning_objective" className="form-label">
@@ -185,11 +196,30 @@ export default function GroupWork({ BASE_URL }) {
                       <textarea
                         className={`form-control form-control-sm mb-2 ${errors.learning_objective ? 'is-invalid' : ''}`}
                         id="learning_objective"
-                        placeholder="Enter learning objectives for eg. Objectives focus on describing movement, observing changes in motion under varying forces, and understanding how mass affects the force needed for motion."
+                        placeholder="Enter learning objectives (e.g. Objectives focus on describing movement, observing changes in motion under varying forces, and understanding how mass affects the force needed for motion.)"
                         rows={3}
-                        {...register('learning_objective', { required: 'Learning objective is required' })}
+                        {...register('learning_objective', {
+                          required: 'Learning objective is required',
+                          validate: (value) => {
+                            const trimmed = value.trim();
+                        
+                            if (trimmed.length === 0) return 'Learning objective is required';
+                            if (trimmed.length > 250) return 'The objective must be 250 characters or fewer.';
+                            if (!/^[a-zA-Z0-9.,'"-\s]+$/.test(trimmed))
+                              return 'Only letters, numbers, spaces, and basic punctuation (.,\'"-) are allowed.';
+                            if (!/[a-zA-Z]/.test(trimmed))
+                              return 'The objective must contain at least one letter.';
+                            if (/^[.,'"-\s]+$/.test(trimmed))
+                              return 'Objective cannot be only punctuation or empty symbols.';
+                        
+                            return true;
+                          }
+                        })}
                       />
-                      {errors.learning_objective && <div className="invalid-feedback">{errors.learning_objective.message}</div>}
+                      {errors.learning_objective && (
+                        <div className="invalid-feedback">{errors.learning_objective.message}</div>
+                      )}
+
 
                       {/* Group Size */}
                       <label htmlFor="group_size" className="form-label">
@@ -200,7 +230,7 @@ export default function GroupWork({ BASE_URL }) {
                         id="group_size"
                         {...register('group_size', { required: 'Group size is required' })}
                       >
-                        <option value="">Choose group size</option>
+                        <option value="">Choose Group Size</option>
                         {[2, 3, 4, 5].map((size) => (
                           <option key={size} value={size}>
                             {size}
@@ -241,7 +271,7 @@ export default function GroupWork({ BASE_URL }) {
                     style={pdfStyle}
                     onClick={generatePdf}
                   >
-                    <FaCloudDownloadAlt /> View Group Work
+                    <FaCloudDownloadAlt /> Download Group Work
                   </button>
                 </div>
               </div>
@@ -255,7 +285,7 @@ export default function GroupWork({ BASE_URL }) {
 const renderGroupWork = (apiResponse) => {
   const nameStyle = {
     display: "inline-block",
-    width: "200px",
+    width: "130px",
     height: "1px",
     backgroundColor: "black",
     borderBottom: "1px solid black",
@@ -263,14 +293,14 @@ const renderGroupWork = (apiResponse) => {
 
   const dateStyle = {
     display: "inline-block",
-    width: "100px",
+    width: "130px",
     height: "1px",
     backgroundColor: "black",
     borderBottom: "1px solid black",
   };
 
   return (
-    <div className="container-fluid mt-3 mb-2 ps-5 pe-5 print-content">
+    <div className="container-fluid mt-3 mb-2 ps-3 pe-2 print-content">
       <div id="headerContent" className="section">
         <div className="d-flex justify-content-between mt-5 mb-5">
           <h5>Name : <span style={nameStyle}></span></h5>

@@ -8,6 +8,8 @@ import Spinner from "../../spinner/Spinner";
 import NavBreadcrumb from "../../pages/BreadCrumb/BreadCrumb";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import { InlineMath, BlockMath } from 'react-katex';
+import 'katex/dist/katex.min.css';
 
 const difficulties = [
   { value: "", label: "Choose a Difficulty" },
@@ -74,26 +76,36 @@ export default function SatMath({ BASE_URL }) {
           'X-Site-Url': siteUrl
         },
       });
-      setApiResponse(response.data.exam);
+      setApiResponse(response.data.quiz);
       toast.success("SAT Maths generated successfully!");
       reset();
     } catch (error) {
-      if (error.response.status === 401) {
-        toast.warning('This email has been already used on another device.');
-        Cookies.remove('authToken');
-        Cookies.remove('site_url');
-        Cookies.remove('Display_name');
-        Cookies.remove('user_email');
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('authUser');
-        setTimeout(() => {
-          navigate('/login');
-          window.location.reload();
-        }, 2000);
+      setApiResponse(null);
+      if (error.response) {
+        const backendError = error.response.data?.error || error.response.data?.message || 'Failed to generate SAT Maths';
+        toast.error(backendError);
+        if (error.response.status === 401) {
+          toast.warning('This email has been used on another device. Redirecting to login...');
+
+          Cookies.remove('authToken');
+          Cookies.remove('site_url');
+          Cookies.remove('Display_name');
+          Cookies.remove('user_email');
+          localStorage.removeItem('authToken');
+          localStorage.removeItem('authUser');
+
+          setTimeout(() => {
+            navigate('/login');
+            window.location.reload();
+          }, 2000);
+        }
+      } else if (error.request) {
+        toast.error('No response from server. Please check your network connection.');
       } else {
-        toast.error('Failed to generate, Please try again.');
+        toast.error(error.message || 'An unexpected error occurred. Please try again.');
       }
-    } finally {
+    }
+    finally {
       setIsLoading(false);
     }
   };
@@ -112,6 +124,47 @@ export default function SatMath({ BASE_URL }) {
     { label: "Assessment", active: true },
     { label: "SAT Maths", active: true },
   ];
+
+
+  const nameStyle = {
+    display: "inline-block",
+    width: "130px",
+    height: "1px",
+    backgroundColor: "black",
+    borderBottom: "1px solid black",
+  };
+
+  const dateStyle = {
+    display: "inline-block",
+    width: "130px",
+    height: "1px",
+    backgroundColor: "black",
+    borderBottom: "1px solid black",
+  };
+
+  const renderMath = (text) => {
+    if (!text) return null;
+  
+    // Check if the entire string is a LaTeX expression without $...$ wrapping
+    const isPureLatex = /^[a-zA-Z0-9\s^_\\\{\}\[\]\(\)\+\-\=\/\*\.]+$/.test(text);
+  
+    if (isPureLatex) {
+      return <BlockMath math={text} />;
+    }
+  
+    // Otherwise use regex splitting
+    const parts = text.split(/(\${1,2}[^$]+\${1,2})/g);
+    return parts.map((part, index) => {
+      if (part.startsWith('$$') && part.endsWith('$$')) {
+        return <BlockMath key={index} math={part.slice(2, -2)} />;
+      } else if (part.startsWith('$') && part.endsWith('$')) {
+        return <InlineMath key={index} math={part.slice(1, -1)} />;
+      } else {
+        return <span key={index}>{part}</span>;
+      }
+    });
+  };
+
 
   return (
     <>
@@ -137,12 +190,16 @@ export default function SatMath({ BASE_URL }) {
                       className={`form-control form-control-sm mb-2 ${errors.topic ? "is-invalid" : ""}`}
                       id="topic"
                       placeholder="Enter your topic"
-                      {...register("topic", { required: "Topic is required" })}
+                      {...register("topic", {
+                        required: "Topic is required",
+                        pattern: {
+                          value: /^(?!\s)(?![0-9])[a-zA-Z0-9.,'"-\s]+$/,
+                          message: 'The topic must be 1-50 characters long, cannot start with a space or number, and must not contain only special characters.'
+                        }
+                      })}
                     />
                     {errors.topic && <div className="invalid-feedback">{errors.topic.message}</div>}
                   </div>
-
-
                   <div className="mb-2">
                     <label htmlFor="difficulty" className="form-label">
                       Difficulty <span className="text-danger">*</span>
@@ -213,6 +270,15 @@ export default function SatMath({ BASE_URL }) {
                     </div>
                   ))}
 
+                  <div className="mb-3">
+                    <small className="text-muted">
+                      <strong className="text-danger">Note:</strong>
+                      <ul>
+                        <li>Topic must not be more than 50 characters long.</li>
+                        <li>No special characters (e.g., @, #, $, -, _).</li>
+                      </ul>
+                    </small>
+                  </div>
 
                   <div className="d-flex justify-content-between mt-3">
                     <button type="button" className="btn btn-sm" style={cancelStyle} onClick={() => reset()} disabled={isLoading}>
@@ -227,34 +293,43 @@ export default function SatMath({ BASE_URL }) {
             </>
           ) : (
             <div className="col-md-10 mt-2">
+              <div className="d-flex justify-content-between mt-5 mb-5">
+                <h5>Name : <span style={nameStyle}></span></h5>
+                <h5 className='me-3'>Date :  <span style={dateStyle}></span></h5>
+              </div>
               <h4 className="text-center">{apiResponse.title}</h4>
               {apiResponse.sections.map((section, index) => (
-                <div key={index} className="mt-4">
+                <div key={index} className="mt-3">
                   <h5 className="fw-bold">{section.section}</h5>
-                  {section.questions.map((question) => (
-                    <div key={question.question_number} className="mb-2">
-                      <p>
-                        <strong>Q{question.question_number}:</strong> {question.question}
+                  {section.questions.map((question, qIndex) => (
+                    <div key={qIndex} className="mb-2 p-1">
+                      <p className="fw-bold">
+                        Q{qIndex + 1}: {renderMath(question.question)}
                       </p>
                       {question.options && (
-                        <div style={displayStyle}>
-                          {question.options.map((option, idx) => (
-                            <div key={idx}>{option}</div>
-                          ))}
+                        <div style={displayStyle} className="mt-2">
+                          {question.options.map((option, idx) => {
+                            const optionLabel = String.fromCharCode(65 + idx) + ".";
+                            return (
+                              <div key={idx} className="d-flex align-items-start">
+                                <strong className="me-2">{optionLabel}</strong>
+                                <span>{renderMath(option)}</span>
+                              </div>
+                            );
+                          })}
                         </div>
                       )}
                       {showAnswers && (
-                        <p className="mt-4">
-                          <strong>Answer:{showAnswers ? question.correct_answer : ''}</strong> 
-                        </p>
+                        <div className="mt-2">
+                          <strong>Answer:</strong> {renderMath(question.correct_answer)}
+                        </div>
                       )}
                     </div>
                   ))}
                 </div>
               ))}
-              <div className="text-center mt-4">
-              <button
-                  className="btn btn-sm me-2 mt-2 no-print"
+              <div className="d-flex justify-content-center mt-4">
+                <button className="btn btn-sm mt-2 me-2 no-print"
                   style={btnStyle}
                   onClick={() => {
                     setApiResponse(null);
@@ -283,3 +358,5 @@ export default function SatMath({ BASE_URL }) {
     </>
   );
 }
+
+

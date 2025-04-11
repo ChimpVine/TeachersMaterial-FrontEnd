@@ -100,14 +100,23 @@ export default function WorkBook({ BASE_URL }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { subject, grade, textarea, pdf_file } = formData;
+        const trimmed = textarea.trim();
+        const isValidText = trimmed.length <= 250 &&
+            /[a-zA-Z]/.test(trimmed) &&
+            /^[a-zA-Z0-9.,'"\-\s!?()]+$/.test(trimmed);
 
         if (!subject || !grade || !textarea || !pdf_file) {
-            toast.error('Please fill in all fields.');
+            toast.warning('Please fill in all fields.');
+            return;
+        }
+
+        if (!isValidText) {
+            toast.warning('Topic must contain only letters, numbers, and spaces no special characters or numbers alone.');
             return;
         }
 
         if (pdf_file && pdf_file.size > 500 * 1024) {
-            toast.error('File size exceeds 500KB. Please upload a smaller file.');
+            toast.warning('File size exceeds 500KB. Please upload a smaller file.');
             return;
         }
 
@@ -140,26 +149,29 @@ export default function WorkBook({ BASE_URL }) {
             });
             toast.success('Workbook generated successfully!');
         } catch (error) {
-            if (
-                error.response.status === 401 
-            ) {
-                // console.error('Error: Invalid token.');
-                toast.warning('This email has been already used on another device.');
-    
-                Cookies.remove('authToken');
-                Cookies.remove('site_url');
-                Cookies.remove('Display_name');
-                Cookies.remove('user_email');
-                localStorage.removeItem('authToken');
-                localStorage.removeItem('authUser');
-    
-                setTimeout(() => {
-                    navigate('/Login');
-                    window.location.reload();
-                }, 2000); 
+            setApiResponse(null);
+            if (error.response) {
+                const backendError = error.response.data?.error || error.response.data?.message || 'Failed to generate Workbook.';
+                toast.error(backendError);
+                if (error.response.status === 401) {
+                    toast.warning('This email has been used on another device. Redirecting to login...');
+
+                    Cookies.remove('authToken');
+                    Cookies.remove('site_url');
+                    Cookies.remove('Display_name');
+                    Cookies.remove('user_email');
+                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('authUser');
+
+                    setTimeout(() => {
+                        navigate('/login');
+                        window.location.reload();
+                    }, 2000);
+                }
+            } else if (error.request) {
+                toast.error('No response from server. Please check your network connection.');
             } else {
-                // console.error('Error:', error);
-                toast.error('Failed to generate the workbook. Please try again.');
+                toast.error(error.message || 'An unexpected error occurred. Please try again.');
             }
         } finally {
             setIsLoading(false);
@@ -237,12 +249,12 @@ export default function WorkBook({ BASE_URL }) {
                                             />
 
                                             <label htmlFor="textarea" className="form-label">
-                                                Your Topic <span style={{ color: 'red' }}>*</span>
+                                                Topic <span style={{ color: 'red' }}>*</span>
                                             </label>
                                             <textarea
                                                 type="text"
                                                 className="form-control form-control-sm mb-2"
-                                                placeholder="Briefly describe the file you are uploading (e.g., Arithmetic, History, or Ancient Egypt)"
+                                                placeholder="Briefly describe the file you are uploading (e.g. Arithmetic, History, or Ancient Egypt)"
 
                                                 id="textarea"
                                                 name="textarea"
@@ -282,7 +294,7 @@ export default function WorkBook({ BASE_URL }) {
                                     <FaArrowLeft /> Generate Another Workbook
                                 </button>
                                 <button className="btn btn-sm mt-2 mb-3 no-print" style={pdfStyle} onClick={handlePrint}>
-                                    <FaRegFilePdf /> View PDF
+                                    <FaRegFilePdf /> Download PDF
                                 </button>
                             </div>
                         )
@@ -297,7 +309,7 @@ const parseWorkbook = (workbook) => {
 
     const nameStyle = {
         display: "inline-block",
-        width: "200px",
+        width: "130px",
         height: "1px",
         backgroundColor: "black",
         borderBottom: "1px solid black",
@@ -305,14 +317,14 @@ const parseWorkbook = (workbook) => {
 
     const dateStyle = {
         display: "inline-block",
-        width: "100px",
+        width: "130px",
         height: "1px",
         backgroundColor: "black",
         borderBottom: "1px solid black",
     };
 
     return (
-        <div className="container-fluid mt-3 mb-2 ps-5 pe-5 print-content">
+        <div className="container-fluid mt-3 mb-2 ps-3 pe-2 print-content">
             <div className='section'>
                 <div className="d-flex justify-content-between mt-5 mb-5">
                     <h5>Name : <span style={nameStyle}></span></h5>

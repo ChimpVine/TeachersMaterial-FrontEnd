@@ -6,7 +6,7 @@ import { Container, Row, Col, Card } from 'react-bootstrap';
 import { FaChalkboardTeacher, FaUserGraduate, FaBookOpen } from "react-icons/fa";
 import { NavLink } from 'react-router-dom';
 
-export default function Aboutus({API_BASE_URL}) {
+export default function Aboutus({ API_BASE_URL }) {
 
     const textStyle = {
         color: '#8F47D7'
@@ -17,7 +17,6 @@ export default function Aboutus({API_BASE_URL}) {
     };
 
     const desStyle = {
-        color: '#8F47D7',
         fontWeight: '600'
 
     };
@@ -36,10 +35,16 @@ export default function Aboutus({API_BASE_URL}) {
         cursor: 'default'
     };
 
+    const subStyle = {
+        color: '#8F47D7',
+        fontWeight: '600'
+    };
+
+
     const goals = [
         {
             title: 'Enhance Teaching Efficiency',
-            description: 'Develop AI-powered tools that streamline lesson planning and assessment, reducing teachers\' administrative workload.',
+            description: 'Develop AI-powered tools that streamline lesson planning and assessment, reducing teacher’s administrative workload.',
             icon: <FaChalkboardTeacher className='me-3' style={iconStyle} />
         },
         {
@@ -61,7 +66,7 @@ export default function Aboutus({API_BASE_URL}) {
         },
         {
             title: 'Comprehensive AI Toolkit',
-            description: 'We offer a wide range of tools to meet every classroom need, from quizzes and group activities to lesson planning and grading rubrics. Our all-in-one toolkit for teachers is designed to support K-12 education, making it a versatile resource for any teaching environment.',
+            description: 'We offer a wide range of tools to meet every classroom need, from quizzes and group activities to lesson planning and grading rubrics. Our all-in-one toolkit for teachers is designed to support diverse teaching styles and needs, making it a valuable resource for any classroom setting, regardless of grade or teaching environment.',
         },
         {
             title: 'Accessible and User-Friendly',
@@ -81,8 +86,7 @@ export default function Aboutus({API_BASE_URL}) {
                             <h2 className="fw-bold">AI Driven Tools for Inspired Teaching and Learning</h2>
                         </header>
                         <p className="mt-3 text-muted" style={paraStyle}>
-                            At ChimpVine AI, we believe that teaching should be inspiring, not overwhelming. We harness the power of AI to create intuitive tools that simplify lesson planning, assessment, and classroom engagement. Our mission is to empower
-                            educators and enrich student experiences by providing a seamless, innovative teaching toolkit designed for today's classrooms. Unlock your potential with ChimpVine AI where teaching meets technology.
+                            At ChimpVine AI, we believe that teaching should be inspiring, not overwhelming. We harness the power of AI to create intuitive tools that simplify lesson planning, assessment, and classroom engagement. Our mission is to empower educators and enrich student experiences by providing a seamless, innovative teaching toolkit designed for today's classrooms. Unlock your potential with ChimpVine AI where teaching meets technology.
                         </p>
                         <NavLink to="/ai-tools-for-teachers">
                             <button className='btn btn-md mt-3 me-2' style={btnStyle}>Go to AI Tools</button>
@@ -94,7 +98,7 @@ export default function Aboutus({API_BASE_URL}) {
                 </div>
             </div>
             <Container className="text-center my-5">
-                <h2 className="mb-4 fw-bold">Our Goals</h2>
+                <h2 className="mb-4 fw-bold" style={subStyle} >Our Goals</h2>
                 <Row className="justify-content-center" style={pointerStyle}>
                     {goals.map((goal, index) => (
                         <Col key={index} md={4} className="mb-4">
@@ -115,7 +119,7 @@ export default function Aboutus({API_BASE_URL}) {
                 <Row className="justify-content-center" style={pointerStyle}>
                     <Col md={4} className="d-flex flex-column justify-content-center">
                         <h2 className="fw-bold" style={{ fontSize: '2rem' }}>
-                            Why <span style={{ color: '#8F47D7' }}>Us</span>
+                            <span style={textStyle}> Why Us</span>
                         </h2>
                         <hr style={{ border: '2px solid #8F47D7', width: '75px' }} />
                         <p>

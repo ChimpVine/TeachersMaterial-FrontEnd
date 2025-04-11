@@ -97,11 +97,19 @@ export default function VocabularyPlan({ BASE_URL }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { subject, grade, difficultyLevel, topic, numberOfWords } = formData;
+        const trimmed = topic.trim();
+        const isValidText = trimmed.length <= 250 &&
+            /[a-zA-Z]/.test(trimmed) && // must contain at least one letter
+            /^[a-zA-Z0-9.,'"\-\s!?()]+$/.test(trimmed); // allow specific special characters
 
         // Check if all required fields are filled
         if (!subject || !grade || !difficultyLevel || !topic || !numberOfWords) {
-            toast.error('Please fill in all required fields.');
+            toast.warning('Please fill in all required fields.');
             return;
+        }
+
+        if (!isValidText) {
+            toast.warning("Topic must be 50 characters or fewer, contain at least one letter, and only use standard punctuation.");
         }
 
         const formDataToSend = {
@@ -141,26 +149,29 @@ export default function VocabularyPlan({ BASE_URL }) {
             });
             toast.success('Vocabulary generated successfully!');
         } catch (error) {
-            if (
-                error.response.status === 401 
-            ) {
-                // console.error('Error: Invalid token.');
-                toast.warning('This email has been already used on another device.');
+            setApiResponse(null);
+            if (error.response) {
+                const backendError = error.response.data?.error || error.response.data?.message || 'Failed to generate jokes.';
+                toast.error(backendError);
+                if (error.response.status === 401) {
+                    toast.warning('This email has been used on another device. Redirecting to login...');
 
-                Cookies.remove('authToken');
-                Cookies.remove('site_url');
-                Cookies.remove('Display_name');
-                Cookies.remove('user_email');
-                localStorage.removeItem('authToken');
-                localStorage.removeItem('authUser');
+                    Cookies.remove('authToken');
+                    Cookies.remove('site_url');
+                    Cookies.remove('Display_name');
+                    Cookies.remove('user_email');
+                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('authUser');
 
-                setTimeout(() => {
-                    navigate('/login');
-                    window.location.reload();
-                }, 2000);
+                    setTimeout(() => {
+                        navigate('/login');
+                        window.location.reload();
+                    }, 2000);
+                }
+            } else if (error.request) {
+                toast.error('No response from server. Please check your network connection.');
             } else {
-                // console.error('Error:', error);
-                toast.error('Failed to generate the Vocabulary. Please try again.');
+                toast.error(error.message || 'An unexpected error occurred. Please try again.');
             }
         } finally {
             setIsLoading(false);
@@ -188,7 +199,7 @@ export default function VocabularyPlan({ BASE_URL }) {
                                 <NavBreadcrumb items={breadcrumbItems} />
                                 <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded no-print">
                                     <form onSubmit={handleSubmit}>
-                                        <h4 className="text-center mb-3">Vocabulary Generator</h4>
+                                        <h4 className="text-center mb-3">Vocabulary Builder</h4>
                                         <div className="mb-2">
                                             <label htmlFor="subject" className="form-label">
                                                 Subject <span style={{ color: 'red' }}>*</span>
@@ -273,7 +284,7 @@ export default function VocabularyPlan({ BASE_URL }) {
                                                 value={formData.topic}
                                                 onChange={handleChange}
                                                 disabled={isLoading}
-                                                placeholder="Enter Vocabulary Topic For eg.Force , Algebra or Ancient Egypt"
+                                                placeholder="Enter topic (e.g. Force, Algebra, or Ancient Egypt)"
                                             />
                                         </div>
 
@@ -303,10 +314,11 @@ export default function VocabularyPlan({ BASE_URL }) {
                         ) : (
                             <div className="mt-3" ref={contentRef}>
                                 {renderVocabulary(apiResponse)}
-                                <button className="btn btn-sm mt-2 mb-3 me-2 no-print" style={btnStyle} onClick={() => setApiResponse(null)}>                                    <FaArrowLeft /> Generate Another Vocabulary
+                                <button className="btn btn-sm mt-2 mb-3 me-2 no-print" style={btnStyle} onClick={() => setApiResponse(null)}>
+                                    <FaArrowLeft /> Generate Another Vocabulary
                                 </button>
                                 <button className="btn btn-sm mt-2 mb-3 no-print" style={pdfStyle} onClick={handlePrint}>
-                                    <FaRegFilePdf /> View PDF
+                                    <FaRegFilePdf /> Download PDF
                                 </button>
                             </div>
                         )
@@ -320,7 +332,7 @@ export default function VocabularyPlan({ BASE_URL }) {
 const renderVocabulary = (vocabularyData) => {
     const nameStyle = {
         display: "inline-block",
-        width: "200px",
+        width: "130px",
         height: "1px",
         backgroundColor: "black",
         borderBottom: "1px solid black",
@@ -328,13 +340,13 @@ const renderVocabulary = (vocabularyData) => {
 
     const dateStyle = {
         display: "inline-block",
-        width: "100px",
+        width: "130px",
         height: "1px",
         backgroundColor: "black",
         borderBottom: "1px solid black",
     };
     return (
-        <div className="container-fluid mt-3 mb-2 ps-5 pe-5 print-content">
+        <div className="container-fluid mt-3 mb-2 ps-3 pe-2 print-content">
             <div className='section'>
                 <div className="d-flex justify-content-between mt-5 mb-5">
                     <h5>Name : <span style={nameStyle}></span></h5>

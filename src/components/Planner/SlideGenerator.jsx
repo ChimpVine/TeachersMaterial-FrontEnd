@@ -93,10 +93,33 @@ export default function SlideGenerator({ BASE_URL }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
         const { grade, title, objective, slide_number } = formData;
+        const trimmed = formData.objective.trim();
+        const trimmedTitle = formData.title.trim();
+    
+        const isValidTitle =
+            trimmedTitle.length <= 50 &&
+            /^[a-zA-Z0-9.,'"\-!?() ]+$/.test(trimmedTitle) && // allow specific punctuation
+            /[a-zA-Z]/.test(trimmedTitle); // must contain at least one letter
+
+        const isValidObjective = trimmed.length <= 250 &&
+            /[a-zA-Z]/.test(trimmed) && // must contain at least one letter
+            /^[a-zA-Z0-9.,'"\-\s!?()]+$/.test(trimmed); // allow specific special characters
 
         if (!grade || !title || !objective || !slide_number) {
-            toast.error('Please fill in all fields.');
+            toast.warning('Please fill in all fields.');
+            return;
+        }
+
+        if (!isValidTitle) {
+            toast.warning("Title must be 50 characters or fewer, contain at least one letter, and only use standard punctuation.");
+            return;
+        }
+
+        if (!isValidObjective) {
+            toast.warning('Objectives must be 250 characters or fewer, contain at least one letter, and may include only letters, numbers, spaces, and basic punctuation.'
+            );
             return;
         }
 
@@ -131,28 +154,32 @@ export default function SlideGenerator({ BASE_URL }) {
             });
             toast.success('Slide generated successfully!');
         } catch (error) {
-            if (
-                error.response.status === 401
-            ) {
-                // console.error('Error: Invalid token.');
-                toast.warning('This email has been already used on another device.');
+            setApiResponse(null);
+            if (error.response) {
+                const backendError = error.response.data?.error || error.response.data?.message || 'Failed to generate Slides.';
+                toast.warning(backendError);
+                if (error.response.status === 401) {
+                    toast.warning('This email has been used on another device. Redirecting to login...');
 
-                Cookies.remove('authToken');
-                Cookies.remove('site_url');
-                Cookies.remove('Display_name');
-                Cookies.remove('user_email');
-                localStorage.removeItem('authToken');
-                localStorage.removeItem('authUser');
+                    Cookies.remove('authToken');
+                    Cookies.remove('site_url');
+                    Cookies.remove('Display_name');
+                    Cookies.remove('user_email');
+                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('authUser');
 
-                setTimeout(() => {
-                    navigate('/login');
-                    window.location.reload();
-                }, 2000);
+                    setTimeout(() => {
+                        navigate('/login');
+                        window.location.reload();
+                    }, 2000);
+                }
+            } else if (error.request) {
+                toast.warning('No response from server. Please check your network connection.');
             } else {
-                // console.error('Error:', error);
-                toast.error('Failed to generate the Slides. Please try again.');
+                toast.warning(error.message || 'An unexpected error occurred. Please try again.');
             }
-        } finally {
+        }
+        finally {
             setIsLoading(false);
         }
     };
@@ -332,7 +359,7 @@ export default function SlideGenerator({ BASE_URL }) {
                                                 name="title"
                                                 value={formData.title}
                                                 onChange={handleChange}
-                                                placeholder="For eg. The Wildlife of the United States"
+                                                placeholder="e.g. The Wildlife of the United States"
                                             />
 
                                             <label htmlFor="objective" className="form-label">
@@ -348,7 +375,7 @@ export default function SlideGenerator({ BASE_URL }) {
                                                 value={formData.objective}
                                                 onChange={handleChange}
                                                 rows={4}
-                                                placeholder="For eg. Discover the diverse wildlife found in different regions of America. Learn about animals like the American bison, bald eagle, and grizzly bear. Explore the importance of preserving habitats and biodiversity."
+                                                placeholder="e.g. Discover the diverse wildlife found in different regions of America. Learn about animals like the American bison, bald eagle, and grizzly bear. Explore the importance of preserving habitats and biodiversity."
                                             />
 
                                             <label htmlFor="slide_number" className="form-label">

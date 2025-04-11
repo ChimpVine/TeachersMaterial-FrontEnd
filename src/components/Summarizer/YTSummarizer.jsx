@@ -1,68 +1,79 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { FaArrowRight, FaEraser, FaArrowLeft, FaCloudDownloadAlt, FaFilePdf } from "react-icons/fa";
+import { FaArrowRight, FaEraser, FaArrowLeft } from "react-icons/fa";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../spinner/Spinner';
 import NavBar from '../NavBar';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
-import Cookies from 'js-cookie'; 
-
+import { HiMiniQuestionMarkCircle } from "react-icons/hi2";
+import Cookies from 'js-cookie';
+import { useForm } from 'react-hook-form';
 
 export default function YTSummarizer({ BASE_URL }) {
     const btnStyle = { backgroundColor: '#FF683B', color: 'white' };
     const cancelStyle = { backgroundColor: '#dc3545', color: 'white' };
     const headingStyle = { color: '#dc3545' };
 
-    const [formData, setFormData] = useState({ video_url: '' });
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [apiResponse, setApiResponse] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [showModal, setShowModal] = useState(false);
 
-    // Handle form data changes
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+    const handleModalToggle = () => {
+        setShowModal(!showModal);
     };
 
     const breadcrumbItems = [
-        { label: 'Main Panel', href: '/MainPlanner', active: false },
+        { label: 'Main Panel', href: '/ai-tools-for-teachers', active: false },
         { label: 'Summarizer', active: true },
         { label: 'YouTube Summarizer', active: true }
     ];
 
-    // Handle form submission
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const { video_url } = formData;
+    const onSubmit = async (data) => {
+        const { topic } = data;
 
-        if (!video_url) {
-            toast.error('Please provide a video URL.');
-            return;
-        }
-
-        // Retrieve cookies for headers
         const authToken = Cookies.get('authToken');
         const siteUrl = Cookies.get('site_url');
 
         setIsLoading(true);
         try {
             const response = await axios.post(
-                `${BASE_URL}/YT_summarize`,
-                { video_url },
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${authToken}`,
-                        'X-Site-Url': siteUrl
-                    }
-                }
-            );
+                `${BASE_URL}/YT_summary`, { topic }, {
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': `Bearer ${authToken}`,
+                    'X-Site-Url': siteUrl
+                },
+            });
             setApiResponse(response.data);
-            setFormData({ video_url: '' });
-            toast.success('Summary generated successfully!');
+            toast.success('Youtube Summary generated successfully!');
+            reset();
         } catch (error) {
-            toast.warning(`${error.response.data.error}`);
-            setFormData({ video_url: '' });
+            setApiResponse(null);
+            if (error.response) {
+                const backendError = error.response.data?.error || error.response.data?.message || 'Failed to generate YT Summarizer.';
+                toast.error(backendError);
+                if (error.response.status === 401) {
+                    toast.warning('This email has been used on another device. Redirecting to login...');
+
+                    Cookies.remove('authToken');
+                    Cookies.remove('site_url');
+                    Cookies.remove('Display_name');
+                    Cookies.remove('user_email');
+                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('authUser');
+
+                    setTimeout(() => {
+                        navigate('/login');
+                        window.location.reload();
+                    }, 2000);
+                }
+            } else if (error.request) {
+                toast.error('No response from server. Please check your network connection.');
+            } else {
+                toast.error(error.message || 'An unexpected error occurred. Please try again.');
+            }
         } finally {
             setIsLoading(false);
         }
@@ -71,7 +82,9 @@ export default function YTSummarizer({ BASE_URL }) {
     const renderSummary = (summaryData) => {
         return (
             <div className="accordion mt-3 mb-4" id="accordionExample">
-                <h3 className="mb-3 text-center" style={headingStyle}><strong>Your Youtube Summarizer</strong></h3>
+                <h3 className="mb-3 text-center" style={headingStyle}>
+                    <strong>Your YouTube Summarizer</strong>
+                </h3>
                 {summaryData.summarizer.map((section, index) => (
                     <div key={index} className="col-md-6 offset-md-3 accordion-item">
                         <h2 className="accordion-header" id={`heading${index}`}>
@@ -84,7 +97,7 @@ export default function YTSummarizer({ BASE_URL }) {
                                 aria-controls={`collapse${index}`}
                             >
                                 <strong>{section.title}:</strong>
-                                <strong className='ms-2'>{section.timestamp}</strong>
+                                <strong className="ms-2">{section.timestamp}</strong>
                             </button>
                         </h2>
                         <div
@@ -93,7 +106,7 @@ export default function YTSummarizer({ BASE_URL }) {
                             aria-labelledby={`heading${index}`}
                             data-bs-parent="#accordionExample"
                         >
-                            <div className="accordion-body justify-content-start">
+                            <div className="accordion-body">
                                 <p><strong>{section.summary}</strong></p>
                                 {section.points ? (
                                     <div>
@@ -109,11 +122,11 @@ export default function YTSummarizer({ BASE_URL }) {
                                         ))}
                                     </div>
                                 ) : (
-                                    <div>
+                                    <ul>
                                         {section.details.map((detail, idx) => (
                                             <li key={idx}>{detail}</li>
                                         ))}
-                                    </div>
+                                    </ul>
                                 )}
                             </div>
                         </div>
@@ -123,14 +136,12 @@ export default function YTSummarizer({ BASE_URL }) {
         );
     };
 
-
     return (
         <>
             <NavBar />
             <ToastContainer position="top-right" autoClose={1500} />
             <div className="container-fluid">
                 <div className="row justify-content-center mt-5">
-
                     {isLoading ? (
                         <div className="col-md-5 text-center">
                             <Spinner />
@@ -140,39 +151,52 @@ export default function YTSummarizer({ BASE_URL }) {
                             <>
                                 <NavBreadcrumb items={breadcrumbItems} />
                                 <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded">
-                                    <form onSubmit={handleSubmit}>
+                                    <form onSubmit={handleSubmit(onSubmit)}>
                                         <h4 className="text-center mb-3">YouTube Summarizer</h4>
                                         <div className="mb-3">
-                                            <label htmlFor="video_url" className="form-label">
-                                                Youtube Video URL <span style={{ color: 'red' }}>*</span>
-                                            </label>
-                                            <input
-                                                type="text"
-                                                className="form-control form-control-sm mb-2"
-                                                id="video_url"
-                                                name="video_url"
-                                                value={formData.video_url}
-                                                onChange={handleChange}
+                                            <div className="d-flex justify-content-between mb-2">
+                                                <label htmlFor="topic" className="form-label">
+                                                    Youtube Video Transcript <span style={{ color: 'red' }}>*</span>
+                                                </label>
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-warning btn-sm"
+                                                    onClick={handleModalToggle}
+                                                >
+                                                    <HiMiniQuestionMarkCircle /> How to use
+                                                </button>
+                                            </div>
+                                            <textarea
+                                                className={`form-control form-control-sm resizeStyle mb-2 ${errors.topic ? "is-invalid" : ""
+                                                    }`}
+                                                id="topic"
+                                                {...register("topic", {
+                                                    required: "YouTube Video Transcript is required.",
+                                                    pattern: {
+                                                        value: /^(?!\s*$).+/,
+                                                        message: "The transcript cannot be empty.",
+                                                    },
+                                                })}
                                                 disabled={isLoading}
-                                                placeholder="Enter YouTube Video URL"
-                                            />
+                                                placeholder="Enter YouTube Video Transcript (e.g., '0:00 - Hello')"
+                                                rows={8}
+                                            ></textarea>
+                                            {errors.topic && <small className="text-danger">{errors.topic.message}</small>}
                                         </div>
                                         <div className="mb-3">
                                             <small className="text-muted">
                                                 <strong className='text-danger'>Note:</strong>
                                                 <ul>
-                                                    <li>Please ensure the YouTube video includes subtitles.</li>
-                                                    <li>The video should not exceed 30 minutes in duration.</li>
+                                                    <li>Please ensure the YouTube video includes transcript.</li>
                                                 </ul>
                                             </small>
                                         </div>
-
                                         <div className="d-flex justify-content-between mt-3">
                                             <button
                                                 type="button"
                                                 className="btn btn-sm"
                                                 style={cancelStyle}
-                                                onClick={() => setFormData({ video_url: '' })}
+                                                onClick={() => reset()}
                                                 disabled={isLoading}
                                             >
                                                 <FaEraser /> Reset
@@ -197,6 +221,47 @@ export default function YTSummarizer({ BASE_URL }) {
                     )}
                 </div>
             </div>
+            {showModal && (
+                <div
+                    className="modal fade show d-flex align-items-center justify-content-center"
+                    style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+                    tabIndex="-1"
+                >
+                    <div className="modal-dialog modal-dialog-centered">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">How to Use</h5>
+                                <button
+                                    type="button"
+                                    className="btn-close"
+                                    onClick={handleModalToggle}
+                                    aria-label="Close"
+                                ></button>
+                            </div>
+                            <div className="modal-body">
+                                <ol>
+                                    <li>Open the video you want to transcribe on YouTube.</li>
+                                    <li>Click “…more” under the title of the video in the description box.</li>
+                                    <li>Click the <strong>Show Transcript</strong> button in the description box under the video title.</li>
+                                    <li>The transcript will appear on the right side of the video.</li>
+                                    <li>Highlight the full text, right-click, and copy it.</li>
+                                    <li>Paste it into the <strong>YouTube Video Transcript</strong> field for the YouTube Transcript.</li>
+                                </ol>
+                            </div>
+                            <div className="modal-footer">
+                                <button
+                                    type="button"
+                                    className="btn btn-secondary"
+                                    onClick={handleModalToggle}
+                                >
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     );
 }
+

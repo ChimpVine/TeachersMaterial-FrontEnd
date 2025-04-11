@@ -23,7 +23,12 @@ import Maketheword from '../components/Gamification/Maketheword.jsx';
 import PrivateRoute from '../components/PrivateRoute';
 import Login from '../pages/Login/Login.jsx';
 import Aboutus from '../pages/AboutUs/Aboutus.jsx';
-import SatMaths from '../components/Assessment/SatMaths.jsx'
+import SatMaths from '../components/Assessment/SatMaths.jsx';
+import TeacherJoke from "../components/Gamification/TeacherJoke.jsx"
+import BingoGenerator from "../components/Gamification/BingoGenerator.jsx"
+import MysteryCase from "../components/Gamification/Mysterycase.jsx"
+import YTSummarizer from '../components/Summarizer/YTSummarizer.jsx';
+import FunMaths from '../components/Gamification/FunMaths.jsx';
 
 export default function RoutingConfig() {
   const location = useLocation();
@@ -48,6 +53,11 @@ export default function RoutingConfig() {
     '/make-the-word': 'Make the word - AI Tools for Teachers',
     '/sat-maths': 'SAT Math - AI Tools for Teachers',
     '/pdf-splitter': 'Pdf Splitter - AI Tools for Teachers',
+    '/teacher-joke': 'Teacher-Joke - AI Tools for Teachers',
+    '/bingo-generator': 'Bingo Generator - AI Tools for Teachers',
+    '/mystery-case': 'Mystery Case - AI Tools for Teachers',
+    '/yt-summarizer': 'YT Summarizer - AI Tools for Teachers',
+    '/fun-maths': 'Fun Maths - AI Tools for Teachers',
     '/comingsoon': 'Comingsoon - AI Tools for Teachers',
   };
 
@@ -55,7 +65,7 @@ export default function RoutingConfig() {
 
   const API_BASE_URL = "https://site.chimpvine.com";
 
-  const BASE_URL = 'https://teachertools-api.chimpvine.com';
+  const BASE_URL = 'https://teachertools-api.chimpvine.com/';
   
   ReactGA.initialize('G-TBNNYXX21K');
 
@@ -84,6 +94,11 @@ export default function RoutingConfig() {
           <Route path="/group-work" element={<GroupWork BASE_URL={BASE_URL} />} />
           <Route path="/make-the-word" element={<Maketheword BASE_URL={BASE_URL} />} />
           <Route path="/sat-maths" element={<SatMaths BASE_URL={BASE_URL} />} />
+          <Route path="/teacher-joke" element={<TeacherJoke BASE_URL={BASE_URL}/>} />
+          <Route path="/mystery-case" element={<MysteryCase BASE_URL={BASE_URL}/>} />
+          <Route path="/bingo-generator" element={<BingoGenerator BASE_URL={BASE_URL} />} />
+          <Route path="/yt-summarizer" element={<YTSummarizer BASE_URL={BASE_URL} />} />
+          <Route path="/fun-maths" element={<FunMaths BASE_URL={BASE_URL} />} />
           <Route path="/comingsoon" element={<ComingSoon />} />
         </Route>
         <Route path="/pdf-splitter" element={<PdfSplitter />} />

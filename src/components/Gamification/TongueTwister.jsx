@@ -53,15 +53,23 @@ export default function TongueTwister({ BASE_URL }) {
 
         // Check if all required fields are filled
         if (!topic || !number_of_twisters) {
-            toast.error('Please fill in all required fields.');
+            toast.warning('Please fill in all required fields.');
             return;
+        }
+
+        const trimmed = topic.trim();
+        const isValidText = trimmed.length <= 50 &&
+            /[a-zA-Z]/.test(trimmed) && // must contain at least one letter
+            /^[a-zA-Z0-9.,'"\-\s!?()]+$/.test(trimmed); // allow specific special characters
+
+        if (!isValidText) {
+            toast.warning("Topic must be 50 characters or fewer, contain at least one letter, and only use standard punctuation.");
         }
 
         // Create FormData object for sending form-encoded data
         const formDataToSend = new FormData();
         formDataToSend.append('topic', topic);
         formDataToSend.append('number_of_twisters', number_of_twisters);
-
 
         // Retrieve cookies for headers
         const authToken = Cookies.get('authToken');
@@ -83,29 +91,32 @@ export default function TongueTwister({ BASE_URL }) {
             });
             toast.success('Tongue Twister generated successfully!');
         } catch (error) {
-            if (
-                error.response.status === 401
-            ) {
-                // console.error('Error: Invalid token.');
-                toast.warning('This email has been already used on another device.');
+            setApiResponse(null);
+            if (error.response) {
+                const backendError = error.response.data?.error || error.response.data?.message || 'Failed to generate jokes.';
+                toast.error(backendError);
+                if (error.response.status === 401) {
+                    toast.warning('This email has been used on another device. Redirecting to login...');
 
-                Cookies.remove('authToken');
-                Cookies.remove('site_url');
-                Cookies.remove('Display_name');
-                Cookies.remove('user_email');
-                localStorage.removeItem('authToken');
-                localStorage.removeItem('authUser');
+                    Cookies.remove('authToken');
+                    Cookies.remove('site_url');
+                    Cookies.remove('Display_name');
+                    Cookies.remove('user_email');
+                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('authUser');
 
-                setTimeout(() => {
-                    navigate('/login');
-                    window.location.reload();
-                }, 2000);
-
+                    setTimeout(() => {
+                        navigate('/login');
+                        window.location.reload();
+                    }, 2000);
+                }
+            } else if (error.request) {
+                toast.error('No response from server. Please check your network connection.');
             } else {
-                console.error('Error:', error);
-                toast.error('Failed to generate the Tongue Twister. Please try again.');
+                toast.error(error.message || 'An unexpected error occurred. Please try again.');
             }
-        } finally {
+        }
+        finally {
             setIsLoading(false);
         }
     };
@@ -144,7 +155,7 @@ export default function TongueTwister({ BASE_URL }) {
                                                 value={formData.topic}
                                                 onChange={handleChange}
                                                 disabled={isLoading}
-                                                placeholder="Enter Tongue Twister Topic For eg. Animals, Foods"
+                                                placeholder="Enter topic (e.g. Force, Algebra, or Ancient Egypt)"
                                             />
 
                                             <label htmlFor="number_of_twisters" className="form-label">
@@ -193,7 +204,7 @@ export default function TongueTwister({ BASE_URL }) {
                                     <FaArrowLeft /> Generate Another Tongue Twister
                                 </button>
                                 <button className="btn btn-sm mt-2 mb-3 no-print" style={pdfStyle} onClick={handlePrint}>
-                                    <FaRegFilePdf /> View PDF
+                                    <FaRegFilePdf /> Download PDF
                                 </button>
                             </div>
                         )
@@ -206,7 +217,7 @@ export default function TongueTwister({ BASE_URL }) {
 
 const renderTongueTwister = (tongueTwisterData) => {
     return (
-        <div className="container-fluid mt-3 mb-2 ps-5 pe-5 print-content">
+        <div className="container-fluid mt-3 mb-2 ps-3 pe-2 print-content">
             <div className='mt-4'>
                 <div className="mb-5">
                     <h5>Topic: {tongueTwisterData.topic}</h5>

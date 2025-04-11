@@ -61,24 +61,34 @@ export default function Maketheword({ BASE_URL }) {
             setApiResponse(response.data);
             toast.success('Words generated successfully!');
             reset();
-        } catch (error) {
-            if (error.response.status === 401) {
-                toast.warning('This email has been already used on another device.');
-                Cookies.remove('authToken');
-                Cookies.remove('site_url');
-                Cookies.remove('Display_name');
-                Cookies.remove('user_email');
-                localStorage.removeItem('authToken');
-                localStorage.removeItem('authUser');
-                setTimeout(() => {
-                    navigate('/login');
-                    window.location.reload();
-                }, 2000);
+        }
+        catch (error) {
+            setApiResponse(null);
+            if (error.response) {
+                const backendError = error.response.data?.error || error.response.data?.message || 'Failed to generate word.';
+                toast.error(backendError);
+                if (error.response.status === 401) {
+                    toast.warning('This email has been used on another device. Redirecting to login...');
+
+                    Cookies.remove('authToken');
+                    Cookies.remove('site_url');
+                    Cookies.remove('Display_name');
+                    Cookies.remove('user_email');
+                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('authUser');
+
+                    setTimeout(() => {
+                        navigate('/login');
+                        window.location.reload();
+                    }, 2000);
+                }
+            } else if (error.request) {
+                toast.error('No response from server. Please check your network connection.');
             } else {
-                const errorMessage = error.response?.data?.error || 'Failed to generate words. Please try again.';
-                toast.error(errorMessage);
+                toast.error(error.message || 'An unexpected error occurred. Please try again.');
             }
-        } finally {
+        }
+        finally {
             setIsLoading(false);
         }
     };
@@ -115,17 +125,24 @@ export default function Maketheword({ BASE_URL }) {
                                         {/* Theme */}
                                         <div className="mb-2">
                                             <label htmlFor="theme" className="form-label">
-                                                Theme <span style={{ color: 'red' }}>*</span>
+                                                Theme <span style={{ color: "red" }}>*</span>
                                             </label>
                                             <input
                                                 type="text"
-                                                className={`form-control form-control-sm mb-2 ${errors.theme ? 'is-invalid' : ''}`}
+                                                className={`form-control form-control-sm mb-2 ${errors.theme ? "is-invalid" : ""}`}
                                                 id="theme"
-                                                {...register('theme', { required: 'Theme is required' })}
-                                                placeholder="Enter Theme For E.g. Animals, Foods, Planets"
+                                                {...register("theme", {
+                                                    required: "Theme is required",
+                                                    pattern: {
+                                                        value: /^(?!\s)(?![0-9])[a-zA-Z0-9.,'"-\s]+$/,
+                                                        message: "The theme must be 1-50 characters long, cannot start with a space or number, and must not contain only special characters."
+                                                    }
+                                                })}
+                                                placeholder="Enter theme (e.g. Animals, Foods, Planets)"
                                             />
                                             {errors.theme && <div className="invalid-feedback">{errors.theme.message}</div>}
                                         </div>
+
 
                                         {/* Difficulty Level */}
                                         <div className="mb-2">
@@ -163,6 +180,15 @@ export default function Maketheword({ BASE_URL }) {
                                                 ))}
                                             </select>
                                             {errors.number_of_words && <div className="invalid-feedback">{errors.number_of_words.message}</div>}
+                                        </div>
+                                        <div className="mb-3">
+                                            <small className="text-muted">
+                                                <strong className="text-danger">Note:</strong>
+                                                <ul>
+                                                    <li>Theme must not be more than 50 characters long.</li>
+                                                    <li>No special characters (e.g., @, #, $, -, _).</li>
+                                                </ul>
+                                            </small>
                                         </div>
 
                                         <div className="d-flex justify-content-between mt-3">
@@ -216,7 +242,7 @@ export default function Maketheword({ BASE_URL }) {
 const renderWordGame = (apiResponse, showAnswers) => {
     const nameStyle = {
         display: "inline-block",
-        width: "200px",
+        width: "130px",
         height: "1px",
         backgroundColor: "black",
         borderBottom: "1px solid black",
@@ -224,7 +250,7 @@ const renderWordGame = (apiResponse, showAnswers) => {
 
     const dateStyle = {
         display: "inline-block",
-        width: "100px",
+        width: "130px",
         height: "1px",
         backgroundColor: "black",
         borderBottom: "1px solid black",
@@ -232,18 +258,16 @@ const renderWordGame = (apiResponse, showAnswers) => {
     const headingStyle = { color: '#dc3545' };
 
     return (
-        <div className="container-fluid mt-3 mb-2 ps-5 pe-5 print-content">
+        <div className="container-fluid mt-3 mb-2 ps-3 pe-2 print-content">
             <div id="headerContent" className='section'>
                 <div className="d-flex justify-content-between mt-5 mb-5">
                     <h5>Name : <span style={nameStyle}></span></h5>
                     <h5 className='me-3'>Date :  <span style={dateStyle}></span></h5>
                 </div>
             </div>
-            <h4 style={headingStyle}><strong>Generated Make the Word</strong></h4>
+            <h4 style={headingStyle}><strong>Make the Word</strong></h4>
             <section className='mb-5'>
                 <p><strong>Theme:</strong> {apiResponse.theme}</p>
-                <p><strong>Difficulty:</strong> {apiResponse.difficulty}</p>
-                <p><strong>Number of Words:</strong> {apiResponse.no_of_words}</p>
                 <p className="letters">
                     <strong>Letters: </strong>
                     {apiResponse.letters.map((letter, index) => (
@@ -252,11 +276,14 @@ const renderWordGame = (apiResponse, showAnswers) => {
                         </span>
                     ))}
                 </p>
+                <p className="text-muted fst-italic">
+                    (Note: Please use the letters given above to guess the words using the given hints.)
+                </p>
                 <div className="row">
                     {apiResponse.words.map((wordObj, index) => (
                         <div key={index} className="col-md-6 mb-4">
                             <div className="p-3 border rounded">
-                                <strong>Word: {showAnswers ? wordObj.word : ''}</strong>
+                                <strong>Word: {showAnswers ? wordObj.word : "__________"}</strong>
                                 <p className={showAnswers ? 'answer' : ''}><strong>Hint:</strong> {wordObj.hint}</p>
                             </div>
                         </div>

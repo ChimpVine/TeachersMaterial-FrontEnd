@@ -142,37 +142,48 @@ export default function WorkSheet({ BASE_URL }) {
 
         // Validate required fields
         if (!formData.subject) {
-            toast.error('Please select a subject.');
+            toast.warning('Please select a subject.');
             return;
         }
         if (!formData.grade) {
-            toast.error('Please select a grade.');
+            toast.warning('Please select a grade.');
             return;
         }
         if (!formData.number) {
-            toast.error('Please select the number of questions.');
+            toast.warning('Please select the number of questions.');
             return;
         }
         if (!formData.questionType) {
-            toast.error('Please select a question type.');
+            toast.warning('Please select a question type.');
             return;
         }
         if (subOptions.length > 0 && !formData.subQuestionType) {
-            toast.error('Please select a sub-question type.');
+            toast.warning('Please select a sub-question type.');
             return;
         }
         if (!formData.topic) {
-            toast.error('Please enter a topic.');
+            toast.warning('Please enter a topic.');
             return;
         }
+
+        const trimmed = formData.topic.trim();
+        const isValidText = trimmed.length <= 250 &&
+            /[a-zA-Z]/.test(trimmed) && // must contain at least one letter
+            /^[a-zA-Z0-9.,'"\-\s!?()]+$/.test(trimmed); // allow specific special characters
+
+
+        if (!isValidText) {
+            toast.warning("Description must be 250 characters or fewer, contain at least one letter, and only use standard punctuation.");
+        }
+
         if (!formData.pdfFile) {
-            toast.error('Please upload a PDF file.');
+            toast.warning('Please upload a PDF file.');
             return;
         }
 
         // Check the file size before generating the worksheet
         if (formData.pdfFile && formData.pdfFile.size > 500 * 1024) {
-            toast.error('File size exceeds 500KB. Please upload a smaller file.');
+            toast.warning('File size exceeds 500KB. Please upload a smaller file.');
             return;
         }
 
@@ -213,7 +224,7 @@ export default function WorkSheet({ BASE_URL }) {
                 error.response.status === 401
             ) {
                 // console.error('Error: Invalid token.');
-                toast.warning('This email has been already used on another device.');
+                toast.warning('This email has been used on another device. Redirecting to login...');
 
                 Cookies.remove('authToken');
                 Cookies.remove('site_url');
@@ -344,7 +355,7 @@ export default function WorkSheet({ BASE_URL }) {
                             <NavBreadcrumb items={breadcrumbItems} />
                             <div className="col-md-5 border border-4 rounded-3 pt-4 pb-3 ps-5 pe-5 shadow p-3 bg-body rounded">
                                 <form onSubmit={handleSubmit}>
-                                    <h4 className="text-center mb-3">WorkSheet Planner</h4>
+                                    <h4 className="text-center mb-3">Worksheet Planner</h4>
                                     <div className="mb-2">
                                         <label htmlFor="subject" className="form-label">
                                             Subject <span style={{ color: 'red' }}>*</span>
@@ -448,12 +459,12 @@ export default function WorkSheet({ BASE_URL }) {
                                         />
 
                                         <label htmlFor="textarea" className="form-label">
-                                            Your Topic <span style={{ color: 'red' }}>*</span>
+                                            File Description Label <span style={{ color: 'red' }}>*</span>
                                         </label>
                                         <textarea
                                             type="text"
                                             className="form-control form-control-sm mb-2"
-                                            placeholder="Briefly describe the file you are uploading (e.g., Arithmetic, History, or Ancient Egypt)"
+                                            placeholder="Briefly describe the file you are uploading (e.g. Arithmetic, History, or Ancient Egypt)"
                                             id="textarea"
                                             name="topic"
                                             value={formData.topic}
@@ -495,13 +506,12 @@ export default function WorkSheet({ BASE_URL }) {
                             </div>
                         </>
                     ) : (
-                        <div className="container-fluid ps-4 pe-4">
+                        <div className="container-fluid ps-3 pe-2">
                             <div id="headerContent" className='section'>
                                 <div className="d-flex justify-content-between mt-5 mb-4">
-                                    <h5>Name: <span style={{ display: "inline-block", width: "150px", height: "1px", backgroundColor: "black", borderBottom: "1px solid black" }}></span></h5>
-                                    <h5>Date: <span style={{ display: "inline-block", width: "150px", height: "1px", backgroundColor: "black", borderBottom: "1px solid black" }}></span></h5>
+                                    <h5>Name: <span style={{ display: "inline-block", width: "130px", height: "1px", backgroundColor: "black", borderBottom: "1px solid black" }}></span></h5>
+                                    <h5>Date: <span style={{ display: "inline-block", width: "130px", height: "1px", backgroundColor: "black", borderBottom: "1px solid black" }}></span></h5>
                                 </div>
-                                <h5 className='mb-3'>Assigned By: <span style={{ display: "inline-block", width: "150px", height: "1px", backgroundColor: "black", borderBottom: "1px solid black" }}></span></h5>
                             </div>
                             {
                                 apiResponse && apiResponse.worksheet && formData.questionType === 'MCQ' && formData.subQuestionType === 'MCQ_Single' && (
@@ -511,6 +521,7 @@ export default function WorkSheet({ BASE_URL }) {
                                         modalVisible={modalVisible}
                                         handleUpdate={handleUpdate}
                                         setApiResponse={setApiResponse}
+                                        setModalVisible={setModalVisible}
                                     />
                                 )
                             }
@@ -522,6 +533,7 @@ export default function WorkSheet({ BASE_URL }) {
                                         modalVisible={modalVisible}
                                         handleUpdate={handleUpdate}
                                         setApiResponse={setApiResponse}
+                                        setModalVisible={setModalVisible}
                                     />
                                 )
                             }
@@ -533,6 +545,7 @@ export default function WorkSheet({ BASE_URL }) {
                                         modalVisible={modalVisible}
                                         handleUpdate={handleUpdate}
                                         setApiResponse={setApiResponse}
+                                        setModalVisible={setModalVisible}
                                     />
                                 )
                             }
@@ -544,6 +557,7 @@ export default function WorkSheet({ BASE_URL }) {
                                         modalVisible={modalVisible}
                                         handleUpdate={handleUpdate}
                                         setApiResponse={setApiResponse}
+                                        setModalVisible={setModalVisible}
                                     />
                                 )
                             }
@@ -555,6 +569,7 @@ export default function WorkSheet({ BASE_URL }) {
                                         modalVisible={modalVisible}
                                         handleUpdate={handleUpdate}
                                         setApiResponse={setApiResponse}
+                                        setModalVisible={setModalVisible}
                                     />
                                 )
                             }
@@ -566,6 +581,7 @@ export default function WorkSheet({ BASE_URL }) {
                                         modalVisible={modalVisible}
                                         handleUpdate={handleUpdate}
                                         setApiResponse={setApiResponse}
+                                        setModalVisible={setModalVisible}
                                     />
                                 )
                             }
@@ -578,6 +594,7 @@ export default function WorkSheet({ BASE_URL }) {
                                     setApiResponse={setApiResponse}
                                     handleUpdate={handleUpdate}
                                     modalVisible={modalVisible}
+                                    setModalVisible={setModalVisible}
                                 />
                             )}
                             {apiResponse && apiResponse.worksheet && formData.questionType === 'Q&A' && formData.subQuestionType === 'Short_Answer_Explain' && (
@@ -589,6 +606,7 @@ export default function WorkSheet({ BASE_URL }) {
                                     setApiResponse={setApiResponse}
                                     handleUpdate={handleUpdate}
                                     modalVisible={modalVisible}
+                                    setModalVisible={setModalVisible}
                                 />
                             )}
                             {apiResponse && apiResponse.worksheet && formData.questionType === 'Q&A' && formData.subQuestionType === 'Long_Answer_Explain' && (
@@ -600,6 +618,7 @@ export default function WorkSheet({ BASE_URL }) {
                                     setApiResponse={setApiResponse}
                                     handleUpdate={handleUpdate}
                                     modalVisible={modalVisible}
+                                    setModalVisible={setModalVisible}
                                 />
                             )}
                             {apiResponse && apiResponse.worksheet && formData.questionType === 'Sequencing' && (
@@ -609,6 +628,7 @@ export default function WorkSheet({ BASE_URL }) {
                                     setApiResponse={setApiResponse}
                                     handleUpdate={handleUpdate}
                                     modalVisible={modalVisible}
+                                    setModalVisible={setModalVisible}
                                 />
                             )}
                             {apiResponse && apiResponse.worksheet && formData.questionType === 'Problem_Solving' && (
@@ -619,6 +639,7 @@ export default function WorkSheet({ BASE_URL }) {
                                     setApiResponse={setApiResponse}
                                     handleUpdate={handleUpdate}
                                     modalVisible={modalVisible}
+                                    setModalVisible={setModalVisible}
                                 />
                             )}
                             <div className="d-flex justify-content-center">
@@ -644,7 +665,7 @@ export default function WorkSheet({ BASE_URL }) {
                                     style={pdfStyle}
                                     onClick={() => generatePdf(false, false)}
                                 >
-                                    <FaCloudDownloadAlt /> View Questions
+                                    <FaCloudDownloadAlt /> Download Questions
                                 </button>
 
                                 {!(formData.subQuestionType === 'Short_Answer_List' ||
@@ -656,7 +677,7 @@ export default function WorkSheet({ BASE_URL }) {
                                             style={pdfStyle}
                                             onClick={() => generatePdf(true, true)}
                                         >
-                                            <FaFilePdf /> View Answers
+                                            <FaFilePdf /> Download Answers
                                         </button>
                                     )}
                             </div>

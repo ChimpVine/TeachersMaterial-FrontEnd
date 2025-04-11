@@ -42,18 +42,18 @@ const grades = [
 
 const lessonDurations = [
     { value: "", label: "Choose the Duration" },
-    { value: "15", label: "15 minutes" },
-    { value: "30", label: "30 minutes" },
-    { value: "45", label: "45 minutes" },
-    { value: "60", label: "1 hour" },
-    { value: "75", label: "1 hour 15 minutes" },
-    { value: "90", label: "1 hour 30 minutes" },
-    { value: "105", label: "1 hour 45 minutes" },
-    { value: "120", label: "2 hours" },
-    { value: "135", label: "2 hours 15 minutes" },
-    { value: "150", label: "2 hours 30 minutes" },
-    { value: "165", label: "2 hours 45 minutes" },
-    { value: "180", label: "3 hours" }
+    { value: "15 minutes", label: "15 minutes" },
+    { value: "30 minutes", label: "30 minutes" },
+    { value: "45 minutes", label: "45 minutes" },
+    { value: "1 hour", label: "1 hour" },
+    { value: "1 hour 15 minutes", label: "1 hour 15 minutes" },
+    { value: "1 hour 30 minutes", label: "1 hour 30 minutes" },
+    { value: "1 hour 45 minutes", label: "1 hour 45 minutes" },
+    { value: "2 hours", label: "2 hours" },
+    { value: "2 hours 15 minutes", label: "2 hours 15 minutes" },
+    { value: "2 hours 30 minutes", label: "2 hours 30 minutes" },
+    { value: "2 hours 45 minutes", label: "2 hours 45 minutes" },
+    { value: "3 hours", label: "3 hours" }
 ];
 
 export default function LessonPlan({ BASE_URL }) {
@@ -101,19 +101,31 @@ export default function LessonPlan({ BASE_URL }) {
         });
     };
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { subject, grade, duration, textarea, pdf_file } = formData;
+        const trimmed = textarea.trim();
+        const isValidobjectives = trimmed.length <= 250 &&
+            /[a-zA-Z]/.test(trimmed) &&
+            /^[a-zA-Z0-9.,'"\-\s!?()]+$/.test(trimmed);
 
         if (!subject || !grade || !duration || !textarea || !pdf_file) {
-            toast.error('Please fill in all fields.');
+            toast.warning('Please fill in all fields.');
             return;
         }
 
-        if (pdf_file && pdf_file.size > 500 * 1024) {
-            toast.error('File size exceeds 500KB. Please upload a smaller file.');
+        if (!isValidobjectives) {
+            toast.warning("Description must be 250 characters or fewer, contain at least one letter, and only use standard punctuation.");
             return;
         }
+
+
+        if (pdf_file && pdf_file.size > 500 * 1024) {
+            toast.warning('File size exceeds 500KB. Please upload a smaller file.');
+            return;
+        }
+
 
         const formDataToSend = new FormData();
         formDataToSend.append('subject', subject);
@@ -146,26 +158,33 @@ export default function LessonPlan({ BASE_URL }) {
             });
             toast.success('Lesson plan generated successfully!');
         } catch (error) {
-            if (
-                error.response.status === 401 
-            ) {
-                console.error('Error: Invalid token.');
-                toast.warning('This email has been already used on another device.');
-    
-                Cookies.remove('authToken');
-                Cookies.remove('site_url');
-                Cookies.remove('Display_name');
-                Cookies.remove('user_email');
-                localStorage.removeItem('authToken');
-                localStorage.removeItem('authUser');
-                
-                setTimeout(() => {
-                    navigate('/login');
-                    window.location.reload(); 
-                }, 2000); 
+            setApiResponse(null);
+
+            if (error.response) {
+                const data = error.response.data;
+                const backendError = data?.error || data?.message || 'Failed to generate Lesson Planner.';
+                toast.error(backendError);
+
+                if (error.response.status === 401) {
+                    toast.warning('This email has been used on another device. Redirecting to login...');
+
+                    Cookies.remove('authToken');
+                    Cookies.remove('site_url');
+                    Cookies.remove('Display_name');
+                    Cookies.remove('user_email');
+                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('authUser');
+
+                    setTimeout(() => {
+                        navigate('/login');
+                        window.location.reload();
+                    }, 2000);
+                }
+
+            } else if (error.request) {
+                toast.error('No response from server. Please check your network connection.');
             } else {
-                // console.error('Error:', error);
-                toast.error('Failed to generate the lesson plan. Please try again.');
+                toast.error(error.message || 'An unexpected error occurred. Please try again.');
             }
         } finally {
             setIsLoading(false);
@@ -267,7 +286,7 @@ export default function LessonPlan({ BASE_URL }) {
                                             <textarea
                                                 type="text"
                                                 className="form-control form-control-sm mb-2"
-                                                placeholder="Briefly describe the file you are uploading (e.g., Chapter 1 - The Solar System Notes, or Midterm Study Guide)"
+                                                placeholder="Briefly describe the file you are uploading (e.g. Chapter 1 - The Solar System Notes, or Midterm Study Guide)"
                                                 id="textarea"
                                                 name="textarea"
                                                 rows={3}
@@ -312,7 +331,7 @@ export default function LessonPlan({ BASE_URL }) {
                                     <FaArrowLeft /> Generate Another Lesson
                                 </button>
                                 <button className="btn btn-sm mt-2 mb-3 no-print" style={pdfStyle} onClick={handlePrint}>
-                                    <FaRegFilePdf /> View PDF
+                                    <FaRegFilePdf /> Download PDF
                                 </button>
                             </div>
                         )
@@ -327,7 +346,7 @@ const renderLessonPlan = (lessonPlan) => {
 
     const nameStyle = {
         display: "inline-block",
-        width: "200px",
+        width: "130px",
         height: "1px",
         backgroundColor: "black",
         borderBottom: "1px solid black",
@@ -335,14 +354,14 @@ const renderLessonPlan = (lessonPlan) => {
 
     const dateStyle = {
         display: "inline-block",
-        width: "100px",
+        width: "130px",
         height: "1px",
         backgroundColor: "black",
         borderBottom: "1px solid black",
     };
 
     return (
-        <div className="container-fluid mt-3 mb-2 ps-5 pe-5 print-content">
+        <div className="container-fluid mt-3 mb-2 ps-3 pe-2 print-content">
             <div className='section'>
                 <div className="d-flex justify-content-between mt-5 mb-5">
                     <h5>Name : <span style={nameStyle}></span></h5>

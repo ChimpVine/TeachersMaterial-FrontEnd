@@ -39,9 +39,18 @@ export default function WordPuzzle({ BASE_URL }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { topic, numberofword, difficulty_level } = formData;
+        const trimmed = topic.trim();
+        const isValidText = trimmed.length <= 50 &&
+            /[a-zA-Z]/.test(trimmed) && // must contain at least one letter
+            /^[a-zA-Z0-9.,'"\-\s!?()]+$/.test(trimmed); // allow specific special characters
 
         if (!topic || !numberofword || !difficulty_level) {
-            toast.error('Please fill in all required fields.');
+            toast.warning('Please fill in all required fields.');
+            return;
+        }
+
+        if (!isValidText) {
+           toast.warning("Topic must be 50 characters or fewer, contain at least one letter, and only use standard punctuation.");
             return;
         }
 
@@ -68,26 +77,29 @@ export default function WordPuzzle({ BASE_URL }) {
             setFormData({ topic: '', numberofword: '', difficulty_level: '' });
             toast.success('Word Puzzle generated successfully!');
         } catch (error) {
-            if (
-                error.response.status === 401 
-            ) {
-                // console.error('Error: Invalid token.');
-                toast.warning('This email has been already used on another device.');
+            setApiResponse(null);
+            if (error.response) {
+                const backendError = error.response.data?.error || error.response.data?.message || 'Failed to generate word puzzle.';
+                toast.error(backendError);
+                if (error.response.status === 401) {
+                    toast.warning('This email has been used on another device. Redirecting to login...');
 
-                Cookies.remove('authToken');
-                Cookies.remove('site_url');
-                Cookies.remove('Display_name');
-                Cookies.remove('user_email');
-                localStorage.removeItem('authToken');
-                localStorage.removeItem('authUser');
+                    Cookies.remove('authToken');
+                    Cookies.remove('site_url');
+                    Cookies.remove('Display_name');
+                    Cookies.remove('user_email');
+                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('authUser');
 
-                setTimeout(() => {
-                    navigate('/login');
-                    window.location.reload();
-                }, 2000);
+                    setTimeout(() => {
+                        navigate('/login');
+                        window.location.reload();
+                    }, 2000);
+                }
+            } else if (error.request) {
+                toast.error('No response from server. Please check your network connection.');
             } else {
-                // console.error('Error:', error);
-                toast.error('Failed to generate the Word Puzzle. Please try again.');
+                toast.error(error.message || 'An unexpected error occurred. Please try again.');
             }
         } finally {
             setIsLoading(false);
@@ -145,7 +157,7 @@ export default function WordPuzzle({ BASE_URL }) {
                                                 value={formData.topic}
                                                 onChange={handleChange}
                                                 disabled={isLoading}
-                                                placeholder="Enter Word Puzzle Topic For eg. Animals,Foods"
+                                                placeholder="Enter topic (e.g. Force, Algebra, or Ancient Egypt)"
                                             />
 
                                             <label htmlFor="numberofword" className="form-label">
@@ -213,7 +225,7 @@ export default function WordPuzzle({ BASE_URL }) {
                                     style={pdfStyle}
                                     onClick={() => generatePdf(false, false)}
                                 >
-                                    <FaCloudDownloadAlt /> View Questions
+                                    <FaCloudDownloadAlt /> Download Questions
                                 </button>
 
                                 <button
@@ -222,7 +234,7 @@ export default function WordPuzzle({ BASE_URL }) {
                                     style={pdfStyle}
                                     onClick={() => generatePdf(true, false)}
                                 >
-                                    <FaFilePdf /> View Answers
+                                    <FaFilePdf /> Download Answers
                                 </button>
                             </div>
                         )
@@ -236,7 +248,7 @@ export default function WordPuzzle({ BASE_URL }) {
 const renderWordPuzzle = (wordPuzzleData) => {
     const nameStyle = {
         display: "inline-block",
-        width: "200px",
+        width: "130px",
         height: "1px",
         backgroundColor: "black",
         borderBottom: "1px solid black",
@@ -244,7 +256,7 @@ const renderWordPuzzle = (wordPuzzleData) => {
 
     const dateStyle = {
         display: "inline-block",
-        width: "100px",
+        width: "130px",
         height: "1px",
         backgroundColor: "black",
         borderBottom: "1px solid black",
@@ -256,7 +268,7 @@ const renderWordPuzzle = (wordPuzzleData) => {
     const headingStyle = { color: '#dc3545' };
 
     return (
-        <div className="container-fluid mt-3 mb-2 ps-5 pe-5 print-content">
+        <div className="container-fluid mt-3 mb-2 ps-3 pe-2 print-content">
             <div id="headerContent" className='section'>
                 <div className="d-flex justify-content-between mt-5 mb-5">
                     <h5>Name : <span style={nameStyle}></span></h5>
