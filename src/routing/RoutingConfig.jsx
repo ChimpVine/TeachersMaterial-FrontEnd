@@ -29,6 +29,10 @@ import BingoGenerator from "../components/Gamification/BingoGenerator.jsx"
 import MysteryCase from "../components/Gamification/Mysterycase.jsx"
 import YTSummarizer from '../components/Summarizer/YTSummarizer.jsx';
 import FunMaths from '../components/Gamification/FunMaths.jsx';
+// import AIDirectory from '../pages/SeoPage/AIDirectory.jsx';
+// import SEOLessonPlanner from '../pages/SeoPage/SEOLessonPlanner.jsx';
+// import SEOWorksheet from '../pages/SeoPage/SEOWorksheet.jsx';
+// import SEOTongueTwister from '../pages/SeoPage/SEOTongueTwister.jsx';
 
 export default function RoutingConfig() {
   const location = useLocation();
@@ -65,7 +69,9 @@ export default function RoutingConfig() {
 
   const API_BASE_URL = "https://site.chimpvine.com";
 
-  const BASE_URL = 'https://teachertools-api.chimpvine.com/';
+  const BASE_URL = 'https://teachertools-api.chimpvine.com';
+
+  // const BASE_URL = 'http://192.168.1.64:8080';
   
   ReactGA.initialize('G-TBNNYXX21K');
 
@@ -101,6 +107,10 @@ export default function RoutingConfig() {
           <Route path="/fun-maths" element={<FunMaths BASE_URL={BASE_URL} />} />
           <Route path="/comingsoon" element={<ComingSoon />} />
         </Route>
+        {/* <Route path="/about-worksheet-planner" element={<SEOWorksheet/>}/>
+        <Route path="/about-Lesson-planner" element={<SEOLessonPlanner/>}/>
+        <Route path="/about-tongue-twister" element={<SEOTongueTwister/>}/>
+        <Route path="/ai-directory" element={<AIDirectory/>} /> */}
         <Route path="/pdf-splitter" element={<PdfSplitter />} />
         <Route path="*" element={<Error404Page />} />
       </Routes>

@@ -114,7 +114,14 @@ export default function Footer() {
                                         target='_blank'>
                                         About Us
                                     </NavLink>
-
+                                </li>
+                                <li>
+                                    <NavLink
+                                        className="content"
+                                        to="/ai-directory"
+                                        target='_blank'>
+                                        AI Directory
+                                    </NavLink>
                                 </li>
                                 <li>
                                     <NavLink

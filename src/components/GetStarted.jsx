@@ -5,6 +5,7 @@ import Footer from '../pages/Footer.jsx';
 import HeroSection from '../pages/HeroSection.jsx';
 import { UserContext } from '../context/UserContext';
 import { toast } from 'react-toastify';
+import { MdKeyboardArrowRight } from "react-icons/md";
 
 const TypingEffect = () => {
     const [text, setText] = useState('');
@@ -51,7 +52,7 @@ const TypingEffect = () => {
 };
 
 
-const GetStarted = ({API_BASE_URL}) => {
+const GetStarted = ({ API_BASE_URL }) => {
     const { login, user } = useContext(UserContext);
     const [searchParams] = useSearchParams();
 
@@ -90,17 +91,21 @@ const GetStarted = ({API_BASE_URL}) => {
                             <div>
                                 <TypingEffect />
                                 {user ? (
-                                    <NavLink to="/ai-tools-for-teachers">
-                                        <button className="unique-button mt-5 mb-5" aria-label="Go to AI Tools">
-                                            <span>Go to AI Tools</span>
-                                        </button>
-                                    </NavLink>
+                                    <>
+                                        <NavLink to="/ai-tools-for-teachers">
+                                            <button className="unique-button mt-5 mb-5" aria-label="Go to AI Tools">
+                                                <span>Go to AI Tools</span>
+                                            </button>
+                                        </NavLink>
+                                    </>
                                 ) : (
-                                    <NavLink to={`${API_BASE_URL}/register/chimpvine-membership/`}>
-                                        <button className="unique-button mt-5 mb-5" aria-label="Start Planning">
-                                            <span>Sign Up Now</span>
-                                        </button>
-                                    </NavLink>
+                                    <>
+                                        <NavLink to={`${API_BASE_URL}/register/chimpvine-membership/`}>
+                                            <button className="unique-button mt-5 mb-5" aria-label="Start Planning">
+                                                <span>Sign Up Now</span>
+                                            </button>
+                                        </NavLink>
+                                    </>
                                 )}
                             </div>
                         </div>

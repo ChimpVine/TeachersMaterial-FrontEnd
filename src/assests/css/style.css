@@ -88,7 +88,7 @@ a:hover {
     color: #FFFFFF;
     text-align: center;
     font-size: 21px;
-    padding: 20px;
+    padding: 12px;
     width: 200px;
     transition: all 0.5s;
     cursor: pointer;
@@ -118,6 +118,30 @@ a:hover {
 .unique-button:hover span:after {
     opacity: 1;
     right: 0;
+}
+
+.learn-more-outline-btn {
+    border-radius: 50px;
+    background-color: transparent;
+    border: 2px solid #000000; /* Dark border */
+    color: #000000;
+    font-size: 21px;
+    padding: 10px;
+    width: 200px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    margin: 5px;
+}
+
+/* Optional: subtle hover effect */
+.learn-more-outline-btn:hover {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+/* Remove any span-specific animation */
+.learn-more-outline-btn span {
+    display: inline-block;
 }
 
 .upload-button {
@@ -158,6 +182,8 @@ a:hover {
     opacity: 1;
     right: 0;
 }
+
+
 
 .footer .content,
 .social-content {
@@ -400,3 +426,123 @@ math-field::part(menu-toggle) {
 .cv_trademark:hover {
     color: #FF683B !important;
 }
+
+/* SEO Page CSS */
+.step-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    flex-direction: row;
+}
+
+.step-box {
+    max-width: 270px;
+    text-align: center;
+    padding: 1rem;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.step-icon {
+    border-radius: 1rem;
+    padding: 1rem;
+    display: inline-block;
+}
+
+.step-connector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    margin-top: -20px;
+}
+
+@media (max-width: 768px) {
+    .step-wrapper {
+        flex-direction: column;
+    }
+
+    .step-connector {
+        display: none;
+    }
+
+    .paraStyle {
+        text-align: justify;
+    }
+}
+
+.timeline-step {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+}
+
+.circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-weight: bold;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    flex-shrink: 0;
+    font-size: 1.1rem;
+}
+
+.green {
+    background-color: #73A350;
+}
+
+.red {
+    background-color: #dc3545;
+}
+
+.orange {
+    background-color: #ffa33b;
+}
+
+.purple {
+    background-color: #8d4ef8;
+}
+
+.blue {
+    background-color: #8FB3F2;
+}
+
+.styled-hr {
+    border: 0;
+    height: 1px;
+    margin: 20px 0;
+}
+
+/*AI Directory CSS Styles*/
+
+.btn-tab {
+    border: none !important;
+}
+
+.btn-tab:hover,
+.btn-tab.active {
+    border-bottom: 3px solid #FF683B !important;
+    /* Add a bottom border when hovered or active */
+}
+
+.table-info {
+    --bs-table-color: #fff; /* white text color */
+    --bs-table-bg: #8F47D7; /* purple background */
+    --bs-table-border-color: #8F47D7; /* purple border */
+    --bs-table-striped-bg: #9b6fd4; /* a lighter shade of purple for striped rows */
+    --bs-table-striped-color: #fff; /* white text for striped rows */
+    --bs-table-active-bg: #9b6fd4; /* a lighter purple for active row */
+    --bs-table-active-color: #fff; /* white text for active row */
+    --bs-table-hover-bg: #7e4db9; /* a slightly darker purple for hover */
+    --bs-table-hover-color: #fff; /* white text on hover */
+    color: var(--bs-table-color);
+    background-color: var(--bs-table-bg);
+    border-color: var(--bs-table-border-color);
+}
+

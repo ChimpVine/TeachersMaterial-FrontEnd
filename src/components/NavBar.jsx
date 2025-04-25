@@ -113,15 +113,6 @@ export default function NavBar() {
                                     </li>
                                 </ul>
                             </li>
-                            <li className="nav-item mt-2 p-2">
-                                <NavLink
-                                    className={({ isActive }) =>
-                                        isActive ? "nav-link-navigate me-5 text-light active-link" : "nav-link-navigate me-5 text-light"
-                                    }
-                                    to={`${API_BASE_URL}/contact-us/`} target='_blank'>
-                                    Contact Us
-                                </NavLink>
-                            </li>
                             {user ? (
                                 <li className="nav-item text-white mt-1 p-2">
                                     Welcome, {userName}
