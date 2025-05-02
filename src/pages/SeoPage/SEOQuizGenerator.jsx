@@ -131,11 +131,11 @@ export default function SEOQuizGenerator() {
                 <title>About Quiz Generator - AI Tools for Teachers</title>
                 <meta
                     name="description"
-                    content="Ignite curious minds with our AI Mystery Case Generator. Explore a new way of studying through mystery cases. Have mysteries unlock the wonders, try it now!"
+                    content="Create quizzes instantly with our AI-powered Quiz Generator. Perfect for teachers and educators looking to save time and enhance student engagement."
                 />
-                <meta name="keywords" content="mystery case generator, mystery case generator based on plot, mystery case generator free, mystery case generator fantasy, mystery generator wheel, mystery plot ideas
-                mystery story ideas with a twist
-                " />
+                <meta name="keywords" content="
+                ai quiz generator,ai quiz generator free,ai quiz generator from pdf,ai quiz generator from pdf free,ai quiz generator online,ai quiz generator for students,ai quiz generator multiple choice,ai quiz generator from text,best ai quiz generator,free quiz generator for teachers,fun quiz generator for teachers,quiz generator for teachers,quiz generator for teachers pdf,quiz generator for teachers online,quiz generator from pdf,quiz generator free,best online quiz maker for teachers,teachers tools,teacher ai tools,teachers tools online,ai teacher tools
+                    " />
             </Helmet>
             <NavBar />
             <div className="container mt-5 text-center">
