@@ -4,7 +4,7 @@ Disallow: /quiz-generator
 Disallow: /lesson-planner
 Disallow: /workbook-planner
 Disallow: /worksheet-planner
-Disallow: /vocabulary-builder
+Disallow: /vocabulary-planner
 Disallow: /tongue-twister
 Disallow: /word-puzzle
 Disallow: /social-story
@@ -23,4 +23,3 @@ Disallow: /pdf-splitter
 Disallow: /comingsoon
 
 Sitemap: https://ai.chimpvine.com/sitemap.xml
-
