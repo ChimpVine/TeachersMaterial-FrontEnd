@@ -1,12 +1,25 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Helmet } from 'react-helmet-async'
 import NavBar from '../../components/NavBar'
 import { NavLink } from 'react-router-dom';
-import { FaWpforms, FaLightbulb, FaChartLine, FaHandHoldingUsd, FaUsers, FaBrain, FaShareAlt, FaRegClock, FaRocket, FaAdjust,FaUser } from "react-icons/fa";
+import { FaWpforms, FaLightbulb, FaChartLine, FaHandHoldingUsd, FaUsers, FaBrain, FaShareAlt, FaRegClock, FaRocket, FaAdjust, FaUser } from "react-icons/fa";
 import logo from '../../assests/img/body-hero-section.png'
 import Footer from '../Footer';
+import { UserContext } from '../../context/UserContext';
+import { toast } from 'react-toastify';
+import WorkSheet from '../../assests/img/work-sheet.png'
 
 export default function SEOWorksheet() {
+
+    const { user } = useContext(UserContext);
+
+    const handleAIToolsClick = () => {
+        if (!user) {
+            toast.warning("Login to access AI Tools");
+        }
+    };
+
+
     const btnStyle = {
         backgroundColor: '#FF683B',
         color: 'white',
@@ -109,7 +122,7 @@ export default function SEOWorksheet() {
         },
         {
             title: 'Increased Focus on Students',
-            desc: 'By handling the bulk of worksheet planning and content generation, our tool frees up educators to concentrate on student performance, engagement, and well-being—making the learning experience more holistic and effective.',
+            desc: ' By handling the bulk of worksheet planning and content generation, our tool frees up educators to concentrate on student performance, engagement, and well-being—making the learning experience more holistic and effective.Empower your teaching and parenting with smart worksheet planning—join the wave of innovative educators using AI to streamline tasks and elevate student success.',
             icon: <FaUser size={50} style={{ color: '#28A745' }} />,
         }
     ];
@@ -129,25 +142,36 @@ export default function SEOWorksheet() {
             </Helmet>
             <NavBar />
             <div className="container mt-5 text-center">
-                <h3 className="mb-3 fw-bold">AI Worksheet Planner</h3>
+                <h3 className="mb-3 fw-bold">Worksheet Planner</h3>
                 <div className="col-md-8 mx-auto">
                     <p className="mt-3 text-muted paraStyle">
-                        The AI-Powered Worksheet Planner is your all-in-one solution for generating high-quality, topic-based worksheets with just a few clicks! Whether you’re preparing assessments in Science, Math, English, or any subject, this tool lets you choose question types, adjust formats, and instantly receive ready-to-use content — editable and tailored to your students’ needs. Designed for teachers, curriculum creators, and homeschooling parents looking for speed, flexibility, and quality in worksheet creation.
+                        The <span className='fw-bold'>AI-Powered Worksheet Planner</span> is your all-in-one solution for generating high-quality, topic-based worksheets with just a few clicks! Whether you’re preparing assessments in Science, Math, English, or any subject, this tool lets you choose question types, adjust formats, and instantly receive ready-to-use content — editable and tailored to your students’ needs. Designed for teachers, curriculum creators, and homeschooling parents looking for speed, flexibility, and quality in worksheet creation.
                     </p>
                 </div>
                 <div className="col-md-10 col-lg-8 mx-auto mt-4">
-                    <div className="ratio ratio-16x9">
-                        <iframe
-                            src="https://www.youtube.com/embed/_Npp65RP7Vw"
-                            title="AI Quiz Generator Demo"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                        ></iframe>
-                    </div>
+                    <img
+                        src={WorkSheet}
+                        alt="worksheet-generator"
+                        className="image-style img-fluid"
+                    />
                 </div>
-                <NavLink to="/quiz-generator">
-                    <button className='btn mt-4' style={btnStyle}>Generate Now</button>
-                </NavLink>
+                {user ? (
+                    <NavLink
+                        className="btn btn-md mt-3 me-2"
+                        style={btnStyle}
+                        to="/worksheet-planner"
+                    >
+                        Generate Now
+                    </NavLink>
+                ) : (
+                    <button
+                        className="btn btn-md mt-3 me-2"
+                        style={btnStyle}
+                        onClick={handleAIToolsClick}
+                    >
+                        Generate Now
+                    </button>
+                )}
             </div>
             <hr className="styled-hr" />
             <div className="container mt-5 text-center">
@@ -219,12 +243,12 @@ export default function SEOWorksheet() {
 
                     {/* Right Side Timeline */}
                     <div className="col-md-6 mt-4 mt-md-0">
-                        <h4 className="fw-bold text-danger mb-4">Why our AI Worksheet Planner?</h4>
+                        <h4 className="fw-bold text-danger mb-4">Why our Worksheet Planner?</h4>
                         <div className="timeline-step mb-4">
                             <div className="circle red">1</div>
                             <div className="timeline-content">
                                 <h5 className="fw-bold mb-1">Fully Editable Content</h5>
-                                <p className="text-muted">All questions generated are 100% editable. Modify text, rephrase questions, or tailor answer options directly to suit your classroom’s learning goals.</p>
+                                <p className="text-muted">All questions generated are 100% <span className='fw-bold'>editable.</span> Modify text, rephrase questions, or tailor answer options directly to suit your classroom’s learning goals.</p>
                             </div>
                         </div>
 
@@ -247,10 +271,10 @@ export default function SEOWorksheet() {
                 </div>
             </div>
             <div className="container mt-5 text-center">
-                <h3 className="mb-3 fw-bold">Why Should Teachers and Parents use our AI Quiz Generator?</h3>
+                <h3 className="mb-3 fw-bold">Why Should Teachers and Parents use our Worksheet Planner?</h3>
                 <div className="col-md-8 mx-auto mb-4">
                     <p className="mt-3 text-muted paraStyle">
-                        In today’s fast-paced educational landscape, personalized learning is no longer a luxury but a necessity. Studies show that personalized learning plans can improve student performance by up to 30% (EdTech Trends Report 2023). Our AI Quiz Generator is designed to support this transformation with its data-driven, adaptive assessment tools that cater to every learner’s unique needs.
+                        In an age where personalized education is key to effective learning, static worksheets no longer meet the needs of diverse classrooms. Research shows that individualized practice plans can significantly boost student comprehension and retention. Our AI Worksheet Planner is built to align with this vision—providing tailored, flexible learning materials that adapt to each student's pace and progress.
                     </p>
                 </div>
                 <hr className="styled-hr" />
@@ -258,8 +282,8 @@ export default function SEOWorksheet() {
                     {features.map((feature, idx) => (
                         <div key={idx} className="col-md-4 mb-4">
                             <div
-                                className="card text-center p-4 feature-card"
-                                style={{ backgroundColor: feature.bgColor }}
+                                className="card text-center p-4 feature-card W-100"
+                                style={{ backgroundColor: feature.bgColor, height: "100%" }}
                             >
                                 <div className="card-body">
                                     <div className="icon-circle mb-3">
@@ -275,7 +299,7 @@ export default function SEOWorksheet() {
             </div>
             <hr className="styled-hr" />
             <div className="container">
-                <h3 className="fw-bold mb-5 text-center">How Does the AI Worksheet Planner Compare?</h3>
+                <h3 className="fw-bold mb-5 text-center">How Does the Worksheet Planner Compare?</h3>
                 <div className="row justify-content-center">
                     <div className="col-md-4">
                         <div className="timeline-step d-flex align-items-center mb-5">
@@ -324,8 +348,8 @@ export default function SEOWorksheet() {
                     {AIfeatures.map((feature, idx) => (
                         <div key={idx} className="col-md-4 mb-4">
                             <div
-                                className="card text-center p-4 feature-card"
-                                style={{ backgroundColor: feature.bgColor }}
+                                className="card text-center p-4 feature-card w-100"
+                                style={{ backgroundColor: feature.bgColor, height: "100%" }}
                             >
                                 <div className="card-body">
                                     <div className="icon-circle mb-3">
@@ -341,7 +365,7 @@ export default function SEOWorksheet() {
             </div>
             <hr className="styled-hr" />
             <div className="col-md-10 mx-auto">
-                <p className="text-muted paraStyle">
+                <p className="text-muted paraStyle p-2">
                     Whether you're teaching “Plants and Their Needs” to 1st graders or preparing grammar <span className='fw-bold'>worksheets</span> for middle schoolers, this tool lets you build and edit your assessments with ease, clarity, and professionalism.
                 </p>
             </div>

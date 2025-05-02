@@ -49,7 +49,7 @@ const QuizUI = ({ BASE_URL }) => {
 
     const breadcrumbItems = [
         { label: 'Main Panel', href: '/ai-tools-for-teachers', active: false },
-        { label: 'Assessment', active: true },
+        { label: 'Assessment', href: '/ai-tools-for-teachers?tab=Assessment', active: false },
         { label: 'Quiz Generator', active: true }
     ];
 

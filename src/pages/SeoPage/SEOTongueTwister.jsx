@@ -1,12 +1,25 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Helmet } from 'react-helmet-async'
 import NavBar from '../../components/NavBar'
 import { NavLink } from 'react-router-dom';
 import { FaWpforms, FaLightbulb, FaChartLine, FaHandHoldingUsd, FaUsers, FaBrain, FaShareAlt, FaRegClock, FaRocket, FaAdjust, FaUser } from "react-icons/fa";
 import logo from '../../assests/img/body-hero-section.png'
 import Footer from '../Footer';
+import { UserContext } from '../../context/UserContext';
+import { toast } from 'react-toastify';
+import TongueTwister from '../../assests/img/tongue-twister.png'
 
 export default function SEOTongueTwister() {
+
+    const { user } = useContext(UserContext);
+
+    const handleAIToolsClick = () => {
+        if (!user) {
+            toast.warning("Login to access AI Tools");
+        }
+    };
+
+
     const btnStyle = {
         backgroundColor: '#FF683B',
         color: 'white',
@@ -128,25 +141,36 @@ export default function SEOTongueTwister() {
             </Helmet>
             <NavBar />
             <div className="container mt-5 text-center">
-                <h3 className="mb-3 fw-bold">AI Tongue Twister Generator</h3>
+                <h3 className="mb-3 fw-bold">Tongue Twister Generator</h3>
                 <div className="col-md-8 mx-auto">
                     <p className="mt-3 text-muted paraStyle">
-                        The <span className='fw-bold'>AI Tongue Twister Generator</span> adds a burst of fun to any lesson! Instantly create engaging, educational tongue twisters based on your chosen topic. This tool blends phonetic repetition with subject-specific vocabulary, making learning playful and memorable — perfect for classroom icebreakers, language drills, or gamified learning.
+                        The <span className='fw-bold'>AI Tongue Twister Generator</span> adds a burst of fun to any lesson! Instantly create engaging, educational tongue twisters based on your chosen topic. This tool blends phonetic repetition with subject-specific vocabulary, making learning playful and memorable — perfect for classroom icebreakers, language drills, or gamified learning. Ideal for teachers, speech therapists, ESL instructors, and anyone looking to spark creativity and laughter in the classroom!
                     </p>
                 </div>
                 <div className="col-md-10 col-lg-8 mx-auto mt-4">
-                    <div className="ratio ratio-16x9">
-                        <iframe
-                            src="https://www.youtube.com/embed/_Npp65RP7Vw"
-                            title="AI Quiz Generator Demo"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                        ></iframe>
-                    </div>
+                    <img
+                        src={TongueTwister}
+                        alt="tonguetwister-generator"
+                        className="image-style img-fluid"
+                    />
                 </div>
-                <NavLink to="/quiz-generator">
-                    <button className='btn mt-4' style={btnStyle}>Generate Now</button>
-                </NavLink>
+                {user ? (
+                    <NavLink
+                        className="btn btn-md mt-3 me-2"
+                        style={btnStyle}
+                        to="/tongue-twister"
+                    >
+                        Generate Now
+                    </NavLink>
+                ) : (
+                    <button
+                        className="btn btn-md mt-3 me-2"
+                        style={btnStyle}
+                        onClick={handleAIToolsClick}
+                    >
+                        Generate Now
+                    </button>
+                )}
             </div>
             <hr className="styled-hr" />
             <div className="container mt-5 text-center">
@@ -254,11 +278,10 @@ export default function SEOTongueTwister() {
                 </div>
             </div>
             <div className="container mt-5 text-center">
-                <h3 className="mb-3 fw-bold">Why Should Teachers and Parents use our AI Lesson Planner?</h3>
+                <h3 className="mb-3 fw-bold">Why Should Teachers and Parents Use Our Tongue Twister Generator?</h3>
                 <div className="col-md-8 mx-auto mb-4">
                     <p className="mt-3 text-muted paraStyle">
                         Bringing fun into learning is one of the most effective ways to boost engagement and retention—and our AI Tongue Twister Generator does exactly that. Whether you're a teacher aiming to energize your classroom, a parent looking for interactive language activities, or a speech therapist working on articulation, this tool turns any lesson into a delightful, educational challenge.By transforming complex concepts into playful wordplay, students practice pronunciation, strengthen vocabulary, and develop fluency—all while having fun. The AI Tongue Twister Generator offers a creative, gamified way to reinforce classroom topics and support language development across all age groups.
-
                     </p>
                 </div>
                 <hr className="styled-hr" />
@@ -266,8 +289,8 @@ export default function SEOTongueTwister() {
                     {features.map((feature, idx) => (
                         <div key={idx} className="col-md-4 mb-4">
                             <div
-                                className="card text-center p-4 feature-card"
-                                style={{ backgroundColor: feature.bgColor }}
+                                className="card text-center p-4 feature-card w-100"
+                                style={{ backgroundColor: feature.bgColor, height: "100%" }}
                             >
                                 <div className="card-body">
                                     <div className="icon-circle mb-3">
@@ -283,7 +306,7 @@ export default function SEOTongueTwister() {
             </div>
             <hr className="styled-hr" />
             <div className="container">
-                <h3 className="fw-bold mb-5 text-center">How Does the AI Worksheet Planner Compare?</h3>
+                <h3 className="fw-bold mb-5 text-center">How Does the Tongue Twister Generator Compare?</h3>
                 <div className="row justify-content-center">
                     <div className="col-md-4">
                         <div className="timeline-step d-flex align-items-center mb-5">
@@ -291,7 +314,7 @@ export default function SEOTongueTwister() {
                                 <FaBrain size={25} />
                             </div>
                             <div className="timeline-content">
-                                <h4 className="fw-bold mb-1">AI Worksheet Planner</h4>
+                                <h4 className="fw-bold mb-1">AI Tongue Twister Generator</h4>
                             </div>
                         </div>
                         {timelineFeatures.map((feature, idx) => (
@@ -327,13 +350,13 @@ export default function SEOTongueTwister() {
             </div>
             <hr className="styled-hr" />
             <div className="container mt-5 text-center">
-                <h3 className="mb-3 fw-bold">Why Choose the Worksheet Planner?</h3>
+                <h3 className="mb-3 fw-bold">Why Choose the Tongue Twister Generator?</h3>
                 <div className="row justify-content-center">
                     {AIfeatures.map((feature, idx) => (
                         <div key={idx} className="col-md-4 mb-4">
                             <div
-                                className="card text-center p-4 feature-card"
-                                style={{ backgroundColor: feature.bgColor }}
+                                className="card text-center p-4 feature-card w-100"
+                                style={{ backgroundColor: feature.bgColor, height: "100%" }}
                             >
                                 <div className="card-body">
                                     <div className="icon-circle mb-3">

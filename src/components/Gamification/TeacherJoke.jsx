@@ -20,7 +20,7 @@ export default function JokesGenerator({ BASE_URL }) {
 
     const breadcrumbItems = [
         { label: 'Main Panel', href: '/ai-tools-for-teachers', active: false },
-        { label: 'Gamification', active: true },
+        { label: 'Gamification', href: '/ai-tools-for-teachers?tab=Gamification', active: false },
         { label: 'Teacher Joke', active: true }
     ];
 

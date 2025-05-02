@@ -26,7 +26,7 @@ export default function YTSummarizer({ BASE_URL }) {
 
     const breadcrumbItems = [
         { label: 'Main Panel', href: '/ai-tools-for-teachers', active: false },
-        { label: 'Summarizer', active: true },
+        { label: 'Summarizer', href: '/ai-tools-for-teachers?tab=Summarizer', active: false },
         { label: 'YouTube Summarizer', active: true }
     ];
 

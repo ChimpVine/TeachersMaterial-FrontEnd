@@ -123,7 +123,8 @@ a:hover {
 .learn-more-outline-btn {
     border-radius: 50px;
     background-color: transparent;
-    border: 2px solid #000000; /* Dark border */
+    border: 2px solid #000000;
+    /* Dark border */
     color: #000000;
     font-size: 21px;
     padding: 10px;
@@ -532,17 +533,31 @@ math-field::part(menu-toggle) {
 }
 
 .table-info {
-    --bs-table-color: #fff; /* white text color */
-    --bs-table-bg: #8F47D7; /* purple background */
-    --bs-table-border-color: #8F47D7; /* purple border */
-    --bs-table-striped-bg: #9b6fd4; /* a lighter shade of purple for striped rows */
-    --bs-table-striped-color: #fff; /* white text for striped rows */
-    --bs-table-active-bg: #9b6fd4; /* a lighter purple for active row */
-    --bs-table-active-color: #fff; /* white text for active row */
-    --bs-table-hover-bg: #7e4db9; /* a slightly darker purple for hover */
-    --bs-table-hover-color: #fff; /* white text on hover */
+    --bs-table-color: #fff;
+    /* white text color */
+    --bs-table-bg: #8F47D7;
+    /* purple background */
+    --bs-table-border-color: #8F47D7;
+    /* purple border */
+    --bs-table-striped-bg: #9b6fd4;
+    /* a lighter shade of purple for striped rows */
+    --bs-table-striped-color: #fff;
+    /* white text for striped rows */
+    --bs-table-active-bg: #9b6fd4;
+    /* a lighter purple for active row */
+    --bs-table-active-color: #fff;
+    /* white text for active row */
+    --bs-table-hover-bg: #7e4db9;
+    /* a slightly darker purple for hover */
+    --bs-table-hover-color: #fff;
+    /* white text on hover */
     color: var(--bs-table-color);
     background-color: var(--bs-table-bg);
     border-color: var(--bs-table-border-color);
 }
 
+.image-style {
+    border: 1px solid #000;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

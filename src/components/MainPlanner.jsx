@@ -1,31 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useMemo, useState, useEffect } from 'react';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { PopupWidget } from "react-calendly";
+import ReactGA from 'react-ga4';
+import NavBar from './NavBar';
 import {
-    FaQuestionCircle,
-    FaBookReader,
-    FaReadme,
-    FaReceipt,
-    FaBook,
-    FaGrinTongueSquint,
-    FaPuzzlePiece,
-    FaTasks,
-    FaBookOpen,
-    FaYoutubeSquare,
-    FaUsers,
-    FaTenge,
-    FaFilePdf,
-    FaThLarge,
-    FaQuestion,
-    FaRegSmileBeam,
-    FaFilePowerpoint,
+    FaQuestionCircle, FaBookReader, FaReadme, FaReceipt, FaBook, FaGrinTongueSquint, FaPuzzlePiece,
+    FaTasks, FaBookOpen, FaYoutubeSquare, FaUsers, FaTenge, FaFilePdf, FaThLarge, FaQuestion,
+    FaRegSmileBeam, FaFilePowerpoint
 } from "react-icons/fa";
 import { FaRegFaceLaughSquint } from "react-icons/fa6";
 import { TbMathSymbols, TbZoomQuestion } from "react-icons/tb";
 import { GiPuzzle } from "react-icons/gi";
 import { PiCirclesFourFill, PiMathOperationsFill } from "react-icons/pi";
-import NavBar from './NavBar';
-import ReactGA from 'react-ga4';
+import { IoMdSearch } from "react-icons/io";
 
 const cards = [
     {
@@ -66,7 +53,7 @@ const cards = [
         icon: <FaBook size={50} style={{ color: "#6c757d" }} />,
         title: 'Vocabulary Builder',
         description: 'Easily craft personalized and dynamic vocabulary lists with our intuitive Vocabulary Builder.',
-        link: '/vocabulary-planner',
+        link: '/vocabulary-builder',
         btnColor: 'secondary'
     },
     {
@@ -275,7 +262,7 @@ const cards = [
         ),
         title: 'Rubric Generator',
         description: 'Easily design personalized and detailed rubrics with our intuitive Rubric Generator.',
-        link: '/comingsoon',
+        link: '/rubric-generator',
         btnColor: 'danger'
     },
     {
@@ -351,30 +338,43 @@ const cards = [
 ];
 
 const MainPlanner = () => {
-    const [activeTab, setActiveTab] = useState('All');
+    const location = useLocation();
+    const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
 
-    useEffect(() => {
-        ReactGA.send({ hitType: "pageview", page: window.location.pathname });
-    }, []);
-
-    const trackButtonClick = (label) => {
-        ReactGA.event({
-            category: 'Button Click',
-            action: 'Click on Planner',
-            label: label
-        });
-    };
+    const activeTab = useMemo(() => {
+        const params = new URLSearchParams(location.search);
+        return params.get('tab') || 'All';
+    }, [location.search]);
 
     const handleTabClick = (tabName) => {
-        setActiveTab(tabName);
+        const params = new URLSearchParams(location.search);
+        params.set('tab', tabName);
+        navigate({ search: params.toString() });
     };
 
     const filteredCards = cards.filter(card => {
         const matchesCategory = activeTab === 'All' || card.category === activeTab;
-        const matchesSearch = card.title.toLowerCase().includes(searchQuery.toLowerCase()); // Only search by title
+        const matchesSearch = card.title.toLowerCase().includes(searchQuery.toLowerCase());
         return matchesCategory && matchesSearch;
     });
+
+    useEffect(() => {
+        ReactGA.send({ hitType: "pageview", page: window.location.pathname + window.location.search });
+    }, [location]);
+
+    const trackButtonClick = (toolName) => {
+        ReactGA.event({
+            category: "Tool",
+            action: `Opened ${toolName}`,
+            label: toolName
+        });
+    };
+
+    const msgStyle = {
+        minHeight: '50vh',
+        width: '100%',
+    };
 
     return (
         <div>
@@ -387,40 +387,47 @@ const MainPlanner = () => {
             />
             <NavBar />
             <div className="container py-5">
-                <div className="container">
-                    <div className="d-flex flex-column flex-md-row justify-content-between align-items-center">
-                        {/* Tabs Section */}
-                        <ul className="nav nav-pills nav-fill d-flex flex-wrap justify-content-center justify-content-md-start">
-                            {['All', 'Assessment', 'Summarizer', 'Gamification', 'Planner', 'Learning', 'Specialneeds'].map(tab => (
-                                <li className="nav-item m-1" key={tab}>
-                                    <button
-                                        className={`nav-link ${activeTab === tab ? 'active' : ''}`}
-                                        onClick={() => handleTabClick(tab)}
-                                    >
-                                        {tab === 'Specialneeds' ? 'Special Needs' : tab}
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
+                <div className="d-flex flex-column flex-md-row justify-content-between align-items-center">
+                    <ul className="nav nav-pills nav-fill d-flex flex-wrap justify-content-center justify-content-md-start">
+                        {['All', 'Assessment', 'Summarizer', 'Gamification', 'Planner', 'Learning', 'Specialneeds'].map(tab => (
+                            <li className="nav-item m-1" key={tab}>
+                                <button
+                                    className={`nav-link ${activeTab === tab ? 'active' : ''}`}
+                                    onClick={() => handleTabClick(tab)}
+                                    aria-current={activeTab === tab ? 'page' : undefined}
+                                    role="tab"
+                                >
+                                    {tab === 'Specialneeds' ? 'Special Needs' : tab}
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
 
-                        {/* Search Section */}
-                        <form className="mt-2 mt-md-0 w-md-auto d-flex" onSubmit={(e) => e.preventDefault()}>
-                            <input
-                                className="form-control me-2"
-                                type="text"
-                                placeholder="Search"
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                            />
-                        </form>
-                    </div>
+                    <form className="mt-2 mt-md-0 w-md-auto d-flex" onSubmit={(e) => e.preventDefault()}>
+                        <input
+                            className="form-control me-2"
+                            type="text"
+                            placeholder="Search"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            aria-label="Search AI tools"
+                        />
+                    </form>
                 </div>
+
                 <hr />
+
                 <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 py-5">
                     {filteredCards.length === 0 ? (
-                        <h4 className='text-center'>
-                            No results found
-                        </h4>
+                        <div className="d-flex justify-content-center align-items-center" style={msgStyle}>
+                            <div className="text-center">
+                                <IoMdSearch  className='mb-3' size={50}/>
+                                <h4>No AI Tools found</h4>
+                                <p className="text-muted fs-5">
+                                    Try a different tab or update your search term.
+                                </p>
+                            </div>
+                        </div>
                     ) : (
                         filteredCards.map((card) => (
                             <div className="col" key={card.id}>
@@ -431,7 +438,12 @@ const MainPlanner = () => {
                                             <h5 className="fw-bold mt-3 mb-3">{card.title}</h5>
                                             <p className='mb-2'>{card.description}</p>
                                             <hr />
-                                            <NavLink className={`btn btn-outline-${card.btnColor}`} to={card.link} onClick={() => trackButtonClick(card.title)}>
+                                            <NavLink
+                                                className={`btn btn-outline-${card.btnColor}`}
+                                                to={card.link}
+                                                title={`Go to ${card.title}`}
+                                                onClick={() => trackButtonClick(card.title)}
+                                            >
                                                 Go to {card.title}
                                             </NavLink>
                                         </div>
@@ -447,3 +459,4 @@ const MainPlanner = () => {
 };
 
 export default MainPlanner;
+

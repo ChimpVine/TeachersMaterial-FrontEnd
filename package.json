@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node generate-sitemap.cjs",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -34,6 +34,7 @@
     "react-speech-kit": "^3.0.1",
     "react-spinners": "^0.14.1",
     "react-toastify": "^10.0.6",
+    "sitemap": "^8.0.0",
     "smartlook-client": "^10.0.0",
     "uuidv4": "^6.2.13",
     "yup": "^1.5.0"

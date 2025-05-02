@@ -590,6 +590,18 @@
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-1.0.5.tgz#a6ce3e556e00fd9895dd872dd172ad0d4bd687f4"
   integrity sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==
 
+"@types/node@*":
+  version "22.15.3"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-22.15.3.tgz#b7fb9396a8ec5b5dfb1345d8ac2502060e9af68b"
+  integrity sha512-lX7HFZeHf4QG/J7tBZqrCAXwz9J5RD56Y6MpP0eJkka8p+K0RY/yBTW7CYFJ4VGCclxqOLKmiGP5juQc6MKgcw==
+  dependencies:
+    undici-types "~6.21.0"
+
+"@types/node@^17.0.5":
+  version "17.0.45"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.45.tgz#2c0fafd78705e7a18b7906b5201a522719dc5190"
+  integrity sha512-w+tIMs3rq2afQdsPJlODhoUEKzFP1ayaoyl1CcnwtIlsVe7K7bA1NGm4s3PraqTLlXnbIN84zuBlxBWo1u9BLw==
+
 "@types/node@^18.7.3":
   version "18.19.55"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-18.19.55.tgz#29c3f8e1485a92ec96636957ddec55aabc6e856e"
@@ -628,6 +640,13 @@
   dependencies:
     "@types/prop-types" "*"
     csstype "^3.0.2"
+
+"@types/sax@^1.2.1":
+  version "1.2.7"
+  resolved "https://registry.yarnpkg.com/@types/sax/-/sax-1.2.7.tgz#ba5fe7df9aa9c89b6dff7688a19023dd2963091d"
+  integrity sha512-rO73L89PJxeYM3s3pPPjiPgVVcymqU490g0YO5n5By0k2Erzj6tay/4lr1CHAAU4JyOWd1rpQ8bCf6cZfHU96A==
+  dependencies:
+    "@types/node" "*"
 
 "@types/uuid@8.3.4":
   version "8.3.4"
@@ -693,6 +712,11 @@ ansi-styles@^4.1.0:
   integrity sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg==
   dependencies:
     color-convert "^2.0.1"
+
+arg@^5.0.0:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/arg/-/arg-5.0.2.tgz#c81433cc427c92c4dcf4865142dbca6f15acd59c"
+  integrity sha512-PYjyFOLKQ9y57JvQ6QLo8dAgNqswh8M1RMJYdQduT6xbWSgK36P/Z/v+p888pM69jMMfS8Xd8F6I1kQ/I9HUGg==
 
 argparse@^2.0.1:
   version "2.0.1"
@@ -2743,6 +2767,11 @@ safe-regex-test@^1.0.3:
     es-errors "^1.3.0"
     is-regex "^1.1.4"
 
+sax@^1.2.4:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/sax/-/sax-1.4.1.tgz#44cc8988377f126304d3b3fc1010c733b929ef0f"
+  integrity sha512-+aWOz7yVScEGoKNd4PA10LZ8sk0A/z5+nXQG5giUO5rprX9jgYsTdov9qCchZiPIZezbZH+jRut8nPodFAX4Jg==
+
 scheduler@^0.23.2:
   version "0.23.2"
   resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.23.2.tgz#414ba64a3b282892e944cf2108ecc078d115cdc3"
@@ -2836,6 +2865,16 @@ simple-get@^4.0.0:
     decompress-response "^6.0.0"
     once "^1.3.1"
     simple-concat "^1.0.0"
+
+sitemap@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/sitemap/-/sitemap-8.0.0.tgz#eb6ea48f95787cd680b83683c555d6f6b5a903fd"
+  integrity sha512-+AbdxhM9kJsHtruUF39bwS/B0Fytw6Fr1o4ZAIAEqA6cke2xcoO2GleBw9Zw7nRzILVEgz7zBM5GiTJjie1G9A==
+  dependencies:
+    "@types/node" "^17.0.5"
+    "@types/sax" "^1.2.1"
+    arg "^5.0.0"
+    sax "^1.2.4"
 
 smartlook-client@^10.0.0:
   version "10.0.0"
@@ -3121,6 +3160,11 @@ undici-types@~5.26.4:
   version "5.26.5"
   resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-5.26.5.tgz#bcd539893d00b56e964fd2657a4866b221a65617"
   integrity sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==
+
+undici-types@~6.21.0:
+  version "6.21.0"
+  resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-6.21.0.tgz#691d00af3909be93a7faa13be61b3a5b50ef12cb"
+  integrity sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==
 
 update-browserslist-db@^1.1.0:
   version "1.1.0"

@@ -97,12 +97,22 @@ const GetStarted = ({ API_BASE_URL }) => {
                                                 <span>Go to AI Tools</span>
                                             </button>
                                         </NavLink>
+                                        <NavLink to="/ai-directory">
+                                            <button className="learn-more-outline-btn" aria-label="Learn More">
+                                                <span>Learn More <MdKeyboardArrowRight /></span>
+                                            </button>
+                                        </NavLink>
                                     </>
                                 ) : (
                                     <>
                                         <NavLink to={`${API_BASE_URL}/register/chimpvine-membership/`}>
                                             <button className="unique-button mt-5 mb-5" aria-label="Start Planning">
                                                 <span>Sign Up Now</span>
+                                            </button>
+                                        </NavLink>
+                                        <NavLink to="/ai-directory">
+                                            <button className="learn-more-outline-btn" aria-label="Learn More">
+                                                <span>Learn More <MdKeyboardArrowRight /></span>
                                             </button>
                                         </NavLink>
                                     </>

@@ -1,0 +1,26 @@
+User-agent: *
+Disallow: /login
+Disallow: /quiz-generator
+Disallow: /lesson-planner
+Disallow: /workbook-planner
+Disallow: /worksheet-planner
+Disallow: /vocabulary-builder
+Disallow: /tongue-twister
+Disallow: /word-puzzle
+Disallow: /social-story
+Disallow: /sel-generator
+Disallow: /slide-generator
+Disallow: /text-summarizer
+Disallow: /group-work
+Disallow: /make-the-word
+Disallow: /sat-maths
+Disallow: /teacher-joke
+Disallow: /mystery-case
+Disallow: /bingo-generator
+Disallow: /yt-summarizer
+Disallow: /fun-maths
+Disallow: /pdf-splitter
+Disallow: /comingsoon
+
+Sitemap: https://ai.chimpvine.com/sitemap.xml
+

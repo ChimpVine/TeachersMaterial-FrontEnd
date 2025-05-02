@@ -58,7 +58,7 @@ const numbers = [
 
 const breadcrumbItems = [
     { label: 'Main Panel', href: '/ai-tools-for-teachers', active: false },
-    { label: 'Learning', active: true },
+    { label: 'Learning', href: '/ai-tools-for-teachers?tab=Learning', active: false },
     { label: 'Vocabulary', active: true }
 ];
 

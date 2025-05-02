@@ -145,7 +145,7 @@ export default function FunMath({ BASE_URL }) {
                         <>
                             <NavBreadcrumb items={[
                                 { label: 'Main Panel', href: '/ai-tools-for-teachers' },
-                                { label: 'Gamification', active: true },
+                                { label: 'Gamification', href: '/ai-tools-for-teachers?tab=Gamification', active: false },
                                 { label: 'Fun Math', active: true }
                             ]} />
                             <div className="col-md-5 border rounded-3 pt-4 pb-3 px-5 shadow bg-body">

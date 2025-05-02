@@ -1,12 +1,22 @@
-import React from 'react'
+import React, { useContext } from 'react';
 import NavBar from '../../components/NavBar'
 import logo from '../../assests/img/AI-Tools-Template.png'
 import Footer from '../Footer';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import { FaChalkboardTeacher, FaUserGraduate, FaBookOpen } from "react-icons/fa";
+import { UserContext } from '../../context/UserContext';
 import { NavLink } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function Aboutus({ API_BASE_URL }) {
+
+    const { user } = useContext(UserContext);
+
+    const handleAIToolsClick = () => {
+        if (!user) {
+            toast.warning("Login to access AI Tools");
+        }
+    };
 
     const textStyle = {
         color: '#8F47D7'
@@ -88,9 +98,23 @@ export default function Aboutus({ API_BASE_URL }) {
                         <p className="mt-3 text-muted" style={paraStyle}>
                             At ChimpVine AI, we believe that teaching should be inspiring, not overwhelming. We harness the power of AI to create intuitive tools that simplify lesson planning, assessment, and classroom engagement. Our mission is to empower educators and enrich student experiences by providing a seamless, innovative teaching toolkit designed for today's classrooms. Unlock your potential with ChimpVine AI where teaching meets technology.
                         </p>
-                        <NavLink to="/ai-tools-for-teachers">
-                            <button className='btn btn-md mt-3 me-2' style={btnStyle}>Go to AI Tools</button>
-                        </NavLink>
+                        {user ? (
+                            <NavLink
+                                className="btn btn-md mt-3 me-2"
+                                style={btnStyle}
+                                to="/ai-tools-for-teachers"
+                            >
+                                Go to AI Tools
+                            </NavLink>
+                        ) : (
+                            <button
+                                className="btn btn-md mt-3 me-2"
+                                style={btnStyle}
+                                onClick={handleAIToolsClick}
+                            >
+                                Go to AI Tools
+                            </button>
+                        )}
                     </div>
                     <div className="col-md-7 mt-4 d-flex justify-content-center">
                         <img src={logo} alt="AI Tools" className='img-fluid w-75' />

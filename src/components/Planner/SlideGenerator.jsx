@@ -59,7 +59,7 @@ export default function SlideGenerator({ BASE_URL }) {
 
     const breadcrumbItems = [
         { label: 'Main Panel', href: '/ai-tools-for-teachers', active: false },
-        { label: 'Planner', active: true },
+        { label: 'Planner', href: '/ai-tools-for-teachers?tab=Planner', active: false },
         { label: 'Slide Generator', active: true }
     ];
 

@@ -29,10 +29,28 @@ import BingoGenerator from "../components/Gamification/BingoGenerator.jsx"
 import MysteryCase from "../components/Gamification/Mysterycase.jsx"
 import YTSummarizer from '../components/Summarizer/YTSummarizer.jsx';
 import FunMaths from '../components/Gamification/FunMaths.jsx';
-// import AIDirectory from '../pages/SeoPage/AIDirectory.jsx';
-// import SEOLessonPlanner from '../pages/SeoPage/SEOLessonPlanner.jsx';
-// import SEOWorksheet from '../pages/SeoPage/SEOWorksheet.jsx';
-// import SEOTongueTwister from '../pages/SeoPage/SEOTongueTwister.jsx';
+import AIDirectory from '../pages/SeoPage/AIDirectory.jsx';
+import SEOLessonPlanner from '../pages/SeoPage/SEOLessonPlanner.jsx';
+import SEOWorksheet from '../pages/SeoPage/SEOWorksheet.jsx';
+import SEOTongueTwister from '../pages/SeoPage/SEOTongueTwister.jsx';
+import SEOSlideGenerator from '../pages/SeoPage/SEOSlideGenerator.jsx';
+import SEOWordPuzzle from '../pages/SeoPage/SEOWordPuzzle.jsx'
+import SEOTextSummarizer from '../pages/SeoPage/SEOTextSummarizer.jsx';
+import SEOSELGenerator from '../pages/SeoPage/SEOSELGenerator.jsx'
+import ScrollToTop from '../pages/ScrollToTop.jsx';
+import SEOMaketheword from '../pages/SeoPage/SEOMaketheword.jsx';
+import SEOSATMaths from '../pages/SeoPage/SEOSATMaths.jsx';
+import SEOYTSummarizer from '../pages/SeoPage/SEOYTSummarizer.jsx';
+import SEOFunMath from '../pages/SeoPage/SEOFunMath.jsx';
+import SEOBingoGenerator from '../pages/SeoPage/SEOBingoGenerator.jsx';
+import SEOMysteryCase from '../pages/SeoPage/SEOMysteryCase.jsx';
+import SEOTeacherJoke from '../pages/SeoPage/SEOTeacherJoke.jsx';
+import SEOWorkbookPlanner from '../pages/SeoPage/SEOWorkbookPlanner.jsx';
+import SEOVocabulary from '../pages/SeoPage/SEOVocabulary.jsx';
+import SEOGroupWork from '../pages/SeoPage/SEOGroupWork.jsx';
+import SEOSocialStory from '../pages/SeoPage/SEOSocialStory.jsx';
+import SEOQuizGenerator from '../pages/SeoPage/SEOQuizGenerator.jsx';
+
 
 export default function RoutingConfig() {
   const location = useLocation();
@@ -46,7 +64,7 @@ export default function RoutingConfig() {
     '/quiz-generator': 'Quiz Generator - AI Tools for Teachers',
     '/workbook-planner': 'Workbook - AI Tools for Teachers',
     '/worksheet-planner': 'Worksheet - AI Tools for Teachers',
-    '/vocabulary-planner': 'Vocabulary - AI Tools for Teachers',
+    '/vocabulary-builder': 'Vocabulary - AI Tools for Teachers',
     '/tongue-twister': 'Tongue Twister - AI Tools for Teachers',
     '/word-puzzle': 'Word Puzzle - AI Tools for Teachers',
     '/social-story': 'Social Story - AI Tools for Teachers',
@@ -70,8 +88,6 @@ export default function RoutingConfig() {
   const API_BASE_URL = "https://site.chimpvine.com";
 
   const BASE_URL = 'https://teachertools-api.chimpvine.com';
-
-  // const BASE_URL = 'http://192.168.1.64:8080';
   
   ReactGA.initialize('G-TBNNYXX21K');
 
@@ -80,6 +96,7 @@ export default function RoutingConfig() {
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
+      <ScrollToTop/>
       <Routes>
         <Route path="/" element={<GetStarted API_BASE_URL={API_BASE_URL}/>} />
         <Route path="/login" element={<Login API_BASE_URL={API_BASE_URL}/>}  />
@@ -90,7 +107,7 @@ export default function RoutingConfig() {
           <Route path="/quiz-generator" element={<QuizUI BASE_URL={BASE_URL} />} />
           <Route path="/workbook-planner" element={<WorkBook BASE_URL={BASE_URL} />} />
           <Route path="/worksheet-planner" element={<WorkSheet BASE_URL={BASE_URL} />} />
-          <Route path="/vocabulary-planner" element={<Vocabulary BASE_URL={BASE_URL} />} />
+          <Route path="/vocabulary-builder" element={<Vocabulary BASE_URL={BASE_URL} />} />
           <Route path="/tongue-twister" element={<TongueTwister BASE_URL={BASE_URL} />} />
           <Route path="/word-puzzle" element={<WordPuzzle BASE_URL={BASE_URL} />} />
           <Route path="/social-story" element={<SocialStory BASE_URL={BASE_URL} />} />
@@ -107,10 +124,26 @@ export default function RoutingConfig() {
           <Route path="/fun-maths" element={<FunMaths BASE_URL={BASE_URL} />} />
           <Route path="/comingsoon" element={<ComingSoon />} />
         </Route>
-        {/* <Route path="/about-worksheet-planner" element={<SEOWorksheet/>}/>
-        <Route path="/about-Lesson-planner" element={<SEOLessonPlanner/>}/>
+        <Route path="/ai-directory" element={<AIDirectory/>} />
+        <Route path="/about-quiz-generator" element={<SEOQuizGenerator/>}/>
+        <Route path="/about-social-story" element={<SEOSocialStory/>}/>
+        <Route path="/about-group-work" element={<SEOGroupWork/>}/>
+        <Route path="/about-vocabulary-builder" element={<SEOVocabulary/>}/>
+        <Route path="/about-workbook-planner" element={<SEOWorkbookPlanner/>}/>
+        <Route path="/about-lesson-planner" element={<SEOLessonPlanner/>}/>
+        <Route path="/about-teacher-joke" element={<SEOTeacherJoke/>}/>
+        <Route path="/about-mystery-case" element={<SEOMysteryCase/>}/>
+        <Route path="/about-bingo-generator" element={<SEOBingoGenerator/>}/>
+        <Route path="/about-text-summarizer" element={<SEOTextSummarizer/>}/>
+        <Route path="/about-word-puzzle" element={<SEOWordPuzzle/>}/>
+        <Route path="/about-worksheet-planner" element={<SEOWorksheet/>}/>
         <Route path="/about-tongue-twister" element={<SEOTongueTwister/>}/>
-        <Route path="/ai-directory" element={<AIDirectory/>} /> */}
+        <Route path='/about-slide-generator' element={<SEOSlideGenerator/>}/>
+        <Route path='/about-sel-generator' element={<SEOSELGenerator/>}/>
+        <Route path='/about-make-the-word' element={<SEOMaketheword/>}/>
+        <Route path='/about-sat-maths' element={<SEOSATMaths/>}/>
+        <Route path='/about-yt-summarizer' element={<SEOYTSummarizer/>}/>
+        <Route path='/about-fun-math' element={<SEOFunMath/>}/>
         <Route path="/pdf-splitter" element={<PdfSplitter />} />
         <Route path="*" element={<Error404Page />} />
       </Routes>

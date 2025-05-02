@@ -17,7 +17,7 @@ const needs = [
 
 const breadcrumbItems = [
     { label: 'Main Panel', href: '/ai-tools-for-teachers', active: false },
-    { label: 'Special needs', active: true },
+    { label: 'Special needs', href: '/ai-tools-for-teachers?tab=Specialneeds', active: false },
     { label: 'Social Story', active: true }
 ];
 

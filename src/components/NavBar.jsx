@@ -64,6 +64,16 @@ export default function NavBar() {
                                     Home
                                 </NavLink>
                             </li>
+                            <li className="nav-item mt-2 p-2">
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        isActive ? "nav-link-navigate me-5 text-light active-link" : "nav-link-navigate me-5 text-light"
+                                    }
+                                    to="/ai-directory"
+                                >
+                                    AI Directory
+                                </NavLink>
+                            </li>
                             <li className="nav-item mt-1 me-5 p-2">
                                 {user ? (
                                     <NavLink

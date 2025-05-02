@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import NavBar from '../../components/NavBar';
 import logo from '../../assests/img/ChimpVine-UI.png';
 import { NavLink } from 'react-router-dom';
@@ -13,8 +13,19 @@ import { FaRegFaceLaughSquint, FaArrowTrendUp } from "react-icons/fa6";
 import { TbMathSymbols, TbZoomQuestion } from "react-icons/tb";
 import { PiMathOperationsFill } from "react-icons/pi";
 import Footer from '../Footer';
+import { UserContext } from '../../context/UserContext';
+import { toast } from 'react-toastify';
 
 export default function AIDirectory() {
+
+    const { user } = useContext(UserContext);
+
+    const handleAIToolsClick = () => {
+        if (!user) {
+            toast.warning("Login to access AI Tools");
+        }
+    };
+
     const [activeTab, setActiveTab] = useState('Popular AI Teacher Tools');
 
     useEffect(() => {
@@ -41,8 +52,8 @@ export default function AIDirectory() {
                 </div>
             ),
             title: 'Make the Word',
-            description: 'Quickly create fun and interactive challenges with our Make the Word Generator.',
-            link: '/make-the-word',
+            description: 'Quickly create fun and interactive challenges with our Word Generator.',
+            link: '/about-make-the-word',
         },
         {
             id: 2,
@@ -54,7 +65,7 @@ export default function AIDirectory() {
             ),
             title: 'SAT Maths',
             description: 'Master math concepts with clear, engaging lessons to boost your SAT score.',
-            link: '/sat-maths',
+            link: '/about-sat-maths',
         },
         {
             id: 3,
@@ -66,7 +77,7 @@ export default function AIDirectory() {
             ),
             title: 'YouTube Summarizer',
             description: 'Effortlessly create clear and concise video summaries with our YouTube Summarizer.',
-            link: '/yt-summarizer',
+            link: '/about-yt-summarizer',
         },
         {
             id: 4,
@@ -77,8 +88,8 @@ export default function AIDirectory() {
                 </div>
             ),
             title: 'Fun Math',
-            description: 'Create fun, engaging math activities that captivate and simplify complex concepts.',
-            link: '/fun-maths',
+            description: 'Create fun, engaging math activities that captivate learners and simplify complex concepts.',
+            link: '/about-fun-math',
         },
         {
             id: 5,
@@ -90,7 +101,7 @@ export default function AIDirectory() {
             ),
             title: 'Bingo Card',
             description: 'Effortlessly design fun and interactive custom games with our Bingo Card Generator.',
-            link: '/bingo-generator',
+            link: '/about-bingo-generator',
         },
         {
             id: 6,
@@ -102,7 +113,7 @@ export default function AIDirectory() {
             ),
             title: 'Mystery Case',
             description: 'Create intriguing mystery cases that captivate and challenge your investigative skills.',
-            link: '/mystery-case',
+            link: '/about-mystery-case',
         },
         {
             id: 7,
@@ -114,7 +125,7 @@ export default function AIDirectory() {
             ),
             title: 'Teacher Joke',
             description: 'Effortlessly craft clever teacher jokes that spark laughter and make learning fun.',
-            link: '/teacher-joke',
+            link: '/about-teacher-joke',
         }
     ];
 
@@ -128,8 +139,8 @@ export default function AIDirectory() {
                 </div>
             ),
             title: 'Worksheet Planner',
-            description: 'Easily create and customize worksheets for your students with our Worksheet Planner.',
-            link: '/worksheet-planner',
+            description: 'Easily create and customize engaging worksheets for your students with our Worksheet Planner.',
+            link: '/about-worksheet-planner',
         },
         {
             id: 2,
@@ -141,7 +152,7 @@ export default function AIDirectory() {
             ),
             title: 'Tongue Twister',
             description: 'Easily craft personalized and challenging tongue twisters with our intuitive Tongue Twister.',
-            link: '/tongue-twister',
+            link: '/about-tongue-twister',
         },
         {
             id: 3,
@@ -153,7 +164,7 @@ export default function AIDirectory() {
             ),
             title: 'Word Puzzle',
             description: 'Easily create engaging and interactive word puzzles with our intuitive Word Puzzle.',
-            link: '/word-puzzle',
+            link: '/about-word-puzzle',
         },
         {
             id: 4,
@@ -165,7 +176,7 @@ export default function AIDirectory() {
             ),
             title: 'Slide Generator',
             description: 'Create stunning, engaging slides that captivate and deliver your message clearly.',
-            link: '/slide-generator',
+            link: '/about-slide-generator',
         },
         {
             id: 5,
@@ -177,7 +188,7 @@ export default function AIDirectory() {
             ),
             title: 'Text Summarizer',
             description: 'Effortlessly produce clear and concise text summaries with our Text Summarizer.',
-            link: '/text-summarizer',
+            link: '/about-text-summarizer',
         },
         {
             id: 6,
@@ -189,7 +200,7 @@ export default function AIDirectory() {
             ),
             title: 'SEL Generator',
             description: 'Masterfully curate holistic and engaging SEL content for deep, meaningful learning.',
-            link: '/sel-generator',
+            link: '/about-sel-generator',
         }
     ];
 
@@ -258,118 +269,72 @@ export default function AIDirectory() {
                     </div>
                 );
             case 'Explore AI Teacher Tools':
+                const exploreTools = [
+
+
+                    // Assessment Tools
+                    { category: 'Assessment', title: 'Group Work', description: 'Effortlessly collaborate and manage tasks with ease using our Group Work Organizer.', link: '/about-group-work' },
+                    { category: 'Assessment', title: 'Quiz Generator', description: 'Effortlessly create customized and interactive quizzes with our easy-to-use Quiz Generator.', link: '/about-quiz-generator' },
+                    { category: 'Assessment', title: 'SAT Maths', description: 'Master math concepts with clear, engaging lessons to boost your SAT score.', link: '/about-sat-maths' },
+                    { category: 'Assessment', title: 'Workbook Planner', description: 'Design comprehensive workbooks for your students with our Workbook Planner.', link: '/about-workbook-planner' },
+                    { category: 'Assessment', title: 'Worksheet Planner', description: 'Easily create and customize worksheets for your students with our Worksheet Planner.', link: '/about-worksheet-planner' },
+
+                    // Summarizer Tools
+                    { category: 'Summarizer', title: 'Text Summarizer', description: 'Effortlessly produce clear and concise text summaries with our Text Summarizer.', link: '/about-text-summarizer' },
+                    { category: 'Summarizer', title: 'YouTube Summarizer', description: 'Effortlessly create clear and concise video summaries with our YouTube Summarizer.', link: '/about-yt-summarizer' },
+
+                    // Gamification Tools
+                    { category: 'Gamification', title: 'Bingo Card', description: 'Effortlessly design fun and interactive custom games with our Bingo Card Generator.', link: '/about-bingo-generator' },
+                    { category: 'Gamification', title: 'Fun Math', description: 'Create fun, engaging math activities that captivate and simplify complex concepts.', link: '/about-fun-math' },
+                    { category: 'Gamification', title: 'Make the Word', description: 'Quickly create fun and interactive challenges with our Make the Word Generator.', link: '/about-make-the-word' },
+                    { category: 'Gamification', title: 'Mystery Case', description: 'Create intriguing mystery cases that captivate and challenge your investigative skills.', link: '/about-mystery-case' },
+                    { category: 'Gamification', title: 'Teacher Joke', description: 'Effortlessly craft clever teacher jokes that spark laughter and make learning fun.', link: '/about-teacher-joke' },
+                    { category: 'Gamification', title: 'Tongue Twister', description: 'Easily craft personalized and challenging tongue twisters with our intuitive Tongue Twister.', link: '/about-tongue-twister' },
+                    { category: 'Gamification', title: 'Word Puzzle', description: 'Easily create engaging and interactive word puzzles with our intuitive Word Puzzle.', link: '/about-word-puzzle' },
+
+                    // Planner Tools
+                    { category: 'Planner', title: 'Lesson Planner', description: 'Plan and organize lessons easily with our intuitive and efficient Lesson Planner.', link: '/about-lesson-planner' },
+                    { category: 'Planner', title: 'SEL Generator', description: 'Masterfully curate holistic and engaging SEL content for deep, meaningful learning.', link: '/about-sel-generator' },
+                    { category: 'Planner', title: 'Slide Generator', description: 'Create stunning, engaging slides that captivate and deliver your message clearly.', link: '/about-slide-generator' },
+
+                    // Learning Tool
+                    { category: 'Learning', title: 'Vocabulary Builder', description: 'Easily craft personalized and dynamic vocabulary lists with our intuitive Vocabulary Builder.', link: '/about-vocabulary-builder' },
+
+                    
+
+                    // Special Needs Tool
+                    { category: 'Special Needs', title: 'Social Story', description: 'Create engaging, personalized stories for “special” students with our intuitive tool.', link: '/about-social-story' },
+                ];
                 return (
                     <div className="mt-3 text-muted">
                         <div className="table-responsive">
                             <table className="table table-striped">
                                 <thead>
                                     <tr className="table-info">
+                                        <th>Category</th>
                                         <th>AI Tool</th>
                                         <th>Description</th>
+                                        <th>Try It Now</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td className="fw-bold">Lesson Planner</td>
-                                        <td>Plan and organize lessons easily with our intuitive and efficient Lesson Planner.</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="fw-bold">Workbook Planner</td>
-                                        <td>Design comprehensive workbooks for your students with our Workbook Planner.</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="fw-bold">Worksheet Planner</td>
-                                        <td>Easily create and customize worksheets for your students with our Worksheet Planner.</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="fw-bold">Vocabulary Builder</td>
-                                        <td>Easily craft personalized and dynamic vocabulary lists with our intuitive Vocabulary Builder.</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="fw-bold">Tongue Twister</td>
-                                        <td>Easily craft personalized and challenging tongue twisters with our intuitive Tongue Twister.</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="fw-bold">Word Puzzle</td>
-                                        <td>Easily create engaging and interactive word puzzles with our intuitive Word Puzzle.</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="fw-bold">Slide Generator</td>
-                                        <td>Create stunning, engaging slides that captivate and deliver your message clearly.</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="fw-bold">Group Work</td>
-                                        <td>Effortlessly collaborate and manage tasks with ease using our Group Work Organizer.</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="fw-bold">Quiz Generator</td>
-                                        <td>Effortlessly create customized and interactive quizzes with our easy-to-use Quiz Generator.</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="fw-bold">Social Story</td>
-                                        <td>Create engaging, personalized stories for “special” students with our intuitive tool.</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="fw-bold">Text Summarizer</td>
-                                        <td>Effortlessly produce clear and concise text summaries with our Text Summarizer.</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="fw-bold">SEL Generator</td>
-                                        <td>Masterfully curate holistic and engaging SEL content for deep, meaningful learning.</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="fw-bold">Make the Word</td>
-                                        <td>Quickly create fun and interactive challenges with our Make the Word Generator.</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="fw-bold">SAT Maths</td>
-                                        <td>Master math concepts with clear, engaging lessons to boost your SAT score.</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="fw-bold">YouTube Summarizer</td>
-                                        <td>Effortlessly create clear and concise video summaries with our YouTube Summarizer.</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="fw-bold">Fun Math</td>
-                                        <td>Create fun, engaging math activities that captivate and simplify complex concepts.</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="fw-bold">Bingo Card</td>
-                                        <td>Effortlessly design fun and interactive custom games with our Bingo Card Generator.</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="fw-bold">Mystery Case</td>
-                                        <td>Create intriguing mystery cases that captivate and challenge your investigative skills.</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="fw-bold">Teacher Joke</td>
-                                        <td>Effortlessly craft clever teacher jokes that spark laughter and make learning fun.</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="fw-bold">Rubric Generator</td>
-                                        <td>Easily design personalized and detailed rubrics with our intuitive Rubric Generator.</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="fw-bold">Comprehension</td>
-                                        <td>Easily design personalized and detailed assessments with our intuitive Comprehension.</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="fw-bold">Cross Word Puzzle</td>
-                                        <td>Create engaging crossword puzzles that challenge and sharpen your mind.</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="fw-bold">SAT English</td>
-                                        <td>Create clear, engaging SAT English lessons that captivate and boost performance.</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="fw-bold">YouTube Q&amp;A</td>
-                                        <td>Effortlessly craft dynamic and custom assessments with our YouTube Q&amp;A Generator.</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="fw-bold">PDF Summarizer</td>
-                                        <td>Effortlessly create clear and concise document summaries with our PDF Summarizer.</td>
-                                    </tr>
-
+                                    {exploreTools.map(tool => (
+                                        <tr key={tool.title}>
+                                            <td className="fw-bold">{tool.category}</td>
+                                            <td className="fw-bold">{tool.title}</td>
+                                            <td>{tool.description}</td>
+                                            <td>
+                                                <NavLink
+                                                    to={tool.link}
+                                                    className="text-decoration-none d-flex align-items-center"
+                                                    onClick={() => trackButtonClick(tool.title)}
+                                                >
+                                                    <span className="me-1">Read More</span>
+                                                    <FaArrowTrendUp />
+                                                </NavLink>
+                                            </td>
+                                        </tr>
+                                    ))}
                                 </tbody>
                             </table>
                         </div>
@@ -404,11 +369,23 @@ export default function AIDirectory() {
                         <p className="mt-3 text-muted" style={paraStyle}>
                             Enhance your teaching experience with cutting-edge AI-powered tools that are built to save you time, tailor learning experiences to individual student needs, and keep your classroom more engaged than ever. From instantly grading assignments to generating customized lesson plans and creating interactive, dynamic content—these tools take care of the routine so you can focus on inspiring minds.
                         </p>
-                        <NavLink to="/ai-tools-for-teachers">
-                            <button className="btn btn-md mt-3 me-2" style={btnStyle}>
-                                Go to AI Tools
+                        {user ? (
+                            <NavLink
+                                className="btn btn-md mt-3 me-2"
+                                style={btnStyle}
+                                to="/ai-tools-for-teachers"
+                            >
+                                Go to AI Tools
+                            </NavLink>
+                        ) : (
+                            <button
+                                className="btn btn-md mt-3 me-2"
+                                style={btnStyle}
+                                onClick={handleAIToolsClick}
+                            >
+                                Go to AI Tools
                             </button>
-                        </NavLink>
+                        )}
                     </div>
                     <div className="col-md-7 mt-4 d-flex justify-content-center">
                         <img src={logo} alt="AI Tools" className="img-fluid w-50" />

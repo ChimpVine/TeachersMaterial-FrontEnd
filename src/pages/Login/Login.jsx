@@ -7,16 +7,14 @@ import logo from "../../assests/img/ChimpVine-UI.png";
 import NavBar from '../../components/NavBar';
 import { UserContext } from '../../context/UserContext';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-// import Cookies from 'js-cookie';
-
 
 const containerStyle = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: '80vh',
+    position: 'relative',
 };
-
 
 const leftSectionStyle = {
     backgroundColor: '#8F47D7',
@@ -27,6 +25,7 @@ const leftSectionStyle = {
     padding: '2rem',
     borderTopLeftRadius: '8px',
     borderBottomLeftRadius: '8px',
+    zIndex: 1, 
 };
 
 const logoStyle = {
@@ -37,6 +36,7 @@ const rightSectionStyle = {
     padding: '2.5rem',
     backgroundColor: 'white',
     boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+    zIndex: 1, 
 };
 
 const textStyle = {
@@ -55,6 +55,22 @@ const pointerStyle = {
     cursor: 'pointer'
 };
 
+
+const overlayStyle = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    backdropFilter: 'blur(4px)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 10,
+    borderRadius: '8px',
+};
+
 const Login = ({API_BASE_URL}) => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [errorMessage, setErrorMessage] = useState('');
@@ -62,7 +78,7 @@ const Login = ({API_BASE_URL}) => {
     const { login, verifyToken } = useContext(UserContext);
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
-   
+
     useEffect(() => {
         const checkToken = async () => {
             const isValid = await verifyToken();
@@ -84,6 +100,7 @@ const Login = ({API_BASE_URL}) => {
                 username: data.username,
                 password: data.password,
             });
+
             if (response.data.status === 'success') {
                 login(response.data.token);
                 navigate('/ai-tools-for-teachers');
@@ -91,33 +108,39 @@ const Login = ({API_BASE_URL}) => {
                 setErrorMessage(response.data.message);
             }
         } catch {
-            setErrorMessage('Login failed. Please try again.');
+            setErrorMessage('Email or password is incorrect.');
         } finally {
             setLoading(false);
         }
     };
-
 
     const handleReset = () => {
         reset();
         setErrorMessage('');
     };
 
-    return loading ? (
-        <div className="text-center" style={containerStyle}>
-            <PulseLoader color="#FF6F3C" size={10} />
-        </div>
-    ) : (
+    return (
         <>
             <NavBar />
             <div style={containerStyle} className="mt-4">
                 <div className="row">
+                  
                     <div className="col-md-5" style={leftSectionStyle}>
                         <img src={logo} alt="ChimpVine Logo" style={logoStyle} className="img-fluid" />
                     </div>
+
+                 
                     <div className="col-md-7" style={rightSectionStyle}>
+                      
+                        {loading && (
+                            <div style={overlayStyle}>
+                                <PulseLoader color="#FF6F3C" size={10} />
+                            </div>
+                        )}
+
                         <h3 className="text-center mb-5" style={textStyle}>Login</h3>
-                        <form onSubmit={handleSubmit(onSubmit)}>
+
+                        <form onSubmit={handleSubmit(onSubmit)} style={{ opacity: loading ? 0.5 : 1 }}>
                             <div className="form-group mb-4">
                                 <label>Email</label>
                                 <input
@@ -126,10 +149,17 @@ const Login = ({API_BASE_URL}) => {
                                     placeholder="Enter your email"
                                     autoComplete="username"
                                     disabled={loading}
-                                    {...register('username', { required: 'Email is required' })}
+                                    {...register('username', {
+                                        required: 'Email is required',
+                                        pattern: {
+                                            value: /^\S*$/, 
+                                            message: 'Email should not contain spaces'
+                                        }
+                                    })}
                                 />
                                 {errors.username && <div className="invalid-feedback">{errors.username.message}</div>}
                             </div>
+
                             <div className="form-group mb-4">
                                 <label>Password</label>
                                 <div className="input-group">
@@ -165,6 +195,7 @@ const Login = ({API_BASE_URL}) => {
                                     <label style={pointerStyle}>Forgot Password?</label>
                                 </NavLink>
                             </div>
+
                             <div className="d-flex justify-content-between">
                                 <button type="button" className='btn btn-outline-danger btn-sm' onClick={handleReset} disabled={loading}>
                                     Reset
@@ -173,11 +204,13 @@ const Login = ({API_BASE_URL}) => {
                                     Login
                                 </button>
                             </div>
+
                             {errorMessage && <div style={errorMessageStyle}>{errorMessage}</div>}
                         </form>
-                        <div className='mt-3'>
-                            <span>Dont have an account? </span>
-                            <NavLink to={`${API_BASE_URL}/register/chimpvine-membership/`}>
+
+                        <div className='mt-3' style={{ opacity: loading ? 0.5 : 1 }}>
+                            <span>Don't have an account? </span>
+                            <NavLink to='/pricing-plans'>
                                 <label className='fw-bold' style={pointerStyle}>Sign Up Now</label>
                             </NavLink>
                         </div>
@@ -189,4 +222,5 @@ const Login = ({API_BASE_URL}) => {
 };
 
 export default Login;
+
 

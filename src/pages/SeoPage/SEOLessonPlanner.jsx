@@ -1,12 +1,23 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Helmet } from 'react-helmet-async'
 import NavBar from '../../components/NavBar'
 import { NavLink } from 'react-router-dom';
 import { FaWpforms, FaLightbulb, FaChartLine, FaHandHoldingUsd, FaUsers, FaBrain, FaShareAlt, FaRegClock, FaRocket, FaAdjust, FaUser } from "react-icons/fa";
 import logo from '../../assests/img/body-hero-section.png'
 import Footer from '../Footer';
+import { UserContext } from '../../context/UserContext';
+import { toast } from 'react-toastify';
+import LessonPlanner from '../../assests/img/lessons-planner.png'
 
 export default function SEOLessonPlanner() {
+    const { user } = useContext(UserContext);
+
+    const handleAIToolsClick = () => {
+        if (!user) {
+            toast.warning("Login to access AI Tools");
+        }
+    };
+
     const btnStyle = {
         backgroundColor: '#FF683B',
         color: 'white',
@@ -26,27 +37,27 @@ export default function SEOLessonPlanner() {
         {
             number: 1,
             title: 'Speed',
-            description: 'Generates lesson in seconds',
+            description: 'Instant results',
         },
         {
             number: 2,
             title: 'Structure',
-            description: 'Auto-includes best practices',
+            description: 'Fully tailored to your input',
         },
         {
             number: 3,
             title: 'Flexibility',
-            description: 'Edit and customize easily',
+            description: 'Built-in classroom filter',
         },
         {
             number: 4,
             title: 'Inclusivity',
-            description: 'Built-in accommodations',
+            description: 'New jokes each time',
         },
         {
             number: 5,
             title: 'Presentation',
-            description: 'Printable and professional',
+            description: 'Zero prep',
         },
         {
             number: 6,
@@ -90,18 +101,18 @@ export default function SEOLessonPlanner() {
 
     const AIfeatures = [
         {
-            title: 'Saves time',
-            desc: 'Saves hours of lesson prep each week.',
+            title: 'Quick',
+            desc: 'Provides instant, editable lesson plans.',
             icon: <FaRegClock size={50} style={{ color: '#4CAF50' }} />,
         },
         {
-            title: 'Boosts engagement',
-            desc: 'Boosts assessment variety and adaptability.',
+            title: 'Top-notch Output',
+            desc: 'Ensures quality instruction with scaffolded content.',
             icon: <FaRocket size={50} style={{ color: '#FF9800' }} />,
         },
         {
-            title: 'Editable',
-            desc: 'Editable to meet your classrooms learning style and student level.',
+            title: 'Time Saving',
+            desc: 'Saves time and effort, letting teachers do what they love—teach!',
             icon: <FaAdjust size={50} style={{ color: '#2196F3 ' }} />,
         },
     ];
@@ -118,7 +129,7 @@ export default function SEOLessonPlanner() {
             icon: <FaUsers size={50} style={{ color: '#28A745' }} />,
         },
         {
-            title: 'Consistency',
+            title: 'Instant and Easy',
             desc: 'Ensures every lesson covers core elements required by schools and districts.',
             icon: <FaUser size={50} style={{ color: '#28A745' }} />,
         }
@@ -136,25 +147,37 @@ export default function SEOLessonPlanner() {
             </Helmet>
             <NavBar />
             <div className="container mt-5 text-center">
-                <h3 className="mb-3 fw-bold">AI Lesson Planner</h3>
+                <h3 className="mb-3 fw-bold">Lesson Planner</h3>
                 <div className="col-md-8 mx-auto">
                     <p className="mt-3 text-muted paraStyle">
-                        Our AI-powered Lesson Planner is designed to help educators craft comprehensive, ready-to-use lesson plans with ease! Whether you’re planning for Science, Math, English, or other subjects, this tool allows teachers to upload their materials and instantly generate a detailed lesson plan tailored to their topic, grade, and class duration.This tool is Ideal for teachers, homeschooling parents, and educational content creators looking to save time while enhancing lesson structure!
+                        Our <span className='fw-bold'>AI-powered Lesson Planner</span> is designed to help educators craft comprehensive, ready-to-use lesson plans with ease! Whether you’re planning for Science, Math, English, or other subjects, this tool allows teachers to upload their materials and instantly generate a detailed lesson plan tailored to their topic, grade, and class duration.
+                        This tool is Ideal for teachers, homeschooling parents, and educational content creators looking to save time while enhancing lesson structure!
                     </p>
                 </div>
                 <div className="col-md-10 col-lg-8 mx-auto mt-4">
-                    <div className="ratio ratio-16x9">
-                        <iframe
-                            src="https://www.youtube.com/embed/_Npp65RP7Vw"
-                            title="AI Quiz Generator Demo"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                        ></iframe>
-                    </div>
+                    <img
+                        src={LessonPlanner}
+                        alt="Lesson-Planner"
+                        className="image-style img-fluid"
+                    />
                 </div>
-                <NavLink to="/quiz-generator">
-                    <button className='btn mt-4' style={btnStyle}>Generate Now</button>
-                </NavLink>
+                {user ? (
+                    <NavLink
+                        className="btn btn-md mt-3 me-2"
+                        style={btnStyle}
+                        to="/lesson-planner"
+                    >
+                        Generate Now
+                    </NavLink>
+                ) : (
+                    <button
+                        className="btn btn-md mt-3 me-2"
+                        style={btnStyle}
+                        onClick={handleAIToolsClick}
+                    >
+                        Generate Now
+                    </button>
+                )}
             </div>
             <hr className="styled-hr" />
             <div className="container mt-5 text-center">
@@ -167,7 +190,7 @@ export default function SEOLessonPlanner() {
                         </div>
                         <h6 className="step-title mt-3 fw-bold">Customize Lesson Planner</h6>
                         <p className="step-description text-muted">
-                            Select subject, grade, duration and upload PDF file to generate your Lesson Planner.
+                            Choose subject, grade, duration, upload file, and add a description.
                         </p>
                     </div>
                     {/* Connector */}
@@ -189,7 +212,7 @@ export default function SEOLessonPlanner() {
                         </div>
                         <h6 className="step-title mt-3 fw-bold">Generate Lesson Planner</h6>
                         <p className="step-description text-muted">
-                            Click 'generate' to create a Lesson Planner based on your preferences
+                            Click 'Generate' for a complete lesson plan tailored to your preferences.
                         </p>
                     </div>
                     {/* Connector */}
@@ -209,9 +232,9 @@ export default function SEOLessonPlanner() {
                         <div className="step-icon" style={boxStyle}>
                             <FaChartLine size={40} className="text-dark" />
                         </div>
-                        <h6 className="step-title mt-3 fw-bold">View the Worksheet</h6>
+                        <h6 className="step-title mt-3 fw-bold">View Lesson Planner</h6>
                         <p className="step-description text-muted">
-                            Customize the Lesson Planner as needed before sharing it with students.
+                            Download or view your customized lesson plan.
                         </p>
                     </div>
                 </div>
@@ -226,13 +249,12 @@ export default function SEOLessonPlanner() {
 
                     {/* Right Side Timeline */}
                     <div className="col-md-6 mt-4 mt-md-0">
-                        <h4 className="fw-bold text-danger mb-4">Why our AI Lesson Planner?</h4>
+                        <h4 className="fw-bold text-danger mb-4">Why Our Lesson Planner?</h4>
                         <div className="timeline-step mb-4">
                             <div className="circle red">1</div>
                             <div className="timeline-content">
-                                <h5 className="fw-bold mb-1">Quick</h5>
-                                <p className="text-muted">
-                                    Provides instant, editable lesson plans.
+                                <h5 className="fw-bold mb-1">Comprehensive AI-Generated Structure!</h5>
+                                <p className="text-muted">Each lesson includes:Learning Objectives, Materials Needed, Step-by-step Procedure (Intro → Practice → Closure), Assessment Techniques, Differentiation & Accommodations, Extension Ideas. Reflection Section, Real-world Importance.Everything a modern lesson plan needs—instantly generated and editable!
                                 </p>
                             </div>
                         </div>
@@ -240,9 +262,9 @@ export default function SEOLessonPlanner() {
                         <div className="timeline-step mb-4">
                             <div className="circle orange">2</div>
                             <div className="timeline-content">
-                                <h5 className="fw-bold mb-1">Top-notch Output</h5>
+                                <h5 className="fw-bold mb-1">Multi-Subject Support!</h5>
                                 <p className="text-muted">
-                                    Ensures quality instruction with scaffolded content.
+                                    Supports any K–12 subject and automatically adapts the structure to your grade and topic—whether it’s a first-grade science unit on plants or a middle school history review.
                                 </p>
                             </div>
                         </div>
@@ -250,9 +272,9 @@ export default function SEOLessonPlanner() {
                         <div className="timeline-step">
                             <div className="circle purple">3</div>
                             <div className="timeline-content">
-                                <h5 className="fw-bold mb-1">Time Saving</h5>
+                                <h5 className="fw-bold mb-1">Printable & Shareable!</h5>
                                 <p className="text-muted">
-                                    Saves time and effort, letting teachers do what they love—teach!
+                                    One-click PDF download lets you print or share the lesson plan with colleagues, parents, or students without any hassle.
                                 </p>
                             </div>
                         </div>
@@ -260,10 +282,10 @@ export default function SEOLessonPlanner() {
                 </div>
             </div>
             <div className="container mt-5 text-center">
-                <h3 className="mb-3 fw-bold">Why Should Teachers and Parents use our AI Lesson Planner?</h3>
+                <h3 className="mb-3 fw-bold">Why Should Teachers Use Our Lesson Planner?</h3>
                 <div className="col-md-8 mx-auto mb-4">
                     <p className="mt-3 text-muted paraStyle">
-                        In today’s fast-paced classrooms, efficient planning is crucial. Studies show that teachers spend an average of 6–10 hours per week planning lessons (EdTech Report 2023). Our Lesson Planner helps streamline this process so teachers can focus on delivery and student engagement.
+                        In today’s fast-paced classrooms, <span className='fw-bold'>efficient planning</span> is crucial. Studies show that teachers spend an average of 6–10 hours per week planning lessons (EdTech Report 2023). Our Lesson Planner helps streamline this process so teachers can focus on delivery and student engagement.
                     </p>
                 </div>
                 <hr className="styled-hr" />
@@ -271,8 +293,8 @@ export default function SEOLessonPlanner() {
                     {features.map((feature, idx) => (
                         <div key={idx} className="col-md-4 mb-4">
                             <div
-                                className="card text-center p-4 feature-card"
-                                style={{ backgroundColor: feature.bgColor }}
+                                className="card text-center p-4 feature-card w-100"
+                                style={{ backgroundColor: feature.bgColor, height: "100%" }}
                             >
                                 <div className="card-body">
                                     <div className="icon-circle mb-3">
@@ -288,7 +310,7 @@ export default function SEOLessonPlanner() {
             </div>
             <hr className="styled-hr" />
             <div className="container">
-                <h3 className="fw-bold mb-5 text-center">How Does the AI Worksheet Planner Compare?</h3>
+                <h3 className="fw-bold mb-5 text-center">How Does Lesson Planner Compare ?</h3>
                 <div className="row justify-content-center">
                     <div className="col-md-4">
                         <div className="timeline-step d-flex align-items-center mb-5">
@@ -296,7 +318,7 @@ export default function SEOLessonPlanner() {
                                 <FaBrain size={25} />
                             </div>
                             <div className="timeline-content">
-                                <h4 className="fw-bold mb-1">AI Worksheet Planner</h4>
+                                <h4 className="fw-bold mb-1">Lesson Planner</h4>
                             </div>
                         </div>
                         {timelineFeatures.map((feature, idx) => (
@@ -332,13 +354,13 @@ export default function SEOLessonPlanner() {
             </div>
             <hr className="styled-hr" />
             <div className="container mt-5 text-center">
-                <h3 className="mb-3 fw-bold">Why Choose the Worksheet Planner?</h3>
+                <h3 className="mb-3 fw-bold">Why Choose the Lesson Planner?</h3>
                 <div className="row justify-content-center">
                     {AIfeatures.map((feature, idx) => (
                         <div key={idx} className="col-md-4 mb-4">
                             <div
-                                className="card text-center p-4 feature-card"
-                                style={{ backgroundColor: feature.bgColor }}
+                                className="card text-center p-4 feature-card w-100"
+                                style={{ backgroundColor: feature.bgColor, height: "100%" }}
                             >
                                 <div className="card-body">
                                     <div className="icon-circle mb-3">
@@ -354,7 +376,7 @@ export default function SEOLessonPlanner() {
             </div>
             <hr className="styled-hr" />
             <div className="col-md-10 mx-auto">
-                <p className="text-muted paraStyle">
+                <p className="text-muted paraStyle p-2">
                     Whether you’re teaching in a classroom, tutoring online, or homeschooling, this tool is your perfect companion for educational excellence!
                 </p>
             </div>

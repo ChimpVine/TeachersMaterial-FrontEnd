@@ -20,9 +20,8 @@ export default function TextSummarizer({ BASE_URL }) {
     const [isLoading, setIsLoading] = useState(false);
     const [wordCount, setWordCount] = useState(0);
 
-    const textValue = watch("text", "");  // Watch the value of the text input
+    const textValue = watch("text", "");  
 
-    // Update word count when textValue changes
     useEffect(() => {
         const count = textValue.trim() ? textValue.trim().split(/\s+/).length : 0;
         setWordCount(count);
@@ -32,7 +31,7 @@ export default function TextSummarizer({ BASE_URL }) {
 
     const breadcrumbItems = [
         { label: 'Main Panel', href: '/ai-tools-for-teachers', active: false },
-        { label: 'Summarizer', active: true },
+        { label: 'Summarizer', href: '/ai-tools-for-teachers?tab=Summarizer', active: false },
         { label: 'Text Summarizer', active: true }
     ];
 
