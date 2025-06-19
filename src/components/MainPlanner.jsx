@@ -262,7 +262,7 @@ const cards = [
         ),
         title: 'Rubric Generator',
         description: 'Easily design personalized and detailed rubrics with our intuitive Rubric Generator.',
-        link: '/rubric-generator',
+        link: '/comingsoon',
         btnColor: 'danger'
     },
     {

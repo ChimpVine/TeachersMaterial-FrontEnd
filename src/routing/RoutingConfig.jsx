@@ -51,7 +51,6 @@ import SEOGroupWork from '../pages/SeoPage/SEOGroupWork.jsx';
 import SEOSocialStory from '../pages/SeoPage/SEOSocialStory.jsx';
 import SEOQuizGenerator from '../pages/SeoPage/SEOQuizGenerator.jsx';
 
-
 export default function RoutingConfig() {
   const location = useLocation();
 
@@ -85,8 +84,11 @@ export default function RoutingConfig() {
 
   const pageTitle = routeTitleMap[location.pathname] || 'Error 404 - AI Tools for Teachers';
 
-  const API_BASE_URL = "https://site.chimpvine.com";
+  // const API_BASE_URL = "https://site.chimpvine.com";
+  const API_BASE_URL = "https://teachertools-api.chimpvine.com";
+   
 
+  // const BASE_URL = 'http://192.168.1.100:8080';
   const BASE_URL = 'https://teachertools-api.chimpvine.com';
   
   ReactGA.initialize('G-TBNNYXX21K');

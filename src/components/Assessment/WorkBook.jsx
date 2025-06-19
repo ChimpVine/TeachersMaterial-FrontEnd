@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import axios from 'axios';
 import NavBar from '../NavBar';
 import { FaArrowRight, FaRegFilePdf, FaEraser, FaArrowLeft, FaRegLightbulb } from "react-icons/fa";
@@ -80,17 +80,25 @@ export default function WorkBook({ BASE_URL }) {
             textarea: '',
             pdf_file: null,
         });
-        if (fileInputRef.current) {
-            fileInputRef.current.value = null;
-        }
+        document.getElementById('pdf_file').value = '';
+        document.getElementById('textarea').value = '';
+        setWordCount(0);
     };
 
     const [apiResponse, setApiResponse] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [wordCount, setWordCount] = useState(0);
+
     const contentRef = useRef();
 
     const handleChange = (e) => {
         const { name, value, files } = e.target;
+
+        if (name === 'textarea') {
+            const words = value.trim().split(/\s+/).filter(word => word !== '');
+            setWordCount(words.length);
+        }
+
         setFormData({
             ...formData,
             [name]: files ? files[0] : value,
@@ -111,7 +119,7 @@ export default function WorkBook({ BASE_URL }) {
         }
 
         if (!isValidText) {
-            toast.warning('Topic must contain only letters, numbers, and spaces no special characters or numbers alone.');
+            toast.warning('Max 250 characters. Use letters, numbers, spaces, and .,"\'-!? only.');
             return;
         }
 
@@ -147,6 +155,7 @@ export default function WorkBook({ BASE_URL }) {
                 textarea: '',
                 pdf_file: null,
             });
+
             toast.success('Workbook generated successfully!');
         } catch (error) {
             setApiResponse(null);
@@ -249,19 +258,25 @@ export default function WorkBook({ BASE_URL }) {
                                             />
 
                                             <label htmlFor="textarea" className="form-label">
-                                                Topic <span style={{ color: 'red' }}>*</span>
+                                                File Description Label <span style={{ color: 'red' }}>*</span>
                                             </label>
                                             <textarea
                                                 type="text"
                                                 className="form-control form-control-sm mb-2"
                                                 placeholder="Briefly describe the file you are uploading (e.g. Arithmetic, History, or Ancient Egypt)"
-
                                                 id="textarea"
                                                 name="textarea"
+                                                rows={3}
                                                 value={formData.textarea}
                                                 onChange={handleChange}
                                                 disabled={isLoading}
                                             />
+
+                                            <div className="d-flex justify-content-end mt-1">
+                                                <small className={`${wordCount > 250 ? 'text-danger' : 'text-muted'}`}>
+                                                    Word count: {wordCount}/250
+                                                </small>
+                                            </div>
 
                                             <div className="mb-3">
                                                 <small className="text-muted">
@@ -277,7 +292,8 @@ export default function WorkBook({ BASE_URL }) {
                                         </div>
 
                                         <div className="d-flex justify-content-between mt-3">
-                                            <button type="button" className="btn btn-sm" style={cancelStyle} onClick={handleCancel}>
+                                            <button type="button" className="btn btn-sm" style={cancelStyle} onClick={handleCancel} 
+                                            disabled={isLoading}>
                                                 <FaEraser /> Reset
                                             </button>
                                             <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
@@ -290,10 +306,13 @@ export default function WorkBook({ BASE_URL }) {
                         ) : (
                             <div className="mt-3" ref={contentRef} id="main-btn">
                                 {parseWorkbook(apiResponse)}
-                                <button className="btn btn-sm mt-2 mb-3 me-2 no-print" style={btnStyle} onClick={() => setApiResponse(null)}>
+                                <button className="btn btn-sm mt-2 mb-3 me-2 no-print" style={btnStyle} onClick={() => {
+                                    setApiResponse(null); 
+                                    setWordCount(0); 
+                                }}>
                                     <FaArrowLeft /> Generate Another Workbook
                                 </button>
-                                <button className="btn btn-sm mt-2 mb-3 no-print" style={pdfStyle} onClick={handlePrint}>
+                                <button className="btn btn-sm mt-2 mb-3 no-print" style={pdfStyle} onClick={handlePrint} >
                                     <FaRegFilePdf /> Download PDF
                                 </button>
                             </div>

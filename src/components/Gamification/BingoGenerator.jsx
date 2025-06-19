@@ -17,6 +17,8 @@ export default function BingoGenerator({ BASE_URL }) {
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
     const [apiResponse, setApiResponse] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [wordCount, setWordCount] = useState(0); // Add wordCount state
+
 
     const breadcrumbItems = [
         { label: 'Main Panel', href: '/ai-tools-for-teachers', active: false },
@@ -97,6 +99,12 @@ export default function BingoGenerator({ BASE_URL }) {
         window.print();
     };
 
+    const handleWordCountChange = (e) => {
+        const text = e.target.value;
+        const count = text.trim().split(/\s+/).length; // Count the words based on spaces
+        setWordCount(count);
+    };
+
     return (
         <>
             <NavBar />
@@ -117,7 +125,7 @@ export default function BingoGenerator({ BASE_URL }) {
                                             <label htmlFor="topic" className="form-label">
                                                 Topic <span style={{ color: 'red' }}>*</span>
                                             </label>
-                                            
+
                                             <input
                                                 type="text"
                                                 className={`form-control form-control-sm mb-2 ${errors.topic ? "is-invalid" : ""}`}
@@ -131,9 +139,14 @@ export default function BingoGenerator({ BASE_URL }) {
                                                     },
                                                 })}
                                                 placeholder="Enter topic (e.g. Space, Animals)"
+                                                onChange={handleWordCountChange}
                                             />
-                                            
                                             {errors.topic && <div className="invalid-feedback">{errors.topic.message}</div>}
+                                            <div className="d-flex justify-content-end mt-1">
+                                                <small className={`${wordCount > 50 ? 'text-danger' : 'text-muted'}`}>
+                                                    Word count: {wordCount}/50
+                                                </small>
+                                            </div>
 
                                             <label htmlFor="num_students" className="form-label">
                                                 Number of Students <span style={{ color: 'red' }}>*</span>
@@ -159,7 +172,7 @@ export default function BingoGenerator({ BASE_URL }) {
                                             <small className="text-muted">
                                                 <strong className="text-danger">Note:</strong>
                                                 <ul>
-                                                    <li>Topic must not be more than 50 characters long.</li>
+                                                    <li>Topic must not be more than 50 words long.</li>
                                                     <li>No special characters (e.g., @, #, $, -, _).</li>
                                                 </ul>
                                             </small>
@@ -170,7 +183,10 @@ export default function BingoGenerator({ BASE_URL }) {
                                                 type="button"
                                                 className="btn btn-sm"
                                                 style={cancelStyle}
-                                                onClick={() => reset()}
+                                                onClick={() => {
+                                                    reset(); 
+                                                    setWordCount(0); 
+                                                }}
                                             >
                                                 <FaEraser /> Reset
                                             </button>
@@ -217,7 +233,10 @@ export default function BingoGenerator({ BASE_URL }) {
                                     </div>
                                 </div>
                                 <div className="d-flex justify-content-center">
-                                    <button className="btn btn-sm mt-2 mb-3 me-3 no-print" style={btnStyle} onClick={() => setApiResponse(null)}>
+                                    <button className="btn btn-sm mt-2 mb-3 me-3 no-print" style={btnStyle} onClick={() => {
+                                        setApiResponse(null);
+                                        setWordCount(0);
+                                    }}>
                                         <FaArrowLeft /> Generate More Bingo
                                     </button>
                                     <button

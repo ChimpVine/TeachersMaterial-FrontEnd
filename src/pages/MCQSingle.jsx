@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FaCheck } from "react-icons/fa";
 
 const MCQSingle = ({ worksheet, answers, modalVisible, handleUpdate, setApiResponse }) => {
@@ -52,7 +52,7 @@ const MCQSingle = ({ worksheet, answers, modalVisible, handleUpdate, setApiRespo
 
   const handleSaveChanges = () => {
     if (validateWorksheet()) {
-      handleUpdate(); // Call the parent-provided update handler
+      handleUpdate(); 
     }
   };
 

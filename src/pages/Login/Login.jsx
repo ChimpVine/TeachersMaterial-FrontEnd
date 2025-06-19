@@ -95,8 +95,10 @@ const Login = ({API_BASE_URL}) => {
         setErrorMessage('');
         setLoading(true);
 
+        //   const response = await axios.post(`${API_BASE_URL}/wp-json/custom/v1/login`,       
+
         try {
-            const response = await axios.post(`${API_BASE_URL}/wp-json/custom/v1/login`, {
+            const response = await axios.post(`${API_BASE_URL}/api/login`, {
                 username: data.username,
                 password: data.password,
             });

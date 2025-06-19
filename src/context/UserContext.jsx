@@ -6,7 +6,9 @@ import axios from 'axios';
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-    const API_BASE_URL = "https://site.chimpvine.com";
+
+   
+    const API_BASE_URL = "https://test-teachertools-api.chimpvine.com";
 
     const [user, setUser] = useState(null);
 
@@ -32,7 +34,7 @@ export const UserProvider = ({ children }) => {
     const logout = useCallback(async () => {
         const token = Cookies.get('authToken');
         try {
-            await axios.post(`${API_BASE_URL}/wp-json/custom/v1/logout`, { token });
+            await axios.post(`${API_BASE_URL}/api/logout`, { token });
         } catch (error) {
             console.error('Error logging out:', error);
         }

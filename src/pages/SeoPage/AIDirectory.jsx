@@ -271,39 +271,38 @@ export default function AIDirectory() {
             case 'Explore AI Teacher Tools':
                 const exploreTools = [
 
-
                     // Assessment Tools
-                    { category: 'Assessment', title: 'About Group Work', description: 'Effortlessly collaborate and manage tasks with ease using our Group Work Organizer.', link: '/about-group-work' },
-                    { category: 'Assessment', title: 'About Quiz Generator', description: 'Effortlessly create customized and interactive quizzes with our easy-to-use Quiz Generator.', link: '/about-quiz-generator' },
-                    { category: 'Assessment', title: 'About SAT Maths', description: 'Master math concepts with clear, engaging lessons to boost your SAT score.', link: '/about-sat-maths' },
-                    { category: 'Assessment', title: 'About Workbook Planner', description: 'Design comprehensive workbooks for your students with our Workbook Planner.', link: '/about-workbook-planner' },
-                    { category: 'Assessment', title: 'About Worksheet Planner', description: 'Easily create and customize worksheets for your students with our Worksheet Planner.', link: '/about-worksheet-planner' },
+                    { category: 'Assessment', title: 'Group Work', description: 'Effortlessly collaborate and manage tasks with ease using our Group Work Organizer.', link: '/about-group-work' },
+                    { category: 'Assessment', title: 'Quiz Generator', description: 'Effortlessly create customized and interactive quizzes with our easy-to-use Quiz Generator.', link: '/about-quiz-generator' },
+                    { category: 'Assessment', title: 'SAT Maths', description: 'Master math concepts with clear, engaging lessons to boost your SAT score.', link: '/about-sat-maths' },
+                    { category: 'Assessment', title: 'Workbook Planner', description: 'Design comprehensive workbooks for your students with our Workbook Planner.', link: '/about-workbook-planner' },
+                    { category: 'Assessment', title: 'Worksheet Planner', description: 'Easily create and customize worksheets for your students with our Worksheet Planner.', link: '/about-worksheet-planner' },
 
                     // Summarizer Tools
-                    { category: 'Summarizer', title: 'About Text Summarizer', description: 'Effortlessly produce clear and concise text summaries with our Text Summarizer.', link: '/about-text-summarizer' },
-                    { category: 'Summarizer', title: 'About YouTube Summarizer', description: 'Effortlessly create clear and concise video summaries with our YouTube Summarizer.', link: '/about-yt-summarizer' },
+                    { category: 'Summarizer', title: 'Text Summarizer', description: 'Effortlessly produce clear and concise text summaries with our Text Summarizer.', link: '/about-text-summarizer' },
+                    { category: 'Summarizer', title: 'YouTube Summarizer', description: 'Effortlessly create clear and concise video summaries with our YouTube Summarizer.', link: '/about-yt-summarizer' },
 
                     // Gamification Tools
-                    { category: 'Gamification', title: 'About Bingo Card', description: 'Effortlessly design fun and interactive custom games with our Bingo Card Generator.', link: '/about-bingo-generator' },
-                    { category: 'Gamification', title: 'About Fun Math', description: 'Create fun, engaging math activities that captivate and simplify complex concepts.', link: '/about-fun-math' },
-                    { category: 'Gamification', title: 'About Make the Word', description: 'Quickly create fun and interactive challenges with our Make the Word Generator.', link: '/about-make-the-word' },
-                    { category: 'Gamification', title: 'About Mystery Case', description: 'Create intriguing mystery cases that captivate and challenge your investigative skills.', link: '/about-mystery-case' },
-                    { category: 'Gamification', title: 'About Teacher Joke', description: 'Effortlessly craft clever teacher jokes that spark laughter and make learning fun.', link: '/about-teacher-joke' },
-                    { category: 'Gamification', title: 'About Tongue Twister', description: 'Easily craft personalized and challenging tongue twisters with our intuitive Tongue Twister.', link: '/about-tongue-twister' },
-                    { category: 'Gamification', title: 'About Word Puzzle', description: 'Easily create engaging and interactive word puzzles with our intuitive Word Puzzle.', link: '/about-word-puzzle' },
+                    { category: 'Gamification', title: 'Bingo Card', description: 'Effortlessly design fun and interactive custom games with our Bingo Card Generator.', link: '/about-bingo-generator' },
+                    { category: 'Gamification', title: 'Fun Math', description: 'Create fun, engaging math activities that captivate and simplify complex concepts.', link: '/about-fun-math' },
+                    { category: 'Gamification', title: 'Make the Word', description: 'Quickly create fun and interactive challenges with our Make the Word Generator.', link: '/about-make-the-word' },
+                    { category: 'Gamification', title: 'Mystery Case', description: 'Create intriguing mystery cases that captivate and challenge your investigative skills.', link: '/about-mystery-case' },
+                    { category: 'Gamification', title: 'Teacher Joke', description: 'Effortlessly craft clever teacher jokes that spark laughter and make learning fun.', link: '/about-teacher-joke' },
+                    { category: 'Gamification', title: 'Tongue Twister', description: 'Easily craft personalized and challenging tongue twisters with our intuitive Tongue Twister.', link: '/about-tongue-twister' },
+                    { category: 'Gamification', title: 'Word Puzzle', description: 'Easily create engaging and interactive word puzzles with our intuitive Word Puzzle.', link: '/about-word-puzzle' },
 
                     // Planner Tools
-                    { category: 'Planner', title: 'About Lesson Planner', description: 'Plan and organize lessons easily with our intuitive and efficient Lesson Planner.', link: '/about-lesson-planner' },
-                    { category: 'Planner', title: 'About SEL Generator', description: 'Masterfully curate holistic and engaging SEL content for deep, meaningful learning.', link: '/about-sel-generator' },
-                    { category: 'Planner', title: 'About Slide Generator', description: 'Create stunning, engaging slides that captivate and deliver your message clearly.', link: '/about-slide-generator' },
+                    { category: 'Planner', title: 'Lesson Planner', description: 'Plan and organize lessons easily with our intuitive and efficient Lesson Planner.', link: '/about-lesson-planner' },
+                    { category: 'Planner', title: 'SEL Generator', description: 'Masterfully curate holistic and engaging SEL content for deep, meaningful learning.', link: '/about-sel-generator' },
+                    { category: 'Planner', title: 'Slide Generator', description: 'Create stunning, engaging slides that captivate and deliver your message clearly.', link: '/about-slide-generator' },
 
                     // Learning Tool
-                    { category: 'Learning', title: 'About Vocabulary Builder', description: 'Easily craft personalized and dynamic vocabulary lists with our intuitive Vocabulary Builder.', link: '/about-vocabulary-builder' },
+                    { category: 'Learning', title: 'Vocabulary Builder', description: 'Easily craft personalized and dynamic vocabulary lists with our intuitive Vocabulary Builder.', link: '/about-vocabulary-builder' },
 
                     
 
                     // Special Needs Tool
-                    { category: 'Special Needs', title: 'About Social Story', description: 'Create engaging, personalized stories for “special” students with our intuitive tool.', link: '/about-social-story' },
+                    { category: 'Special Needs', title: 'Social Story', description: 'Create engaging, personalized stories for “special” students with our intuitive tool.', link: '/about-social-story' },
                 ];
                 return (
                     <div className="mt-3 text-muted">

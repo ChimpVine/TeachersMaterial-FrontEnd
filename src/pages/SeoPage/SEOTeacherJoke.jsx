@@ -343,7 +343,7 @@ export default function SEOTeacherJoke() {
             </div>
             <hr className="styled-hr" />
             <div className="container mt-5 text-center">
-                <h3 className="mb-3 fw-bold">Why Choose the Mystery Case Generator?</h3>
+                <h3 className="mb-3 fw-bold">Why Choose the Teacher Joke Generator?</h3>
                 <div className="row justify-content-center">
                     {AIfeatures.map((feature, idx) => (
                         <div key={idx} className="col-md-4 mb-4">

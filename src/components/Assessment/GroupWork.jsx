@@ -243,7 +243,7 @@ export default function GroupWork({ BASE_URL }) {
                       <small className="text-muted">
                         <strong className='text-danger'>Note:</strong>
                         <ul>
-                          <li>Please ensure that the learning objectives are concise and do not exceed 250 words.</li>
+                          <li>Ensure the topic to <span className='fw-bold'>50 words</span> and the objectives to <span className='fw-bold'>500 words.</span></li>
                         </ul>
                       </small>
                     </div>

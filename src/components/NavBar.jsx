@@ -104,7 +104,7 @@ export default function NavBar() {
                             </li>
                             <li className="nav-item dropdown mt-2">
                                 <NavLink
-                                    className="nav-link dropdown-toggle text-light me-5 ms-2"
+                                    className="nav-link dropdown-toggle text-light me-4 ms-2"
                                     id="navbarDropdown"
                                     role="button"
                                     data-bs-toggle="dropdown"

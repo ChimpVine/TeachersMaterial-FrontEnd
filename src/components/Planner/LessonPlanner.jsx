@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import axios from 'axios';
 import NavBar from '../NavBar';
 import { FaArrowRight, FaRegFilePdf, FaEraser, FaArrowLeft } from "react-icons/fa";
@@ -91,41 +91,59 @@ export default function LessonPlan({ BASE_URL }) {
 
     const [apiResponse, setApiResponse] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [wordCount, setWordCount] = useState(0);
     const contentRef = useRef();
 
     const handleChange = (e) => {
         const { name, value, files } = e.target;
+
+        if (name === 'textarea') {
+            const words = value.trim().split(/\s+/).filter(word => word !== '');
+            setWordCount(words.length);
+        }
+
         setFormData({
             ...formData,
             [name]: files ? files[0] : value,
         });
     };
 
+    const handleReset = () => {
+        setFormData({
+            subject: '',
+            grade: '',
+            duration: '',
+            textarea: '',
+            pdf_file: null,
+        });
+        document.getElementById('pdf_file').value = '';
+        document.getElementById('textarea').value = '';
+        setWordCount(0);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { subject, grade, duration, textarea, pdf_file } = formData;
         const trimmed = textarea.trim();
-        const isValidobjectives = trimmed.length <= 250 &&
-            /[a-zA-Z]/.test(trimmed) &&
-            /^[a-zA-Z0-9.,'"\-\s!?()]+$/.test(trimmed);
+        const isValidObjectives =
+            trimmed.length > 0 &&
+            trimmed.length <= 250 &&
+            /^[a-zA-Z0-9.,'"’‘“”!?()\-\s]+$/.test(trimmed);
 
         if (!subject || !grade || !duration || !textarea || !pdf_file) {
             toast.warning('Please fill in all fields.');
             return;
         }
 
-        if (!isValidobjectives) {
-            toast.warning("Description must be 250 characters or fewer, contain at least one letter, and only use standard punctuation.");
+        if (!isValidObjectives) {
+            toast.warning("Objective must be 1–250 characters. Only letters, numbers, spaces, and .,'\"-!?() are allowed.");
             return;
         }
-
 
         if (pdf_file && pdf_file.size > 500 * 1024) {
             toast.warning('File size exceeds 500KB. Please upload a smaller file.');
             return;
         }
-
 
         const formDataToSend = new FormData();
         formDataToSend.append('subject', subject);
@@ -290,10 +308,14 @@ export default function LessonPlan({ BASE_URL }) {
                                                 id="textarea"
                                                 name="textarea"
                                                 rows={3}
-                                                value={formData.textarea}
                                                 onChange={handleChange}
                                                 disabled={isLoading}
                                             />
+                                            <div className="d-flex justify-content-end mt-1">
+                                                <small className={`${wordCount > 250 ? 'text-danger' : 'text-muted'}`}>
+                                                    Word count: {wordCount}/250
+                                                </small>
+                                            </div>
                                             <div className="mb-3">
                                                 <small className="text-muted">
                                                     <strong className='text-danger'>Note:</strong>
@@ -308,13 +330,7 @@ export default function LessonPlan({ BASE_URL }) {
                                         </div>
 
                                         <div className="d-flex justify-content-between mt-3">
-                                            <button type="button" className="btn btn-sm" style={cancelStyle} onClick={() => setFormData({
-                                                subject: '',
-                                                grade: '',
-                                                duration: '',
-                                                textarea: '',
-                                                pdf_file: null,
-                                            })} disabled={isLoading}>
+                                            <button type="button" className="btn btn-sm" style={cancelStyle} onClick={handleReset} disabled={isLoading}>
                                                 <FaEraser /> Reset
                                             </button>
                                             <button type="submit" className="btn btn-sm" style={btnStyle} disabled={isLoading}>
@@ -327,7 +343,10 @@ export default function LessonPlan({ BASE_URL }) {
                         ) : (
                             <div className="mt-3" ref={contentRef} id="main-btn">
                                 {renderLessonPlan(apiResponse)}
-                                <button className="btn btn-sm mt-2 mb-3 me-2 no-print" style={btnStyle} onClick={() => setApiResponse(null)}>
+                                <button className="btn btn-sm mt-2 mb-3 me-2 no-print" style={btnStyle} onClick={() => {
+                                    setApiResponse(null);
+                                    setWordCount(0);
+                                }}>
                                     <FaArrowLeft /> Generate Another Lesson
                                 </button>
                                 <button className="btn btn-sm mt-2 mb-3 no-print" style={pdfStyle} onClick={handlePrint}>
@@ -502,3 +521,4 @@ const renderLessonPlan = (lessonPlan) => {
         </div>
     );
 };
+

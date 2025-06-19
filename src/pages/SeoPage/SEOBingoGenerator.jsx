@@ -239,7 +239,7 @@ export default function SEOBingoGenerator() {
 
                     {/* Right Side Timeline */}
                     <div className="col-md-6 mt-4 mt-md-0">
-                        <h4 className="fw-bold text-danger mb-4">Why Use the Fun Math Generator?</h4>
+                        <h4 className="fw-bold text-danger mb-4">Why Use the Bingo Generator?</h4>
                         <div className="timeline-step mb-4">
                             <div className="circle red">1</div>
                             <div className="timeline-content">
@@ -365,7 +365,7 @@ export default function SEOBingoGenerator() {
             <hr className="styled-hr" />
             <div className="col-md-10 mx-auto">
                 <p className="text-muted paraStyle p-2">
-                    Whether you’re turning geometry into a soccer challenge or using pizza slices to teach fractions — <span className='fw-bold'>the Fun Math Activities Generator</span> transforms traditional math into meaningful fun.
+                    Whether you're reviewing animal habitats or prepping for a spelling quiz, the <span className='fw-bold'>Bingo Generator</span> adds energy and excitement to learning — all with a click.
                 </p>
             </div>
             <Footer />
