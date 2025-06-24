@@ -85,9 +85,7 @@ export default function RoutingConfig() {
   const pageTitle = routeTitleMap[location.pathname] || 'Error 404 - AI Tools for Teachers';
 
   // const API_BASE_URL = "https://site.chimpvine.com";
-  const API_BASE_URL = "https://teachertools-api.chimpvine.com";
-   
-
+  // const API_BASE_URL = "https://teachertools-api.chimpvine.com";
   // const BASE_URL = 'http://192.168.1.100:8080';
   const BASE_URL = 'https://teachertools-api.chimpvine.com';
   
@@ -100,9 +98,9 @@ export default function RoutingConfig() {
       </Helmet>
       <ScrollToTop/>
       <Routes>
-        <Route path="/" element={<GetStarted API_BASE_URL={API_BASE_URL}/>} />
-        <Route path="/login" element={<Login API_BASE_URL={API_BASE_URL}/>}  />
-        <Route path="/about-us" element={<Aboutus API_BASE_URL={API_BASE_URL}/>} />
+        <Route path="/" element={<GetStarted BASE_URL={BASE_URL}/>} />
+        <Route path="/login" element={<Login BASE_URL={BASE_URL}/>}  />
+        <Route path="/about-us" element={<Aboutus BASE_URL={BASE_URL}/>} />
         <Route element={<PrivateRoute />}>
           <Route path="/ai-tools-for-teachers" element={<MainPlanner />} />
           <Route path="/lesson-planner" element={<LessonPlanner BASE_URL={BASE_URL} />} />

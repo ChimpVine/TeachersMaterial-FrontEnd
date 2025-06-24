@@ -8,7 +8,7 @@ import { UserContext } from '../../context/UserContext';
 import { NavLink } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-export default function Aboutus({ API_BASE_URL }) {
+export default function Aboutus({ BASE_URL }) {
 
     const { user } = useContext(UserContext);
 
@@ -173,7 +173,7 @@ export default function Aboutus({ API_BASE_URL }) {
                 <div className="mb-3" style={{ fontSize: '1.25rem', color: '#555' }}>
                     Let’s chat about your goals and get started !
                 </div>
-                <NavLink to={`${API_BASE_URL}/contact-us/`} target='_blank'>
+                <NavLink to={`${BASE_URL}/contact-us/`} target='_blank'>
                     <button className='btn btn-outline-dark btn-lg mt-3 me-2'>Contact Us</button>
                 </NavLink>
             </div>

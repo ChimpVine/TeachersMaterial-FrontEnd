@@ -71,7 +71,10 @@ const overlayStyle = {
     borderRadius: '8px',
 };
 
-const Login = ({API_BASE_URL}) => {
+
+const API_BASE_URL = "https://site.chimpvine.com";
+
+const Login = ({BASE_URL}) => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [errorMessage, setErrorMessage] = useState('');
     const [loading, setLoading] = useState(true);
@@ -95,10 +98,10 @@ const Login = ({API_BASE_URL}) => {
         setErrorMessage('');
         setLoading(true);
 
-        //   const response = await axios.post(`${API_BASE_URL}/wp-json/custom/v1/login`,       
+        //   const response = await axios.post(`${BASE_URL}/wp-json/custom/v1/login`,       
 
         try {
-            const response = await axios.post(`${API_BASE_URL}/api/login`, {
+            const response = await axios.post(`${BASE_URL}/api/login`, {
                 username: data.username,
                 password: data.password,
             });
@@ -212,7 +215,7 @@ const Login = ({API_BASE_URL}) => {
 
                         <div className='mt-3' style={{ opacity: loading ? 0.5 : 1 }}>
                             <span>Don't have an account? </span>
-                            <NavLink to='/pricing-plans'>
+                            <NavLink  to={`${API_BASE_URL}/register/chimpvine-membership/`}>
                                 <label className='fw-bold' style={pointerStyle}>Sign Up Now</label>
                             </NavLink>
                         </div>
