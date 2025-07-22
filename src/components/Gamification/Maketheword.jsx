@@ -129,6 +129,7 @@ export default function Maketheword({ BASE_URL }) {
                                             </label>
                                             <input
                                                 type="text"
+                                                placeholder="e.g. Exploring Space and the Solar System"
                                                 className={`form-control form-control-sm mb-2 ${errors.theme ? "is-invalid" : ""}`}
                                                 id="theme"
                                                 {...register("theme", {
