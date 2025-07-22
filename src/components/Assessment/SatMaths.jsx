@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import NavBar from "../NavBar";
-import { FaArrowRight, FaEraser, FaArrowLeft, FaCloudDownloadAlt } from "react-icons/fa";
+import { FaArrowRight, FaEraser, FaArrowLeft, FaCloudDownloadAlt, FaInfoCircle } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import Spinner from "../../spinner/Spinner";
@@ -144,14 +144,14 @@ export default function SatMath({ BASE_URL }) {
 
   const renderMath = (text) => {
     if (!text) return null;
-  
+
     // Check if the entire string is a LaTeX expression without $...$ wrapping
     const isPureLatex = /^[a-zA-Z0-9\s^_\\\{\}\[\]\(\)\+\-\=\/\*\.]+$/.test(text);
-  
+
     if (isPureLatex) {
       return <BlockMath math={text} />;
     }
-  
+
     // Otherwise use regex splitting
     const parts = text.split(/(\${1,2}[^$]+\${1,2})/g);
     return parts.map((part, index) => {
@@ -192,14 +192,35 @@ export default function SatMath({ BASE_URL }) {
                       placeholder="Enter your topic"
                       {...register("topic", {
                         required: "Topic is required",
-                        pattern: {
-                          value: /^(?!\s)(?![0-9])[a-zA-Z0-9.,'"-\s]+$/,
-                          message: 'The topic must be 1-50 characters long, cannot start with a space or number, and must not contain only special characters.'
+                        validate: (value) => {
+                          const trimmed = value.trim();
+
+                          if (trimmed.length === 0) {
+                            return "Topic cannot be empty or just spaces.";
+                          }
+
+                          const wordCount = trimmed.split(/\s+/).filter(Boolean).length;
+                          if (wordCount > 50) {
+                            return "Topic must not exceed 50 words.";
+                          }
+
+                          if (!/[a-zA-Z]/.test(trimmed)) {
+                            return "Topic must contain at least one letter.";
+                          }
+
+                          if (!/^[a-zA-Z0-9.,'"()\-\s!?]+$/.test(trimmed)) {
+                            return "Topic contains unsupported special characters.";
+                          }
+
+                          return true;
                         }
                       })}
                     />
-                    {errors.topic && <div className="invalid-feedback">{errors.topic.message}</div>}
+                    {errors.topic && (
+                      <div className="invalid-feedback">{errors.topic.message}</div>
+                    )}
                   </div>
+
                   <div className="mb-2">
                     <label htmlFor="difficulty" className="form-label">
                       Difficulty <span className="text-danger">*</span>
@@ -271,13 +292,15 @@ export default function SatMath({ BASE_URL }) {
                   ))}
 
                   <div className="mb-3">
-                    <small className="text-muted">
-                      <strong className="text-danger">Note:</strong>
-                      <ul>
-                        <li>Topic must not be more than 50 characters long.</li>
-                        <li>No special characters (e.g., @, #, $, -, _).</li>
-                      </ul>
-                    </small>
+                    <strong className="text-danger d-block mb-1">Note:</strong>
+                    <ul className="text-muted small ps-3 mb-0">
+                      <li className="d-flex align-items-start gap-2">
+                        <span>
+                          <span className="fw-bold text-dark"> <FaInfoCircle className="text-primary me-1" />Topic Length:</span> Must not exceed
+                          <span className="text-danger fw-semibold ms-1">50 words</span>.
+                        </span>
+                      </li>
+                    </ul>
                   </div>
 
                   <div className="d-flex justify-content-between mt-3">

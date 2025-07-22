@@ -3,7 +3,7 @@ import axios from 'axios';
 import NavBar from '../NavBar';
 import Spinner from '../../spinner/Spinner';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
-import { FaArrowRight, FaEraser, FaArrowLeft, FaCloudDownloadAlt, FaFilePdf } from "react-icons/fa";
+import { FaArrowRight, FaEraser, FaArrowLeft, FaCloudDownloadAlt, FaFilePdf, FaInfoCircle, FaStar } from "react-icons/fa";
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
@@ -151,28 +151,80 @@ export default function FunMath({ BASE_URL }) {
                             <div className="col-md-5 border rounded-3 pt-4 pb-3 px-5 shadow bg-body">
                                 <form onSubmit={handleSubmit(onSubmit)}>
                                     <h4 className="text-center mb-3">Fun Math Generator</h4>
-                                    {[{ label: 'Grade', name: 'grade_level', type: 'select', options: grades },
-                                    { label: 'Math Topic', name: 'math_topic', type: 'text', placeholder: 'Enter math topic (e.g. Fractions, Algebra)' },
-                                    { label: 'Interest', name: 'interest', type: 'text', placeholder: 'Enter interest (e.g. Space, Sports)' }
+                                    {[
+                                        { label: 'Grade', name: 'grade_level', type: 'select', options: grades },
+                                        { label: 'Math Topic', name: 'math_topic', type: 'text', placeholder: 'Enter math topic (e.g. Fractions, Algebra)' },
+                                        { label: 'Interest', name: 'interest', type: 'text', placeholder: 'Enter interest (e.g. Space, Sports)' }
                                     ].map(({ label, name, type, placeholder, options }) => (
                                         <div className="mb-2" key={name}>
-                                            <label htmlFor={name} className="form-label">{label} <span style={{ color: 'red' }}>*</span></label>
+                                            <label htmlFor={name} className="form-label">
+                                                {label} <span style={{ color: 'red' }}>*</span>
+                                            </label>
+
                                             {type === 'select' ? (
-                                                <select id={name} className={`form-select form-select-sm ${errors[name] ? 'is-invalid' : ''}`} {...register(name, { required: `${label} is required` })}>
-                                                    {options.map((option, idx) => (<option key={idx} value={option.value}>{option.label}</option>))}
+                                                <select
+                                                    id={name}
+                                                    className={`form-select form-select-sm ${errors[name] ? 'is-invalid' : ''}`}
+                                                    {...register(name, {
+                                                        required: `${label} is required`,
+                                                    })}
+                                                >
+                                                    {options.map((option, idx) => (
+                                                        <option key={idx} value={option.value}>
+                                                            {option.label}
+                                                        </option>
+                                                    ))}
                                                 </select>
                                             ) : (
-                                                <input type={type} id={name} className={`form-control form-control-sm ${errors[name] ? 'is-invalid' : ''}`} placeholder={placeholder} {...register(name, {
-                                                    required: `${label} is required`,
-                                                    pattern: {
-                                                        value: /^(?!\s)(?![0-9])[a-zA-Z0-9.,'"-\s]+$/,
-                                                        message: 'The topic must be 1-50 characters long, cannot start  with a space, and must not contain special characters.'
-                                                    }
-                                                })} />
+                                                <input
+                                                    type={type}
+                                                    id={name}
+                                                    className={`form-control form-control-sm ${errors[name] ? 'is-invalid' : ''}`}
+                                                    placeholder={placeholder}
+                                                    {...register(name, {
+                                                        required: `${label} is required`,
+                                                        validate: {
+                                                            notEmpty: (value) =>
+                                                                value.trim().length > 0 || `${label} cannot be blank or just spaces.`,
+                                                            hasLetter: (value) =>
+                                                                /[a-zA-Z]/.test(value) || `${label} must include at least one letter.`,
+                                                            notOnlySpecialOrNumbers: (value) =>
+                                                                /[a-zA-Z]/.test(value) && /[^\s]/.test(value) || `${label} must not be only numbers or special characters.`,
+                                                            wordLimit: (value) =>
+                                                                value.trim().split(/\s+/).length <= 50 || `${label} must not exceed 50 words.`,
+                                                        },
+                                                    })}
+                                                />
                                             )}
+
                                             {errors[name] && <div className="invalid-feedback">{errors[name].message}</div>}
                                         </div>
                                     ))}
+                                    <div className="mb-3">
+                                        <strong className="text-danger d-block mb-1">Note:</strong>
+                                        <ul className="text-muted small ps-3 mb-0">
+                                            <li className="d-flex align-items-start gap-2">
+                                                <span>
+                                                    <span className="fw-bold text-dark">
+                                                        <FaInfoCircle className="text-primary me-1" />
+                                                        Math Topic:
+                                                    </span>{' '}
+                                                    Must not exceed
+                                                    <span className="text-danger fw-semibold ms-1">50 words</span>.
+                                                </span>
+                                            </li>
+                                            <li className="d-flex align-items-start gap-2">
+                                                <span>
+                                                    <span className="fw-bold text-dark">
+                                                        <FaStar className="text-warning me-1" />
+                                                        Interest:
+                                                    </span>{' '}
+                                                    Must not exceed
+                                                    <span className="text-danger fw-semibold ms-1">50 words</span>.
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </div>
                                     <div className="d-flex justify-content-between mt-3">
                                         <button
                                             type="button"

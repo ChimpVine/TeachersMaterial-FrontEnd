@@ -167,20 +167,17 @@ export default function YTSummarizer({ BASE_URL }) {
                                                 </button>
                                             </div>
                                             <textarea
-                                                className={`form-control form-control-sm resizeStyle mb-2 ${errors.topic ? "is-invalid" : ""
-                                                    }`}
+                                                className={`form-control form-control-sm resizeStyle mb-2 ${errors.topic ? "is-invalid" : ""}`}
                                                 id="topic"
                                                 {...register("topic", {
                                                     required: "YouTube Video Transcript is required.",
-                                                    pattern: {
-                                                        value: /^(?!\s*$).+/,
-                                                        message: "The transcript cannot be empty.",
-                                                    },
+                                                    validate: (value) =>
+                                                    value.trim().length > 0 || "The transcript cannot be only spaces.",
                                                 })}
                                                 disabled={isLoading}
                                                 placeholder="Enter YouTube Video Transcript (e.g., '0:00 - Hello')"
                                                 rows={8}
-                                            ></textarea>
+                                            />
                                             {errors.topic && <small className="text-danger">{errors.topic.message}</small>}
                                         </div>
                                         <div className="mb-3">

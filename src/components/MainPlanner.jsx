@@ -8,6 +8,7 @@ import {
     FaTasks, FaBookOpen, FaYoutubeSquare, FaUsers, FaTenge, FaFilePdf, FaThLarge, FaQuestion,
     FaRegSmileBeam, FaFilePowerpoint
 } from "react-icons/fa";
+import { IoDocumentTextOutline } from "react-icons/io5";
 import { FaRegFaceLaughSquint } from "react-icons/fa6";
 import { TbMathSymbols, TbZoomQuestion } from "react-icons/tb";
 import { GiPuzzle } from "react-icons/gi";
@@ -253,6 +254,20 @@ const cards = [
     },
     {
         id: 20,
+        category: 'Assessment',
+        icon: (
+            <div className="position-relative">
+                <IoDocumentTextOutline size={50} style={{ color: "#198754" }} />
+                <span className="badge rounded-pill bg-primary position-absolute top-0 end-0">New</span>
+            </div>
+        ),
+        title: 'Handouts Planner',
+        description: 'Design tailored and interactive handouts in minutes with our intuitive Handout Planner.',
+        link: '/handouts-planner',
+        btnColor: 'success'
+    },
+    {
+        id: 21,
         category: 'Planner',
         icon: (
             <div className="position-relative">
@@ -266,7 +281,7 @@ const cards = [
         btnColor: 'danger'
     },
     {
-        id: 21,
+        id: 22,
         category: 'Assessment',
         icon: (
             <div className="position-relative">
@@ -280,7 +295,7 @@ const cards = [
         btnColor: 'success'
     },
     {
-        id: 22,
+        id: 23,
         category: 'Gamification',
         icon: (
             <div className="position-relative">
@@ -294,7 +309,7 @@ const cards = [
         btnColor: 'success'
     },
     {
-        id: 23,
+        id: 24,
         category: 'Assessment',
         icon: (
             <div className="position-relative">
@@ -308,7 +323,7 @@ const cards = [
         btnColor: 'primary'
     },
     {
-        id: 24,
+        id: 25,
         category: 'Summarizer',
         icon: (
             <div className="position-relative">
@@ -322,7 +337,7 @@ const cards = [
         btnColor: 'danger'
     },
     {
-        id: 25,
+        id: 26,
         category: 'Summarizer',
         icon: (
             <div className="position-relative">
@@ -421,7 +436,7 @@ const MainPlanner = () => {
                     {filteredCards.length === 0 ? (
                         <div className="d-flex justify-content-center align-items-center" style={msgStyle}>
                             <div className="text-center">
-                                <IoMdSearch  className='mb-3' size={50}/>
+                                <IoMdSearch className='mb-3' size={50} />
                                 <h4>No AI Tools found</h4>
                                 <p className="text-muted fs-5">
                                     Try a different tab or update your search term.

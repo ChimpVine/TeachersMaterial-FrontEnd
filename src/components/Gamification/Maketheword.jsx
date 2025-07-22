@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import NavBar from '../NavBar';
-import { FaArrowRight, FaEraser, FaArrowLeft, FaCloudDownloadAlt, FaFilePdf } from "react-icons/fa";
+import { FaArrowRight, FaEraser, FaArrowLeft, FaCloudDownloadAlt, FaFilePdf, FaInfoCircle, FaBan } from "react-icons/fa";
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import Spinner from '../../spinner/Spinner';
@@ -182,15 +182,24 @@ export default function Maketheword({ BASE_URL }) {
                                             {errors.number_of_words && <div className="invalid-feedback">{errors.number_of_words.message}</div>}
                                         </div>
                                         <div className="mb-3">
-                                            <small className="text-muted">
-                                                <strong className="text-danger">Note:</strong>
-                                                <ul>
-                                                    <li>Theme must not be more than 50 characters long.</li>
-                                                    <li>No special characters (e.g., @, #, $, -, _).</li>
-                                                </ul>
-                                            </small>
+                                            <strong className="text-danger d-block mb-1">Note:</strong>
+                                            <ul className="text-muted small ps-3 mb-0">
+                                                <li className="d-flex align-items-center gap-2">
+                                                    <FaInfoCircle className="text-primary" />
+                                                    <span>
+                                                        <span className="fw-bold text-dark">Theme Length:</span> Must not exceed
+                                                        <span className="text-danger fw-semibold ms-1">50 characters</span>.
+                                                    </span>
+                                                </li>
+                                                <li className="d-flex align-items-center gap-2">
+                                                    <FaBan className="text-danger" />
+                                                    <span>
+                                                        <span className="fw-bold text-dark">No Special Characters:</span>{' '}
+                                                        Avoid using symbols like <span className="text-danger">@, #, $, -, _</span>.
+                                                    </span>
+                                                </li>
+                                            </ul>
                                         </div>
-
                                         <div className="d-flex justify-content-between mt-3">
                                             <button type="button" className="btn btn-sm" style={cancelStyle} onClick={() => reset()} disabled={isLoading}>
                                                 <FaEraser /> Reset

@@ -53,7 +53,7 @@ const TypingEffect = () => {
 
 const API_BASE_URL = "https://site.chimpvine.com";
 
-const GetStarted = ({ BASE_URL }) => {
+const GetStarted = () => {
     const { login, user } = useContext(UserContext);
     const [searchParams] = useSearchParams();
 

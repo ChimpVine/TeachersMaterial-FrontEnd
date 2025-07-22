@@ -561,3 +561,18 @@ math-field::part(menu-toggle) {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+
+/* Output CSS Style */
+.pdf-style {
+    display: inline-block;
+    width: 130px;
+    height: 1px;
+    background-color: black;
+    border-bottom: 1px solid black;
+}
+
+.noteStyle{
+    color: red;
+}
+

@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import axios from 'axios';
 import pptxgen from 'pptxgenjs';
 import { FaArrowRight, FaEraser, FaArrowLeft, FaEdit, FaTrashAlt, FaFilePowerpoint } from 'react-icons/fa';
+import { FaRegFileLines } from "react-icons/fa6";
 import { toast } from 'react-toastify';
 import NavBar from '../NavBar';
 import Spinner from '../../spinner/Spinner';
@@ -268,14 +269,23 @@ export default function SlideGenerator({ BASE_URL }) {
                                     {errors.grade && (
                                         <div className="form-text text-danger mb-1">Slide number is required.</div>
                                     )}
-                                    <div className="mb-3">
-                                        <small className="text-muted">
-                                            <strong className='text-danger'>Note:</strong>
-                                            <ul>
-                                                <li>Ensure the title to <span className='fw-bold'>50 words</span> and the objectives to <span className='fw-bold'>500 words.</span></li>
-                                            </ul>
-                                        </small>
-                                    </div>
+                                    <strong className="text-danger d-block mb-1">Note:</strong>
+                                    <ul className="text-muted small ps-3 mb-0">
+                                        <li className="mb-1 d-flex align-items-start flex-wrap">
+                                            <FaEdit className="me-2 text-primary flex-shrink-0" />
+                                            <span className="fw-bold text-dark">Title Limit:</span>
+                                            <span className="flex-grow-1 ms-1">
+                                                Must not exceed <span className="text-danger fw-semibold">50 words</span>.
+                                            </span>
+                                        </li>
+                                        <li className="mb-1 d-flex align-items-start flex-wrap">
+                                            <FaRegFileLines className="me-2 text-danger flex-shrink-0" />
+                                            <span className="fw-bold text-dark">Objective Limit:</span>
+                                            <span className="flex-grow-1 ms-1">
+                                                Must not exceed <span className="text-danger fw-semibold">500 words</span>.
+                                            </span>
+                                        </li>
+                                    </ul>
                                     <div className="d-flex justify-content-between mt-3">
                                         <button type="button" className="btn btn-sm btn-danger" onClick={() => reset()}>
                                             <FaEraser /> Reset

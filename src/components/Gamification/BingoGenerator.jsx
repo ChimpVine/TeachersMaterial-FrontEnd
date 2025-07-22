@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Spinner from '../../spinner/Spinner';
-import { FaArrowRight, FaEraser, FaArrowLeft, FaCloudDownloadAlt } from "react-icons/fa";
+import { FaArrowRight, FaEraser, FaArrowLeft, FaCloudDownloadAlt, FaInfoCircle, FaBan } from "react-icons/fa";
 import NavBar from '../NavBar';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
 import Cookies from 'js-cookie';
@@ -60,11 +60,10 @@ export default function BingoGenerator({ BASE_URL }) {
         } catch (error) {
             setApiResponse(null);
             if (error.response) {
-                const backendError = error.response.data?.error || error.response.data?.message || 'Failed to generate Bingo';
-                toast.error(backendError);
+                const backendError = error.response.data?.error || error.response.data?.message || 'Failed to generate bingo.';
+                toast.warning(backendError);
                 if (error.response.status === 401) {
                     toast.warning('This email has been used on another device. Redirecting to login...');
-
                     Cookies.remove('authToken');
                     Cookies.remove('site_url');
                     Cookies.remove('Display_name');
@@ -169,13 +168,23 @@ export default function BingoGenerator({ BASE_URL }) {
                                         </div>
 
                                         <div className="mb-3">
-                                            <small className="text-muted">
-                                                <strong className="text-danger">Note:</strong>
-                                                <ul>
-                                                    <li>Topic must not be more than 50 words long.</li>
-                                                    <li>No special characters (e.g., @, #, $, -, _).</li>
-                                                </ul>
-                                            </small>
+                                            <strong className="text-danger d-block mb-1">Note:</strong>
+                                            <ul className="text-muted small ps-3 mb-0">
+                                                <li className="d-flex align-items-center gap-2 mb-1">
+                                                    <FaInfoCircle className="text-primary" />
+                                                    <span>
+                                                        <span className="fw-bold text-dark">Topic Limit:</span> Must not exceed
+                                                        <span className="text-danger fw-semibold ms-1">50 words</span>.
+                                                    </span>
+                                                </li>
+                                                <li className="d-flex align-items-center gap-2">
+                                                    <FaBan className="text-danger" />
+                                                    <span>
+                                                        <span className="fw-bold text-dark">No Special Characters:</span> Avoid using symbols like
+                                                        <span className="text-danger ms-1">@, #, $, -, _</span>.
+                                                    </span>
+                                                </li>
+                                            </ul>
                                         </div>
 
                                         <div className="d-flex justify-content-between mt-3">
@@ -184,8 +193,8 @@ export default function BingoGenerator({ BASE_URL }) {
                                                 className="btn btn-sm"
                                                 style={cancelStyle}
                                                 onClick={() => {
-                                                    reset(); 
-                                                    setWordCount(0); 
+                                                    reset();
+                                                    setWordCount(0);
                                                 }}
                                             >
                                                 <FaEraser /> Reset

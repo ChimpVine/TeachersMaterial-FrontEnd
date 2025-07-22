@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import NavBar from '../NavBar';
 import { toast } from 'react-toastify';
-import { FaArrowRight, FaCloudDownloadAlt, FaFilePdf, FaEdit, FaArrowLeft, FaEraser } from "react-icons/fa";
+import { FaArrowRight, FaCloudDownloadAlt, FaArrowLeft, FaEraser, FaFilePdf, FaCut, FaEdit } from "react-icons/fa";
 import Spinner from '../../spinner/Spinner';
 import MCQSingle from '../../pages/MCQSingle';
 import MCQMultiple from '../../pages/MCQMultiple';
@@ -166,15 +166,17 @@ export default function WorkSheet({ BASE_URL }) {
             return;
         }
 
-        const trimmed = formData.topic.trim();
-        const isValidText = trimmed.length <= 250 &&
-            /[a-zA-Z]/.test(trimmed) && // must contain at least one letter
-            /^[a-zA-Z0-9.,'"\-\s!?()]+$/.test(trimmed); // allow specific special characters
+        // const trimmed = formData.topic.trim();
+        // const wordCount = trimmed.split(/\s+/).filter(word => word.length > 0).length;
 
+        // const isValidText =
+        //     wordCount <= 250 &&
+        //     /[a-zA-Z]/.test(trimmed) &&
+        //     /^[a-zA-Z0-9.,'"()\-\s!?]+$/.test(trimmed);
 
-        if (!isValidText) {
-            toast.warning("Description must be 250 characters or fewer, contain at least one letter, and only use standard punctuation.");
-        }
+        // if (!isValidText) {
+        //     toast.warning("Description must be 250 words or fewer, contain at least one letter, and only use standard punctuation.");
+        // }
 
         if (!formData.pdfFile) {
             toast.warning('Please upload a PDF file.');
@@ -238,7 +240,9 @@ export default function WorkSheet({ BASE_URL }) {
                     window.location.reload();
                 }, 2000);
             } else {
-                toast.error('Failed to generate worksheet!');
+                const errorMsg = error.response?.data?.error || 'File description contains invalid characters';
+                toast.error(errorMsg);
+
                 setLoading(false);
                 setFormVisible(true);
             }
@@ -358,7 +362,7 @@ export default function WorkSheet({ BASE_URL }) {
                                     <h4 className="text-center mb-3">Worksheet Planner</h4>
                                     <div className="mb-2">
                                         <label htmlFor="subject" className="form-label">
-                                            Subject <span style={{ color: 'red' }}>*</span>
+                                            Subject <span className='noteStyle'>*</span>
                                         </label>
                                         <select
                                             className="form-select form-select-sm mb-3"
@@ -375,7 +379,7 @@ export default function WorkSheet({ BASE_URL }) {
                                         </select>
 
                                         <label htmlFor="grade" className="form-label">
-                                            Grade <span style={{ color: 'red' }}>*</span>
+                                            Grade <span className='noteStyle'>*</span>
                                         </label>
                                         <select
                                             className="form-select form-select-sm mb-3"
@@ -392,7 +396,7 @@ export default function WorkSheet({ BASE_URL }) {
                                         </select>
 
                                         <label htmlFor="number" className="form-label">
-                                            Number of Questions <span style={{ color: 'red' }}>*</span>
+                                            Number of Questions <span className='noteStyle'>*</span>
                                         </label>
                                         <select
                                             className="form-select form-select-sm mb-3"
@@ -409,7 +413,7 @@ export default function WorkSheet({ BASE_URL }) {
                                         </select>
 
                                         <label htmlFor="question-type" className="form-label">
-                                            Question Type <span style={{ color: 'red' }}>*</span>
+                                            Question Type <span className='noteStyle'>*</span>
                                         </label>
                                         <select
                                             className="form-select form-select-sm mb-3"
@@ -428,7 +432,7 @@ export default function WorkSheet({ BASE_URL }) {
                                         {subOptions.length > 0 && (
                                             <>
                                                 <label htmlFor="sub-question-type" className="form-label">
-                                                    Sub Question Type <span style={{ color: 'red' }}>*</span>
+                                                    Sub Question Type <span className='noteStyle'>*</span>
                                                 </label>
                                                 <select
                                                     className="form-select form-select-sm mb-3"
@@ -447,7 +451,7 @@ export default function WorkSheet({ BASE_URL }) {
                                         )}
 
                                         <label htmlFor="pdf_file" className="form-label">
-                                            File Upload <span style={{ color: 'red' }}>*</span>
+                                            File Upload <span className='noteStyle'>*</span>
                                         </label>
                                         <input
                                             type="file"
@@ -459,7 +463,7 @@ export default function WorkSheet({ BASE_URL }) {
                                         />
 
                                         <label htmlFor="textarea" className="form-label">
-                                            File Description Label <span style={{ color: 'red' }}>*</span>
+                                            File Description <span className='noteStyle'>*</span>
                                         </label>
                                         <textarea
                                             type="text"
@@ -467,20 +471,38 @@ export default function WorkSheet({ BASE_URL }) {
                                             placeholder="Briefly describe the file you are uploading (e.g. Arithmetic, History, or Ancient Egypt)"
                                             id="textarea"
                                             name="topic"
+                                            rows="3"
                                             value={formData.topic}
                                             onChange={handleChange}
                                         />
+                                        <div>
+                                            <strong className="text-danger d-block mb-1">Note:</strong>
+                                            <ul className="text-muted small ps-3 mb-0">
+                                                <li className="mb-1 d-flex align-items-start flex-wrap">
+                                                    <FaFilePdf className="me-2 text-danger flex-shrink-0" />
+                                                    <span className="fw-bold text-dark">Upload Requirement:</span>
+                                                    <span className="flex-grow-1 ms-1">
+                                                        Upload a Workbook PDF (max <span className="text-danger fw-semibold">500KB</span>).
+                                                    </span>
+                                                </li>
 
-                                        <div className="mb-3">
-                                            <small className="text-muted">
-                                                <strong className='text-danger'>Note:</strong>
-                                                <ul>
-                                                    <li>For better results, Upload a <span style={{ color: 'red' }}>Workbook</span> PDF under 500KB.</li>
-                                                    <li>To shorten a large PDF,<NavLink to="/pdf-splitter" target='_blank'>
-                                                        <span style={{ fontWeight: 'bold' }}> Click here</span>
-                                                    </NavLink></li>
-                                                </ul>
-                                            </small>
+                                                <li className="mb-1 d-flex align-items-start flex-wrap">
+                                                    <FaEdit className="me-2 text-primary flex-shrink-0" />
+                                                    <span className="fw-bold text-dark">File Description Limit:</span>
+                                                    <span className="flex-grow-1 ms-1">
+                                                        Must not exceed <span className="text-danger fw-semibold">250 words</span>.
+                                                    </span>
+                                                </li>
+
+                                                <li className="d-flex align-items-start flex-wrap">
+                                                    <FaCut className="me-2 text-success flex-shrink-0" />
+                                                    <span className="fw-bold text-dark">PDF Too Large?</span>
+                                                    <NavLink to="/pdf-splitter" target="_blank" className="text-decoration-none flex-grow-1">
+                                                        <span className="fw-bold text-primary ms-1">Click here to split it</span>
+                                                    </NavLink>
+
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
 
@@ -509,8 +531,8 @@ export default function WorkSheet({ BASE_URL }) {
                         <div className="container-fluid ps-3 pe-2">
                             <div id="headerContent" className='section'>
                                 <div className="d-flex justify-content-between mt-5 mb-4">
-                                    <h5>Name: <span style={{ display: "inline-block", width: "130px", height: "1px", backgroundColor: "black", borderBottom: "1px solid black" }}></span></h5>
-                                    <h5>Date: <span style={{ display: "inline-block", width: "130px", height: "1px", backgroundColor: "black", borderBottom: "1px solid black" }}></span></h5>
+                                    <h5>Name: <span className='pdf-style'></span></h5>
+                                    <h5>Date: <span className='pdf-style'></span></h5>
                                 </div>
                             </div>
                             {

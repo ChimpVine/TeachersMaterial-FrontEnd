@@ -16,7 +16,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Router>
     <UserProvider>
-      <ToastContainer position="top-right" autoClose={1000} pauseOnHover={false}/>
+      <ToastContainer position="top-right" autoClose={2000} pauseOnHover={false}/>
       <RoutingConfig />
     </UserProvider>
     </Router>

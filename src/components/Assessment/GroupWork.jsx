@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import NavBar from '../NavBar';
-import { FaArrowRight, FaEraser, FaArrowLeft, FaCloudDownloadAlt } from "react-icons/fa";
+import { FaArrowRight, FaEraser, FaArrowLeft, FaCloudDownloadAlt, FaEdit } from "react-icons/fa";
+import { FaRegFileLines } from "react-icons/fa6";
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import Spinner from '../../spinner/Spinner';
@@ -199,20 +200,20 @@ export default function GroupWork({ BASE_URL }) {
                         placeholder="Enter learning objectives (e.g. Objectives focus on describing movement, observing changes in motion under varying forces, and understanding how mass affects the force needed for motion.)"
                         rows={3}
                         {...register('learning_objective', {
-                          required: 'Learning objective is required',
-                          validate: (value) => {
-                            const trimmed = value.trim();
-                        
-                            if (trimmed.length === 0) return 'Learning objective is required';
-                            if (trimmed.length > 250) return 'The objective must be 250 characters or fewer.';
-                            if (!/^[a-zA-Z0-9.,'"-\s]+$/.test(trimmed))
-                              return 'Only letters, numbers, spaces, and basic punctuation (.,\'"-) are allowed.';
-                            if (!/[a-zA-Z]/.test(trimmed))
-                              return 'The objective must contain at least one letter.';
-                            if (/^[.,'"-\s]+$/.test(trimmed))
-                              return 'Objective cannot be only punctuation or empty symbols.';
-                        
-                            return true;
+                          required: 'Learning objective is required.',
+                          validate: {
+                            maxWords: (value) => {
+                              const wordCount = value.trim().split(/\s+/).filter(Boolean).length;
+                              return wordCount <= 250 || 'Learning objective must be 250 words or fewer.';
+                            },
+                            hasLetter: (value) =>
+                              /[a-zA-Z]/.test(value) || 'Learning objective must contain at least one letter.',
+                            notOnlyPunctuation: (value) =>
+                              /[a-zA-Z0-9]/.test(value) || 'Objective cannot be only punctuation or empty symbols.',
+                          },
+                          pattern: {
+                            value: /^(?!\s*$)[a-zA-Z0-9.,'"!?()\-\s]+$/,
+                            message: 'Learning objective contains invalid characters or is only whitespace.',
                           }
                         })}
                       />
@@ -239,14 +240,23 @@ export default function GroupWork({ BASE_URL }) {
                       </select>
                       {errors.group_size && <div className="invalid-feedback">{errors.group_size.message}</div>}
                     </div>
-                    <div className="mb-3">
-                      <small className="text-muted">
-                        <strong className='text-danger'>Note:</strong>
-                        <ul>
-                          <li>Ensure the topic to <span className='fw-bold'>50 words</span> and the objectives to <span className='fw-bold'>500 words.</span></li>
-                        </ul>
-                      </small>
-                    </div>
+                    <strong className="text-danger d-block mb-1">Note:</strong>
+                    <ul className="text-muted small ps-3 mb-0">
+                      <li className="mb-1 d-flex align-items-start flex-wrap">
+                        <FaEdit className="me-2 text-primary flex-shrink-0" />
+                        <span className="fw-bold text-dark">Title Limit:</span>
+                        <span className="flex-grow-1 ms-1">
+                          Must not exceed <span className="text-danger fw-semibold">50 words</span>.
+                        </span>
+                      </li>
+                      <li className="mb-1 d-flex align-items-start flex-wrap">
+                        <FaRegFileLines className="me-2 text-danger flex-shrink-0" />
+                        <span className="fw-bold text-dark">Objective Limit:</span>
+                        <span className="flex-grow-1 ms-1">
+                          Must not exceed <span className="text-danger fw-semibold">250 words</span>.
+                        </span>
+                      </li>
+                    </ul>
                     <div className="d-flex justify-content-between mt-3">
                       <button type="button" className="btn btn-sm" style={cancelStyle} onClick={() => reset()} disabled={isLoading}>
                         <FaEraser /> Reset

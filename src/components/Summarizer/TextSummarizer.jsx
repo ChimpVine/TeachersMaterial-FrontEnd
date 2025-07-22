@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import NavBar from '../NavBar';
-import { FaArrowRight, FaEraser, FaArrowLeft, FaCloudDownloadAlt } from "react-icons/fa";
+import { FaArrowRight, FaEraser, FaArrowLeft, FaCloudDownloadAlt, FaEdit } from "react-icons/fa";
 import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
 import Spinner from '../../spinner/Spinner';
@@ -20,7 +20,7 @@ export default function TextSummarizer({ BASE_URL }) {
     const [isLoading, setIsLoading] = useState(false);
     const [wordCount, setWordCount] = useState(0);
 
-    const textValue = watch("text", "");  
+    const textValue = watch("text", "");
 
     useEffect(() => {
         const count = textValue.trim() ? textValue.trim().split(/\s+/).length : 0;
@@ -123,11 +123,11 @@ export default function TextSummarizer({ BASE_URL }) {
                                                 {...register('text', {
                                                     required: 'Text is required',
                                                     pattern: {
-                                                      value: /^(?!\s)(?![0-9])[a-zA-Z0-9.,'"-\s]*$/,
-                                                      message: 'Only letters, numbers, spaces, and basic punctuation (.,\'"-) are allowed. Cannot start with space or number.'
+                                                        value: /^(?!\s)(?![0-9])[a-zA-Z0-9.,'"-\s]*$/,
+                                                        message: 'Only letters, numbers, spaces, and basic punctuation (.,\'"-) are allowed. Cannot start with space or number.'
                                                     },
                                                     validate: validateWordCount
-                                                  })}
+                                                })}
                                             />
                                             {errors.text && <div className="invalid-feedback">{errors.text.message}</div>}
                                             {/* Word count aligned to the right side */}
@@ -153,13 +153,13 @@ export default function TextSummarizer({ BASE_URL }) {
                                             </select>
                                             {errors.summary_format && <div className="invalid-feedback">{errors.summary_format.message}</div>}
                                         </div>
-                                        <div className="mb-3">
-                                            <small className="text-muted">
-                                                <strong className='text-danger'>Note:</strong>
-                                                <ul>
-                                                    <li> Please ensure that the text input are concise and under 1000 words.</li>
-                                                </ul>
-                                            </small>
+                                        <div className="d-flex align-items-center flex-wrap gap-1">
+                                            <FaEdit className="text-primary" />
+                                            <span className="fw-bold">Note :</span>
+                                            <span className="text-muted small">
+                                                Please ensure that the text inputs are concise and under
+                                                <span className="text-danger fw-semibold ms-1">1000 words</span>.
+                                            </span>
                                         </div>
                                         <div className="d-flex justify-content-between mt-3">
                                             <button

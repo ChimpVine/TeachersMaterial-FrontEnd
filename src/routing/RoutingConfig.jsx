@@ -29,6 +29,7 @@ import BingoGenerator from "../components/Gamification/BingoGenerator.jsx"
 import MysteryCase from "../components/Gamification/Mysterycase.jsx"
 import YTSummarizer from '../components/Summarizer/YTSummarizer.jsx';
 import FunMaths from '../components/Gamification/FunMaths.jsx';
+import HandoutsPlanner from '../components/Planner/HandoutsPlanner.jsx';
 import AIDirectory from '../pages/SeoPage/AIDirectory.jsx';
 import SEOLessonPlanner from '../pages/SeoPage/SEOLessonPlanner.jsx';
 import SEOWorksheet from '../pages/SeoPage/SEOWorksheet.jsx';
@@ -79,16 +80,16 @@ export default function RoutingConfig() {
     '/mystery-case': 'Mystery Case - AI Tools for Teachers',
     '/yt-summarizer': 'YT Summarizer - AI Tools for Teachers',
     '/fun-maths': 'Fun Maths - AI Tools for Teachers',
+    '/handouts-planner': 'Handouts Planner - AI Tools for Teachers',
     '/comingsoon': 'Comingsoon - AI Tools for Teachers',
   };
 
   const pageTitle = routeTitleMap[location.pathname] || 'Error 404 - AI Tools for Teachers';
 
-  // const API_BASE_URL = "https://site.chimpvine.com";
-  // const API_BASE_URL = "https://teachertools-api.chimpvine.com";
-  // const BASE_URL = 'http://192.168.1.100:8080';
   const BASE_URL = 'https://teachertools-api.chimpvine.com';
-  
+
+  // const BASE_URL = 'http://192.168.1.232:8080';
+
   ReactGA.initialize('G-TBNNYXX21K');
 
   return (
@@ -98,7 +99,7 @@ export default function RoutingConfig() {
       </Helmet>
       <ScrollToTop/>
       <Routes>
-        <Route path="/" element={<GetStarted BASE_URL={BASE_URL}/>} />
+        <Route path="/" element={<GetStarted />} />
         <Route path="/login" element={<Login BASE_URL={BASE_URL}/>}  />
         <Route path="/about-us" element={<Aboutus BASE_URL={BASE_URL}/>} />
         <Route element={<PrivateRoute />}>
@@ -122,6 +123,7 @@ export default function RoutingConfig() {
           <Route path="/bingo-generator" element={<BingoGenerator BASE_URL={BASE_URL} />} />
           <Route path="/yt-summarizer" element={<YTSummarizer BASE_URL={BASE_URL} />} />
           <Route path="/fun-maths" element={<FunMaths BASE_URL={BASE_URL} />} />
+          <Route path="/handouts-planner" element={<HandoutsPlanner BASE_URL={BASE_URL} />} />
           <Route path="/comingsoon" element={<ComingSoon />} />
         </Route>
         <Route path="/ai-directory" element={<AIDirectory/>} />

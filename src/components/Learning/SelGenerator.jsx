@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import NavBar from '../NavBar';
-import { FaArrowRight, FaCloudDownloadAlt, FaEraser, FaArrowLeft } from "react-icons/fa";
+import { FaArrowRight, FaCloudDownloadAlt, FaEraser, FaArrowLeft, FaInfoCircle } from "react-icons/fa";
 import { toast } from 'react-toastify';
 import Spinner from '../../spinner/Spinner';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
@@ -82,32 +82,47 @@ export default function SELGenerator({ BASE_URL }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { grade, sel_topic, learning_objectives, duration } = formData;
-        const trimmed = sel_topic.trim();
-        const obj_trimmed = learning_objectives.trim();
-        
-        const isValidtopic = trimmed.length <= 50 &&
-            /[a-zA-Z]/.test(trimmed) && // must contain at least one letter
-            /^[a-zA-Z0-9.,'"\-\s!?()]+$/.test(trimmed); // allow specific special characters
+        const trimmedTopic = sel_topic.trim();
+        const trimmedObjectives = learning_objectives.trim();
 
-        const isValidobjectives = obj_trimmed.length <= 50 &&
-            /[a-zA-Z]/.test(obj_trimmed) && // must contain at least one letter
-            /^[a-zA-Z0-9.,'"\-\s!?()]+$/.test(obj_trimmed); // allow specific special characters
+        // Helper to count words
+        const countWords = (text) => text.trim().split(/\s+/).filter(Boolean).length;
 
+        const topicWordCount = countWords(trimmedTopic);
+        const objectivesWordCount = countWords(trimmedObjectives);
+
+        // Validation Rules
+        const isValidTopic =
+            topicWordCount <= 50 &&
+            /[a-zA-Z]/.test(trimmedTopic) && 
+            /^[a-zA-Z0-9.,'"\-\s!?()]+$/.test(trimmedTopic); 
+
+        const isValidObjectives =
+            objectivesWordCount <= 250 &&
+            /[a-zA-Z]/.test(trimmedObjectives) &&
+            /^[a-zA-Z0-9.,'"\-\s!?()]+$/.test(trimmedObjectives);
+
+        // Check for empty fields
         if (!grade || !sel_topic || !learning_objectives || !duration) {
             toast.warning('Please fill in all fields.');
             return;
         }
 
-        if (!isValidtopic) {
-            toast.warning('Topic must not include special characters or be numbers alone, and must be 50 characters or fewer.');
+        // Check topic validity
+        if (!isValidTopic) {
+            toast.warning(
+                'SEL Topic must be 50 words or fewer, contain at least one letter, and no unsupported special characters.'
+            );
             return;
         }
 
-        if (!isValidobjectives) {
-            toast.warning('Objectives must not include special characters or be numbers alone, and must be 250 characters or fewer.');
+        // Check objectives validity
+        if (!isValidObjectives) {
+            toast.warning(
+                'Learning Objectives must be 250 words or fewer, contain at least one letter, and no unsupported special characters.'
+            );
             return;
         }
-
 
         const formDataToSend = {
             grade,
@@ -264,12 +279,25 @@ export default function SELGenerator({ BASE_URL }) {
                                             />
                                         </div>
                                         <div className="mb-3">
-                                            <small className="text-muted">
-                                                <strong className='text-danger'>Note:</strong>
-                                                <ul>
-                                                    <li>Please ensure that the learning objectives are concise and do not exceed 250 words.</li>
-                                                </ul>
-                                            </small>
+                                            <strong className="text-danger d-block mb-1">Note:</strong>
+                                            <ul className="text-muted small ps-3 mb-0">
+                                                <li className="d-flex align-items-center gap-2">
+                                                    <span>
+                                                        <FaInfoCircle className="text-primary me-1" />
+                                                        <span className="fw-bold text-dark">SEL Topic:</span>{' '}
+                                                        <span className="text-muted">Must not exceed</span>
+                                                        <span className="text-danger fw-semibold ms-1">50 words</span>.
+                                                    </span>
+                                                </li>
+                                                <li className="d-flex align-items-center gap-2">
+                                                    <span>
+                                                        <FaInfoCircle className="text-primary me-1" />
+                                                        <span className="fw-bold text-dark">Learning Objectives:</span>{' '}
+                                                        <span className="text-muted">Must be concise and not exceed</span>
+                                                        <span className="text-danger fw-semibold ms-1">250 words</span>.
+                                                    </span>
+                                                </li>
+                                            </ul>
                                         </div>
                                         <div className="d-flex justify-content-between mt-3">
                                             <button type="button" className="btn btn-sm" style={cancelStyle} onClick={() => setFormData({

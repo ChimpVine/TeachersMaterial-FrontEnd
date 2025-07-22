@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Spinner from '../../spinner/Spinner';
-import { FaArrowRight, FaEraser, FaArrowLeft, FaCloudDownloadAlt, FaFilePdf } from "react-icons/fa";
+import { FaArrowRight, FaEraser, FaArrowLeft, FaCloudDownloadAlt, FaFilePdf, FaInfoCircle, FaBan } from "react-icons/fa";
 import NavBar from '../NavBar';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
 import Cookies from 'js-cookie';
@@ -48,7 +48,7 @@ export default function JokesGenerator({ BASE_URL }) {
             reset();
             toast.success('Jokes generated successfully!');
         } catch (error) {
-            setApiResponse(null); 
+            setApiResponse(null);
             if (error.response) {
                 const backendError = error.response.data?.error || error.response.data?.message || 'Failed to generate jokes.';
                 toast.error(backendError);
@@ -135,7 +135,11 @@ export default function JokesGenerator({ BASE_URL }) {
                                                     required: 'Topic is required.',
                                                     pattern: {
                                                         value: /^(?!\s)(?![0-9])[a-zA-Z0-9.,'"-\s]+$/,
-                                                        message: 'The topic must be 1-50 characters long, cannot start with a space, and must not contain special characters.'
+                                                        message: 'Cannot start with space or digit, and only letters, numbers, and some punctuation allowed.'
+                                                    },
+                                                    validate: value => {
+                                                        const wordCount = value.trim().split(/\s+/).filter(Boolean).length;
+                                                        return wordCount <= 50 || 'Topic must be 50 words or fewer.';
                                                     }
                                                 })}
                                                 placeholder="Enter topic (e.g. Space, Animals)"
@@ -162,13 +166,23 @@ export default function JokesGenerator({ BASE_URL }) {
                                             {errors.number_of_jokes && <div className="invalid-feedback">{errors.number_of_jokes.message}</div>}
                                         </div>
                                         <div className="mb-3">
-                                            <small className="text-muted">
-                                                <strong className="text-danger">Note:</strong>
-                                                <ul>
-                                                    <li>Topic must not be more than 50 characters long.</li>
-                                                    <li>No special characters (e.g., @, #, $, -, _).</li>
-                                                </ul>
-                                            </small>
+                                            <strong className="text-danger d-block mb-1">Note:</strong>
+                                            <ul className="text-muted small ps-3 mb-0">
+                                                <li className="d-flex align-items-center gap-2 mb-1">
+                                                    <FaInfoCircle className="text-primary" />
+                                                    <span>
+                                                        <span className="fw-bold text-dark">Topic Limit:</span> Must not exceed
+                                                        <span className="text-danger fw-semibold ms-1">50 words</span>.
+                                                    </span>
+                                                </li>
+                                                <li className="d-flex align-items-center gap-2">
+                                                    <FaBan className="text-danger" />
+                                                    <span>
+                                                        <span className="fw-bold text-dark">No Special Characters:</span> Avoid using symbols like
+                                                        <span className="text-danger ms-1">@, #, $, -, _</span>.
+                                                    </span>
+                                                </li>
+                                            </ul>
                                         </div>
                                         <div className="d-flex justify-content-between mt-3">
                                             <button

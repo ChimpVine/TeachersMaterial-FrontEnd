@@ -1,14 +1,13 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import NavBar from '../NavBar';
-import { FaArrowRight, FaEraser, FaArrowLeft, FaRegFilePdf } from "react-icons/fa";
+import { FaArrowRight, FaEraser, FaArrowLeft, FaRegFilePdf, FaEdit } from "react-icons/fa";
 import { toast } from 'react-toastify';
 import Spinner from '../../spinner/Spinner';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 
-// Subjects list
 const subjects = [
     { value: "", label: "Choose a Subject" },
     { value: "english", label: "English" },
@@ -23,7 +22,6 @@ const subjects = [
     { value: "language", label: "Language" }
 ];
 
-// Grades list
 const grades = [
     { value: "", label: "Choose a Grade" },
     { value: "k", label: "Kindergarten" },
@@ -41,7 +39,6 @@ const grades = [
     { value: "12", label: "12th Grade" }
 ];
 
-// Difficulty Levels list
 const difficultyLevels = [
     { value: "", label: "Choose a Difficulty Level" },
     { value: "easy", label: "Easy" },
@@ -49,7 +46,6 @@ const difficultyLevels = [
     { value: "hard", label: "Hard" },
 ];
 
-// Number of Words options
 const numbers = [
     { value: "", label: "Choose the Number of Words" },
     { value: "5", label: "5" },
@@ -97,10 +93,11 @@ export default function VocabularyPlan({ BASE_URL }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { subject, grade, difficultyLevel, topic, numberOfWords } = formData;
-        const trimmed = topic.trim();
-        const isValidText = trimmed.length <= 250 &&
-            /[a-zA-Z]/.test(trimmed) && // must contain at least one letter
-            /^[a-zA-Z0-9.,'"\-\s!?()]+$/.test(trimmed); // allow specific special characters
+
+        // const trimmed = topic.trim();
+        // const isValidText = trimmed.length <= 50 &&
+        //     /[a-zA-Z]/.test(trimmed) && // must contain at least one letter
+        //     /^[a-zA-Z0-9.,'"\-\s!?()]+$/.test(trimmed); // allow specific special characters
 
         // Check if all required fields are filled
         if (!subject || !grade || !difficultyLevel || !topic || !numberOfWords) {
@@ -108,9 +105,9 @@ export default function VocabularyPlan({ BASE_URL }) {
             return;
         }
 
-        if (!isValidText) {
-            toast.warning("Topic must be 50 characters or fewer, contain at least one letter, and only use standard punctuation.");
-        }
+        // if (!isValidText) {
+        //     toast.warning("Topic must be 50 characters or fewer, contain at least one letter, and only use standard punctuation.");
+        // }
 
         const formDataToSend = {
             grade_level: grade,
@@ -202,7 +199,7 @@ export default function VocabularyPlan({ BASE_URL }) {
                                         <h4 className="text-center mb-3">Vocabulary Builder</h4>
                                         <div className="mb-2">
                                             <label htmlFor="subject" className="form-label">
-                                                Subject <span style={{ color: 'red' }}>*</span>
+                                                Subject <span className="noteStyle">*</span>
                                             </label>
                                             <select
                                                 className="form-select form-select-sm mb-3"
@@ -220,7 +217,7 @@ export default function VocabularyPlan({ BASE_URL }) {
                                             </select>
 
                                             <label htmlFor="grade" className="form-label">
-                                                Grade <span style={{ color: 'red' }}>*</span>
+                                                Grade <span className="noteStyle">*</span>
                                             </label>
                                             <select
                                                 className="form-select form-select-sm mb-3"
@@ -238,7 +235,7 @@ export default function VocabularyPlan({ BASE_URL }) {
                                             </select>
 
                                             <label htmlFor="difficultyLevel" className="form-label">
-                                                Difficulty Level <span style={{ color: 'red' }}>*</span>
+                                                Difficulty Level <span className="noteStyle">*</span>
                                             </label>
                                             <select
                                                 className="form-select form-select-sm mb-3"
@@ -256,7 +253,7 @@ export default function VocabularyPlan({ BASE_URL }) {
                                             </select>
 
                                             <label htmlFor="numberOfWords" className="form-label">
-                                                Number of Words <span style={{ color: 'red' }}>*</span>
+                                                Number of Words <span className="noteStyle">*</span>
                                             </label>
                                             <select
                                                 className="form-select form-select-sm mb-2"
@@ -274,7 +271,7 @@ export default function VocabularyPlan({ BASE_URL }) {
                                             </select>
 
                                             <label htmlFor="topic" className="form-label">
-                                                Topic <span style={{ color: 'red' }}>*</span>
+                                                Topic <span className="noteStyle">*</span>
                                             </label>
                                             <input
                                                 type="text"
@@ -286,6 +283,18 @@ export default function VocabularyPlan({ BASE_URL }) {
                                                 disabled={isLoading}
                                                 placeholder="Enter topic (e.g. Force, Algebra, or Ancient Egypt)"
                                             />
+                                        </div>
+                                        <div>
+                                            <strong className="text-danger d-block mb-1">Note:</strong>
+                                            <ul className="text-muted small ps-3 mb-0">
+                                                <li className="mb-1 d-flex align-items-start flex-wrap">
+                                                    <FaEdit className="me-2 text-primary flex-shrink-0" />
+                                                    <span className="fw-bold text-dark">Topic Limit:</span>
+                                                    <span className="flex-grow-1 ms-1">
+                                                        Must not exceed <span className="text-danger fw-semibold">50 words</span>.
+                                                    </span>
+                                                </li>
+                                            </ul>
                                         </div>
 
                                         <div className="d-flex justify-content-between mt-3">
@@ -330,27 +339,12 @@ export default function VocabularyPlan({ BASE_URL }) {
 }
 
 const renderVocabulary = (vocabularyData) => {
-    const nameStyle = {
-        display: "inline-block",
-        width: "130px",
-        height: "1px",
-        backgroundColor: "black",
-        borderBottom: "1px solid black",
-    };
-
-    const dateStyle = {
-        display: "inline-block",
-        width: "130px",
-        height: "1px",
-        backgroundColor: "black",
-        borderBottom: "1px solid black",
-    };
     return (
         <div className="container-fluid mt-3 mb-2 ps-3 pe-2 print-content">
             <div className='section'>
                 <div className="d-flex justify-content-between mt-5 mb-5">
-                    <h5>Name : <span style={nameStyle}></span></h5>
-                    <h5 className='me-3'>Date :  <span style={dateStyle}></span></h5>
+                    <h5>Name : <span className='pdf-style'></span></h5>
+                    <h5 className='me-3'>Date :  <span className='pdf-style'></span></h5>
                 </div>
                 <div className='mb-5'>
                     <h5>Grade: {vocabularyData.grade_level}</h5>

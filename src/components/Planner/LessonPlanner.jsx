@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import axios from 'axios';
 import NavBar from '../NavBar';
-import { FaArrowRight, FaRegFilePdf, FaEraser, FaArrowLeft } from "react-icons/fa";
+import { FaArrowRight, FaRegFilePdf, FaEraser, FaArrowLeft, FaFilePdf, FaEdit, FaCut } from "react-icons/fa";
 import { toast } from 'react-toastify';
 import Spinner from '../../spinner/Spinner';
 import { NavLink } from 'react-router-dom';
@@ -125,9 +125,10 @@ export default function LessonPlan({ BASE_URL }) {
         e.preventDefault();
         const { subject, grade, duration, textarea, pdf_file } = formData;
         const trimmed = textarea.trim();
+        const wordCount = trimmed.trim().split(/\s+/).filter(Boolean).length;
         const isValidObjectives =
-            trimmed.length > 0 &&
-            trimmed.length <= 250 &&
+            wordCount > 0 &&
+            wordCount <= 250 &&
             /^[a-zA-Z0-9.,'"’‘“”!?()\-\s]+$/.test(trimmed);
 
         if (!subject || !grade || !duration || !textarea || !pdf_file) {
@@ -136,7 +137,7 @@ export default function LessonPlan({ BASE_URL }) {
         }
 
         if (!isValidObjectives) {
-            toast.warning("Objective must be 1–250 characters. Only letters, numbers, spaces, and .,'\"-!?() are allowed.");
+            toast.warning("File Description must be 250 words. Only letters, numbers, spaces, and .,'\"-!?() are allowed.");
             return;
         }
 
@@ -231,7 +232,7 @@ export default function LessonPlan({ BASE_URL }) {
                                         <h4 className="text-center mb-3">Lesson Planner</h4>
                                         <div className="mb-2">
                                             <label htmlFor="subject" className="form-label">
-                                                Subject <span style={{ color: 'red' }}>*</span>
+                                                Subject<span className="noteStyle">*</span>
                                             </label>
                                             <select
                                                 className="form-select form-select-sm mb-3"
@@ -248,7 +249,7 @@ export default function LessonPlan({ BASE_URL }) {
                                                 ))}
                                             </select>
                                             <label htmlFor="grade" className="form-label">
-                                                Grade <span style={{ color: 'red' }}>*</span>
+                                                Grade<span className="noteStyle">*</span>
                                             </label>
                                             <select
                                                 className="form-select form-select-sm mb-3"
@@ -266,7 +267,7 @@ export default function LessonPlan({ BASE_URL }) {
                                             </select>
 
                                             <label htmlFor="duration" className="form-label">
-                                                Duration <span style={{ color: 'red' }}>*</span>
+                                                Duration<span className="noteStyle">*</span>
                                             </label>
                                             <select
                                                 className="form-select form-select-sm mb-3"
@@ -285,7 +286,7 @@ export default function LessonPlan({ BASE_URL }) {
 
                                             <div className="d-flex justify-content-between align-items-center">
                                                 <label htmlFor="pdf_file" className="form-label">
-                                                    File Upload <span style={{ color: 'red' }}>*</span>
+                                                    File Upload<span className="noteStyle">*</span>
                                                 </label>
                                             </div>
                                             <input
@@ -299,7 +300,7 @@ export default function LessonPlan({ BASE_URL }) {
                                             />
 
                                             <label htmlFor="textarea" className="form-label">
-                                                File Description Label <span style={{ color: 'red' }}>*</span>
+                                                File Description<span className="noteStyle">*</span>
                                             </label>
                                             <textarea
                                                 type="text"
@@ -316,19 +317,36 @@ export default function LessonPlan({ BASE_URL }) {
                                                     Word count: {wordCount}/250
                                                 </small>
                                             </div>
-                                            <div className="mb-3">
-                                                <small className="text-muted">
-                                                    <strong className='text-danger'>Note:</strong>
-                                                    <ul>
-                                                        <li>Upload a single PDF file under 500KB.</li>
-                                                        <li>To shorten a large PDF,<NavLink to="/pdf-splitter" target='_blank'>
-                                                            <span style={{ fontWeight: 'bold' }}> Click here</span>
-                                                        </NavLink></li>
-                                                    </ul>
-                                                </small>
+                                            <div>
+                                                <strong className="text-danger d-block mb-1">Note:</strong>
+                                                <ul className="text-muted small ps-3 mb-0">
+                                                    <li className="mb-1 d-flex align-items-start flex-wrap">
+                                                        <FaFilePdf className="me-2 text-danger flex-shrink-0" />
+                                                        <span className="fw-bold text-dark">Upload Requirement:</span>
+                                                        <span className="flex-grow-1 ms-1">
+                                                            Upload a single PDF (max <span className="text-danger fw-semibold">500KB</span>).
+                                                        </span>
+                                                    </li>
+
+                                                    <li className="mb-1 d-flex align-items-start flex-wrap">
+                                                        <FaEdit className="me-2 text-primary flex-shrink-0" />
+                                                        <span className="fw-bold text-dark">File Description Limit:</span>
+                                                        <span className="flex-grow-1 ms-1">
+                                                            Must not exceed <span className="text-danger fw-semibold">250 words</span>.
+                                                        </span>
+                                                    </li>
+
+                                                    <li className="d-flex align-items-start flex-wrap">
+                                                        <FaCut className="me-2 text-success flex-shrink-0" />
+                                                        <span className="fw-bold text-dark">PDF Too Large?</span>
+                                                        <NavLink to="/pdf-splitter" target="_blank" className="text-decoration-none flex-grow-1">
+                                                            <span className="fw-bold text-primary ms-1">Click here to split it</span>
+                                                        </NavLink>
+                                                        .
+                                                    </li>
+                                                </ul>
                                             </div>
                                         </div>
-
                                         <div className="d-flex justify-content-between mt-3">
                                             <button type="button" className="btn btn-sm" style={cancelStyle} onClick={handleReset} disabled={isLoading}>
                                                 <FaEraser /> Reset
@@ -362,29 +380,12 @@ export default function LessonPlan({ BASE_URL }) {
 }
 
 const renderLessonPlan = (lessonPlan) => {
-
-    const nameStyle = {
-        display: "inline-block",
-        width: "130px",
-        height: "1px",
-        backgroundColor: "black",
-        borderBottom: "1px solid black",
-    };
-
-    const dateStyle = {
-        display: "inline-block",
-        width: "130px",
-        height: "1px",
-        backgroundColor: "black",
-        borderBottom: "1px solid black",
-    };
-
     return (
         <div className="container-fluid mt-3 mb-2 ps-3 pe-2 print-content">
             <div className='section'>
                 <div className="d-flex justify-content-between mt-5 mb-5">
-                    <h5>Name : <span style={nameStyle}></span></h5>
-                    <h5 className='me-3'>Date :  <span style={dateStyle}></span></h5>
+                    <h5>Name : <span className='pdf-style'></span></h5>
+                    <h5 className='me-3'>Date :  <span className='pdf-style'></span></h5>
                 </div>
                 <div className='mb-3'>
                     <h5>Subject: {lessonPlan.subject} </h5>

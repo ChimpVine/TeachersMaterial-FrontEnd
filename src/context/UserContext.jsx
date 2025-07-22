@@ -7,8 +7,7 @@ export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
 
-   
-    const API_BASE_URL = "https://test-teachertools-api.chimpvine.com";
+    const API_BASE_URL = "https://teachertools-api.chimpvine.com";
 
     const [user, setUser] = useState(null);
 

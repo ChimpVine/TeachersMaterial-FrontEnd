@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import NavBar from '../NavBar';
-import { FaArrowRight, FaEraser, FaArrowLeft, FaCloudDownloadAlt } from "react-icons/fa";
+import { FaArrowRight, FaEraser, FaArrowLeft, FaCloudDownloadAlt, FaUserAlt, FaChild, FaFileAlt, FaBug, FaStar } from "react-icons/fa";
 import { toast } from 'react-toastify';
 import Spinner from '../../spinner/Spinner';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
@@ -54,38 +54,41 @@ export default function SocialStory({ BASE_URL }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+
         const { child_name, child_age, scenario, behavior_challenge, ideal_behavior } = formData;
+
+        // Helper to count words
+        const countWords = (text) => {
+            return text.trim().split(/\s+/).filter(Boolean).length;
+        };
+
+        // Validation for allowed characters + at least one letter
+        const isValidText = (text) => {
+            const trimmed = text.trim();
+            return (
+                countWords(trimmed) <= 50 &&
+                /^[a-zA-Z0-9.,'"-\s]+$/.test(trimmed) &&
+                /[a-zA-Z]/.test(trimmed)
+            );
+        };
 
         const isValidChildAge = /^[1-9]$|^1[0-5]$/.test(child_age.trim()) && child_age.trim() !== '';
 
-        const isValidName = formData.child_name.trim().length <= 50 &&
-            /^[a-zA-Z0-9.,'"-\s]+$/.test(formData.child_name.trim()) &&
-            /[a-zA-Z]/.test(formData.child_name.trim());
-
-        const isValidScenario = formData.scenario.trim().length <= 50 &&
-            /^[a-zA-Z0-9.,'"-\s]+$/.test(formData.scenario.trim()) &&
-            /[a-zA-Z]/.test(formData.scenario.trim());
-
-        const isValidBehavior = formData.behavior_challenge.trim().length <= 50 &&
-            /^[a-zA-Z0-9.,'"-\s]+$/.test( formData.behavior_challenge.trim()) &&
-            /[a-zA-Z]/.test( formData.behavior_challenge.trim());
-
-        const isValidIdeal = formData.ideal_behavior.trim().length <= 50 &&
-            /^[a-zA-Z0-9.,'"-\s]+$/.test(formData.ideal_behavior.trim()) &&
-            /[a-zA-Z]/.test(formData.ideal_behavior.trim());
-
+        const isValidName = isValidText(child_name);
+        const isValidScenario = isValidText(scenario);
+        const isValidBehavior = isValidText(behavior_challenge);
+        const isValidIdeal = isValidText(ideal_behavior);
 
         // Check if all required fields are filled
-        if (!child_name || !child_age || !scenario || !behavior_challenge || !ideal_behavior) {
+        if (!child_name || !child_age || !scenario || !behavior_challenge || !ideal_behavior || !needs ) {
             toast.warning('Please fill in all required fields.');
             return;
         }
 
         if (!isValidName || !isValidScenario || !isValidBehavior || !isValidIdeal) {
-            toast.warning('Field must not include special characters or be numbers alone, and must be 50 characters or fewer.');
+            toast.warning('Fields must contain only allowed characters, at least one letter, and be 50 words or fewer.');
             return;
         }
-
 
         if (!isValidChildAge) {
             toast.warning("Age must be a number between 1 and 15 with no spaces.");
@@ -308,7 +311,44 @@ export default function SocialStory({ BASE_URL }) {
                                                 placeholder="e.g. Waiting patiently and taking turns"
                                             />
                                         </div>
-
+                                        <strong className="text-danger d-block mb-2">Note:</strong>
+                                        <ul className="text-muted small ps-3 mb-0">
+                                            <li className="mb-1 d-flex align-items-start flex-wrap">
+                                                <FaUserAlt className="me-2 text-primary flex-shrink-0" />
+                                                <span className="fw-bold text-dark">Child's Name:</span>
+                                                <span className="flex-grow-1 ms-1">
+                                                    Must not exceed <span className="text-danger fw-semibold">50 words</span>.
+                                                </span>
+                                            </li>
+                                            <li className="mb-1 d-flex align-items-start flex-wrap">
+                                                <FaChild className="me-2 text-warning flex-shrink-0" />
+                                                <span className="fw-bold text-dark">Child's Age:</span>
+                                                <span className="flex-grow-1 ms-1">
+                                                    Must be less than <span className="text-danger fw-semibold">16 years</span>.
+                                                </span>
+                                            </li>
+                                            <li className="mb-1 d-flex align-items-start flex-wrap">
+                                                <FaFileAlt className="me-2 text-info flex-shrink-0" />
+                                                <span className="fw-bold text-dark">Scenario:</span>
+                                                <span className="flex-grow-1 ms-1">
+                                                    Must not exceed <span className="text-danger fw-semibold">50 words</span>.
+                                                </span>
+                                            </li>
+                                            <li className="mb-1 d-flex align-items-start flex-wrap">
+                                                <FaBug className="me-2 text-danger flex-shrink-0" />
+                                                <span className="fw-bold text-dark">Behavior Challenge:</span>
+                                                <span className="flex-grow-1 ms-1">
+                                                    Must not exceed <span className="text-danger fw-semibold">50 words</span>.
+                                                </span>
+                                            </li>
+                                            <li className="mb-1 d-flex align-items-start flex-wrap">
+                                                <FaStar className="me-2 text-success flex-shrink-0" />
+                                                <span className="fw-bold text-dark">Ideal Behavior:</span>
+                                                <span className="flex-grow-1 ms-1">
+                                                    Must not exceed <span className="text-danger fw-semibold">50 words</span>.
+                                                </span>
+                                            </li>
+                                        </ul>
                                         <div className="d-flex justify-content-between mt-3">
                                             <button
                                                 type="button"

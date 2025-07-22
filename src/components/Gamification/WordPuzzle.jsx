@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import NavBar from '../NavBar';
-import { FaArrowRight, FaEraser, FaArrowLeft, FaCloudDownloadAlt, FaFilePdf } from "react-icons/fa";
+import { FaArrowRight, FaEraser, FaArrowLeft, FaCloudDownloadAlt, FaFilePdf, FaEdit } from "react-icons/fa";
 import { toast } from 'react-toastify';
 import Spinner from '../../spinner/Spinner';
 import NavBreadcrumb from '../../pages/BreadCrumb/BreadCrumb';
@@ -39,20 +39,20 @@ export default function WordPuzzle({ BASE_URL }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { topic, numberofword, difficulty_level } = formData;
-        const trimmed = topic.trim();
-        const isValidText = trimmed.length <= 50 &&
-            /[a-zA-Z]/.test(trimmed) && // must contain at least one letter
-            /^[a-zA-Z0-9.,'"\-\s!?()]+$/.test(trimmed); // allow specific special characters
+        // const trimmed = topic.trim();
+        // const isValidText = trimmed.length <= 50 &&
+        //     /[a-zA-Z]/.test(trimmed) && // must contain at least one letter
+        //     /^[a-zA-Z0-9.,'"\-\s!?()]+$/.test(trimmed); // allow specific special characters
 
         if (!topic || !numberofword || !difficulty_level) {
             toast.warning('Please fill in all required fields.');
             return;
         }
 
-        if (!isValidText) {
-           toast.warning("Topic must be 50 characters or fewer, contain at least one letter, and only use standard punctuation.");
-            return;
-        }
+        // if (!isValidText) {
+        //     toast.warning("Topic must be 50 characters or fewer, contain at least one letter, and only use standard punctuation.");
+        //     return;
+        // }
 
         const formDataToSend = new FormData();
         formDataToSend.append('topic', topic);
@@ -146,25 +146,11 @@ export default function WordPuzzle({ BASE_URL }) {
                                     <form onSubmit={handleSubmit}>
                                         <h4 className="text-center mb-3">Word Puzzle Generator</h4>
                                         <div className="mb-2">
-                                            <label htmlFor="topic" className="form-label">
-                                                Topic <span style={{ color: 'red' }}>*</span>
-                                            </label>
-                                            <input
-                                                type="text"
-                                                className="form-control form-control-sm mb-2"
-                                                id="topic"
-                                                name="topic"
-                                                value={formData.topic}
-                                                onChange={handleChange}
-                                                disabled={isLoading}
-                                                placeholder="Enter topic (e.g. Force, Algebra, or Ancient Egypt)"
-                                            />
-
                                             <label htmlFor="numberofword" className="form-label">
                                                 Number of Words <span style={{ color: 'red' }}>*</span>
                                             </label>
                                             <select
-                                                className="form-select form-select-sm mb-2"
+                                                className="form-select form-select-sm mb-3"
                                                 id="numberofword"
                                                 name="numberofword"
                                                 value={formData.numberofword}
@@ -182,7 +168,7 @@ export default function WordPuzzle({ BASE_URL }) {
                                                 Difficulty Level <span style={{ color: 'red' }}>*</span>
                                             </label>
                                             <select
-                                                className="form-select form-select-sm mb-2"
+                                                className="form-select form-select-sm mb-3"
                                                 id="difficulty_level"
                                                 name="difficulty_level"
                                                 value={formData.difficulty_level}
@@ -194,6 +180,32 @@ export default function WordPuzzle({ BASE_URL }) {
                                                 <option value="medium">Medium</option>
                                                 <option value="hard">Hard</option>
                                             </select>
+
+                                            <label htmlFor="topic" className="form-label">
+                                                Topic <span style={{ color: 'red' }}>*</span>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control form-control-sm mb-3"
+                                                id="topic"
+                                                name="topic"
+                                                value={formData.topic}
+                                                onChange={handleChange}
+                                                disabled={isLoading}
+                                                placeholder="Enter topic (e.g. Force, Algebra, or Ancient Egypt)"
+                                            />
+                                        </div>
+                                        <div>
+                                            <strong className="text-danger d-block mb-2">Note:</strong>
+                                            <ul className="text-muted small ps-3 mb-0">
+                                                <li className="mb-1 d-flex align-items-start flex-wrap">
+                                                    <FaEdit className="me-2 text-primary flex-shrink-0" />
+                                                    <span className="fw-bold text-dark">Topic Limit:</span>
+                                                    <span className="flex-grow-1 ms-1">
+                                                        Must not exceed <span className="text-danger fw-semibold">50 words</span>.
+                                                    </span>
+                                                </li>
+                                            </ul>
                                         </div>
 
                                         <div className="d-flex justify-content-between mt-3">
