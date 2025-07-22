@@ -135,10 +135,16 @@ export default function Maketheword({ BASE_URL }) {
                                                     required: "Theme is required",
                                                     pattern: {
                                                         value: /^(?!\s)(?![0-9])[a-zA-Z0-9.,'"-\s]+$/,
-                                                        message: "The theme must be 1-50 characters long, cannot start with a space or number, and must not contain only special characters."
+                                                        message: "The theme cannot start with a space or number, and must not contain only special characters."
+                                                    },
+                                                    validate: (value) => {
+                                                        const trimmed = value.trim();
+                                                        if (trimmed === "") return "Theme cannot be empty.";
+                                                        const wordCount = trimmed.split(/\s+/).length;
+                                                        if (wordCount > 50) return "Theme must not exceed 50 words.";
+                                                        return true;
                                                     }
                                                 })}
-                                                placeholder="Enter theme (e.g. Animals, Foods, Planets)"
                                             />
                                             {errors.theme && <div className="invalid-feedback">{errors.theme.message}</div>}
                                         </div>
@@ -187,8 +193,8 @@ export default function Maketheword({ BASE_URL }) {
                                                 <li className="d-flex align-items-center gap-2">
                                                     <FaInfoCircle className="text-primary" />
                                                     <span>
-                                                        <span className="fw-bold text-dark">Theme Length:</span> Must not exceed
-                                                        <span className="text-danger fw-semibold ms-1">50 characters</span>.
+                                                        <span className="fw-bold text-dark">Theme:</span> Must not exceed
+                                                        <span className="text-danger fw-semibold ms-1">50 Words.</span>.
                                                     </span>
                                                 </li>
                                                 <li className="d-flex align-items-center gap-2">

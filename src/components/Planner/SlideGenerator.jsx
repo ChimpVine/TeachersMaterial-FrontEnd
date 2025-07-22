@@ -15,9 +15,20 @@ import { useForm } from 'react-hook-form';
 const slideNumbers = ['5', '6', '7', '8', '9', '10'];
 
 const grades = [
-    { value: '', label: 'Choose a Grade' },
-    { value: 'k', label: 'Kindergarten' },
-    ...Array.from({ length: 12 }, (_, i) => ({ value: (i + 1).toString(), label: `${i + 1}th Grade` }))
+    { value: "", label: "Choose a Grade" },
+    { value: "k", label: "Kindergarten" },
+    { value: "1", label: "1st Grade" },
+    { value: "2", label: "2nd Grade" },
+    { value: "3", label: "3rd Grade" },
+    { value: "4", label: "4th Grade" },
+    { value: "5", label: "5th Grade" },
+    { value: "6", label: "6th Grade" },
+    { value: "7", label: "7th Grade" },
+    { value: "8", label: "8th Grade" },
+    { value: "9", label: "9th Grade" },
+    { value: "10", label: "10th Grade" },
+    { value: "11", label: "11th Grade" },
+    { value: "12", label: "12th Grade" }
 ];
 
 export default function SlideGenerator({ BASE_URL }) {
@@ -39,7 +50,6 @@ export default function SlideGenerator({ BASE_URL }) {
 
     const objectiveValue = watch('objective', '');
     const objectiveWordCount = objectiveValue.trim().split(/\s+/).filter(Boolean).length;
-    const isObjectiveLimitExceeded = objectiveWordCount > 500;
 
 
     const breadcrumbItems = [

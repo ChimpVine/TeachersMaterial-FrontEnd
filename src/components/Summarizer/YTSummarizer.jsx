@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { FaArrowRight, FaEraser, FaArrowLeft } from "react-icons/fa";
+import { FaArrowRight, FaEraser, FaArrowLeft, FaInfoCircle } from "react-icons/fa";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../spinner/Spinner';
@@ -172,7 +172,7 @@ export default function YTSummarizer({ BASE_URL }) {
                                                 {...register("topic", {
                                                     required: "YouTube Video Transcript is required.",
                                                     validate: (value) =>
-                                                    value.trim().length > 0 || "The transcript cannot be only spaces.",
+                                                        value.trim().length > 0 || "The transcript cannot be only spaces.",
                                                 })}
                                                 disabled={isLoading}
                                                 placeholder="Enter YouTube Video Transcript (e.g., '0:00 - Hello')"
@@ -181,12 +181,15 @@ export default function YTSummarizer({ BASE_URL }) {
                                             {errors.topic && <small className="text-danger">{errors.topic.message}</small>}
                                         </div>
                                         <div className="mb-3">
-                                            <small className="text-muted">
-                                                <strong className='text-danger'>Note:</strong>
-                                                <ul>
-                                                    <li>Please ensure the YouTube video includes transcript.</li>
-                                                </ul>
-                                            </small>
+                                            <strong className="text-danger d-block mb-1">Note:</strong>
+                                            <ul className="text-muted small ps-3 mb-0">
+                                                <li className="d-flex align-items-center gap-2">
+                                                    <span>
+                                                        <FaInfoCircle className="text-primary me-1"/>
+                                                        Ensure the YouTube video has a<span className="fw-bold text-dark ms-1 me-1">valid transcript</span>before summarizing.
+                                                    </span>
+                                                </li>
+                                            </ul>
                                         </div>
                                         <div className="d-flex justify-content-between mt-3">
                                             <button
